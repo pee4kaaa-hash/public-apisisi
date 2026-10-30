@@ -12,6 +12,7 @@
 | [RxNorm](https://lhncbc.nlm.nih.gov/RxNav/APIs/RxNormAPIs.html) | Нормализованные названия лекарств: связь торгового названия с действующим веществом | — |
 | [openFDA](https://open.fda.gov) | Данные FDA о препаратах, побочных эффектах и медизделиях | Ключ |
 | [NHS Health A-Z](https://digital.nhs.uk/developer/api-catalogue/health-a-to-z) | Справочник NHS по заболеваниям, лекарствам и рекомендациям | Ключ |
+| [FDA Recalls](https://rapidapi.com/crisp-point-studio-crisp-point-studio-default/api/live-fda-product-food-recalls) | Свежие отзывы препаратов и продуктов с рынка | Ключ |
 
 ## Генетика, биохимия, молекулярная биология
 
@@ -23,12 +24,19 @@
 | [RCSB PDB](https://data.rcsb.org/) | 3D-структуры белков и нуклеиновых кислот | — |
 | [Open Targets](https://platform-docs.opentargets.org/) | Связи «ген — болезнь — лекарство-мишень» | — |
 | [Chempirical](https://chempirical.com/api/) | Химические соединения, их свойства и реакции | — |
+| [DeepDNA](https://deepdna.ai/docs/) | Гены, варианты и фармакогенетика: как гены влияют на действие лекарств | — |
+| [ENA](https://www.ebi.ac.uk/ena/browser/api/swagger-ui/index.html) | Нуклеотидные последовательности и геномы | — |
 
 ## Научная литература
 
 | API | Чем полезен | Ключ |
 |:---|:---|:---|
 | [NCBI E-utilities](https://www.ncbi.nlm.nih.gov/books/NBK25501/) | Доступ к PubMed и другим базам NCBI — поиск статей для рефератов и курсовых | — |
+| [Europe PMC](https://europepmc.org/RestfulWebService) | Статьи по медицине и биологии с аннотациями и ссылками на полный текст | — |
+| [Semantic Scholar](https://api.semanticscholar.org/) | Поиск статей, авторов и цитирований | — |
+| [OpenAlex](https://docs.openalex.org/) | Открытый каталог научных работ | — |
+| [Crossref Metadata Search](https://github.com/CrossRef/rest-api-doc) | Выходные данные статей и книг — для оформления списка литературы | — |
+| [Wikipedia](https://www.mediawiki.org/wiki/API:Main_page) | Быстрая справка по терминам, в том числе в русской Википедии | — |
 | [arXiv](https://info.arxiv.org/help/api/user-manual.html) | Препринты научных статей | — |
 | [Open Library](https://openlibrary.org/developers/api) | Поиск книг и учебников | — |
 
@@ -38,14 +46,23 @@
 |:---|:---|:---|
 | [FoodData Central](https://fdc.nal.usda.gov/) | Состав продуктов: белки, жиры, углеводы, витамины, минералы | Ключ |
 | [Edamam](https://developer.edamam.com/) | Пищевая ценность блюд и рецептов | Ключ |
+| [Nutritionix](https://developer.nutritionix.com/) | Большая база пищевой ценности продуктов | Ключ |
 
 ## Эпидемиология и статистика
 
 | API | Чем полезен | Ключ |
 |:---|:---|:---|
 | [Open Disease](https://disease.sh/) | Статистика по COVID-19 и гриппу по странам | — |
+| [Monitly](https://monit.ly/api-docs) | Статистика ВОЗ, Всемирного банка и других организаций по 150+ странам | Ключ |
 | [Humanitarian Data Exchange](https://data.humdata.org/) | Открытые данные о здоровье населения в разных странах | — |
 | [Open Data NHS Scotland](https://www.opendata.nhs.scot) | Медицинская статистика Шотландии — пример реальных данных здравоохранения | — |
+
+## Клиническое мышление и терминология
+
+| API | Чем полезен | Ключ |
+|:---|:---|:---|
+| [Infermedica](https://developer.infermedica.com/docs/) | Проверка симптомов и сортировка пациентов — можно сверять себя на ситуационных задачах | Ключ |
+| [Lexigram](https://docs.lexigram.io/) | Выделение клинических терминов из текста, медицинская онтология | Ключ |
 
 ## Английский для медика
 
@@ -60,5 +77,8 @@
 2. Готовите реферат или курсовую — **NCBI E-utilities** (PubMed).
 3. Учите биохимию — **KEGG**, генетику — **MedlinePlus Genetics**.
 4. Считаете рацион на занятии по диетологии — **FoodData Central**.
+5. Оформляете список литературы — **Crossref**.
+
+Совет: в англоязычных базах ищите препараты по МНН на латинице, например `epinephrine` вместо «адреналин». Справочники США описывают американский рынок, поэтому для практики сверяйтесь с российскими инструкциями.
 
 Данные из этих источников предназначены для обучения и не заменяют клинические рекомендации Минздрава РФ.
