@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Стомат ОмГМУ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: липкая шапка с вкладками; каждая вкладка — колонка до 960px; карта зубов FDI как фирменная деталь */
+:root{
+  --bg:#f3f6f7; --surface:#ffffff; --surface-2:#e8eef0; --fg:#14232a; --muted:#56686f;
+  --line:#d3dde0; --accent:#b8325c; --accent-soft:#f7e3ea; --accent-fg:#ffffff;
+  --ok:#1f7a4d; --ok-soft:#dff2e8; --bad:#b3261e; --bad-soft:#fbe4e2;
+  --f-display:"Unbounded","Golos Text",system-ui,sans-serif;
+  --f-body:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f1517; --surface:#172024; --surface-2:#1f2b30; --fg:#e4ecee; --muted:#93a6ad;
+  --line:#2b3a40; --accent:#ec7298; --accent-soft:#3a1d28; --accent-fg:#1a0b11;
+  --ok:#5fcf95; --ok-soft:#173326; --bad:#ff8a80; --bad-soft:#3b1a18; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0f1517; --surface:#172024; --surface-2:#1f2b30; --fg:#e4ecee; --muted:#93a6ad;
+  --line:#2b3a40; --accent:#ec7298; --accent-soft:#3a1d28; --accent-fg:#1a0b11;
+  --ok:#5fcf95; --ok-soft:#173326; --bad:#ff8a80; --bad-soft:#3b1a18; color-scheme:dark }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+select{max-width:100%}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 var(--f-body)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{text-wrap:balance;line-height:1.2}
+h1{font:700 clamp(1.6rem,4.5vw,2.4rem)/1.15 var(--f-display);margin:0}
+h2{font:700 1.25rem/1.25 var(--f-display);margin:0}
+h3{font-size:1.05rem;margin:1.2em 0 .4em}
+.wrap{max-width:960px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:12px;padding-block:10px}
+.brand{font:700 1rem var(--f-display);text-decoration:none;color:var(--fg);white-space:nowrap}
+.brand b{color:var(--accent)}
+.search{flex:1;min-width:0}
+.search input{width:100%;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:var(--bg);color:var(--fg);font:inherit;font-size:.95rem}
+nav.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:8px}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs a{flex:none;text-decoration:none;color:var(--muted);padding:6px 12px;border-radius:999px;font-weight:500;font-size:.95rem}
+nav.tabs a[aria-current="page"]{background:var(--accent);color:var(--accent-fg)}
+main{padding-block:24px 64px}
+section.view{display:grid;gap:20px;grid-template-columns:minmax(0,1fr)}
+.lead{color:var(--muted);max-width:65ch;margin:.4em 0 0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;min-width:0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.eyebrow{font:600 .72rem var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:5px 12px;border-radius:999px;font:inherit;font-size:.9rem;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.btn{display:inline-flex;align-items:center;gap:6px;border:0;background:var(--accent);color:var(--accent-fg);padding:9px 16px;border-radius:8px;font:600 .95rem var(--f-body);cursor:pointer;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+select,input[type=number],input[type=date]{font:inherit;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--fg)}
+.tbl{overflow-x:auto;margin:.6em 0}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:.82rem;text-transform:uppercase;letter-spacing:.04em}
+td.num,.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+details.topic{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+details.topic+details.topic{margin-top:8px}
+details.topic summary{cursor:pointer;padding:12px 16px;font-weight:600;list-style:none;display:flex;gap:10px;align-items:baseline}
+details.topic summary::-webkit-details-marker{display:none}
+details.topic summary::before{content:"+";font-family:var(--f-mono);color:var(--accent);width:1ch}
+details.topic[open] summary::before{content:"−"}
+details.topic summary .tag{margin-left:auto;font-weight:500;font-size:.78rem;color:var(--muted);white-space:nowrap}
+.body{padding:0 16px 14px 16px;max-width:72ch}
+.body ul,.body ol{padding-left:1.2em;margin:.4em 0}
+.body li{margin:.2em 0}
+.body p{margin:.5em 0}
+.key{background:var(--accent-soft);border-radius:8px;padding:10px 12px;margin:.6em 0}
+.key b{color:var(--accent)}
+.subj-h{margin:18px 0 8px;display:flex;align-items:baseline;gap:10px}
+.subj-h small{color:var(--muted)}
+.hidden-by-search{display:none!important}
+/* Карта зубов */
+.jaw{display:grid;grid-template-columns:repeat(16,minmax(0,1fr));gap:3px}
+.tooth{aspect-ratio:3/4;max-width:100%;border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:6px 6px 10px 10px;font:600 .72rem var(--f-mono);cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center}
+.jaw.lower .tooth{border-radius:10px 10px 6px 6px}
+.tooth[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.midline{display:flex;justify-content:space-between;font:.72rem var(--f-mono);color:var(--muted);margin:6px 2px}
+.tooth-info{margin-top:12px;min-height:5.5em}
+.tooth-info b.num{font:700 1.6rem var(--f-mono);color:var(--accent);margin-right:8px}
+/* Тест и карточки */
+.q{font-weight:600;font-size:1.05rem;margin:.2em 0 .8em}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:10px 12px;border-radius:8px;font:inherit;cursor:pointer}
+.opt.right{background:var(--ok-soft);border-color:var(--ok)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.opt:disabled{cursor:default}
+.explain{margin-top:12px;padding:10px 12px;border-radius:8px;background:var(--surface-2)}
+.progress{height:6px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.card{min-height:180px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:1.15rem;cursor:pointer;user-select:none;padding:24px}
+.card .back{color:var(--muted);font-size:1rem}
+.stat{font:700 2rem var(--f-mono);color:var(--accent)}
+ul.check{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+ul.check label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+ul.check input{margin-top:.3em;accent-color:var(--accent)}
+.note{font-size:.88rem;color:var(--muted)}
+footer{border-top:1px solid var(--line);padding-block:20px;color:var(--muted);font-size:.85rem}
+@media (max-width:560px){ .tooth{font-size:.58rem;border-radius:4px 4px 7px 7px} .jaw{gap:2px} .bar{flex-wrap:wrap} .search{flex-basis:100%;order:3} }
+@media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="bar">
+      <a class="brand" href="#home">Стомат<b>·</b>ОмГМУ</a>
+      <div class="search"><input id="q" type="search" placeholder="Поиск по конспектам и шпаргалкам: пульпит, Кеннеди, артикаин…" aria-label="Поиск"></div>
+    </div>
+    <nav class="tabs" aria-label="Разделы">
+      <a href="#home">Главная</a>
+      <a href="#lectures">Конспекты</a>
+      <a href="#cheats">Шпаргалки</a>
+      <a href="#exam">Экзамены</a>
+      <a href="#cards">Карточки</a>
+      <a href="#schedule">Расписания</a>
+      <a href="#links">Вуз и ссылки</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ГЛАВНАЯ -->
+<section class="view" id="v-home">
+  <div>
+    <h1>Стоматология в ОмГМУ</h1>
+    <p class="lead">Конспекты по профильным дисциплинам, шпаргалки, тесты и карточки к зачётам и экзаменам, расписания кафедр и сервисы вуза. Специальность 31.05.03 «Стоматология», осенний семестр 2026–2027.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <p class="eyebrow">Мой курс</p>
+      <div class="row">
+        <select id="course" aria-label="Курс">
+          <option value="1">1 курс</option><option value="2">2 курс</option><option value="3">3 курс</option><option value="4">4 курс</option><option value="5">5 курс</option>
+        </select>
+        <span class="note">Расписания кафедр на осень 2026</span>
+      </div>
+      <ul id="my-sched" style="margin:.8em 0 0;padding-left:1.1em"></ul>
+    </div>
+    <div class="panel">
+      <p class="eyebrow">До экзамена</p>
+      <div class="row">
+        <input id="exam-name" type="text" placeholder="Предмет" aria-label="Предмет" style="flex:1;min-width:120px;font:inherit;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--fg)">
+        <input id="exam-date" type="date" aria-label="Дата экзамена">
+      </div>
+      <p style="margin:.8em 0 0"><span class="stat" id="days-left">—</span> <span id="days-label" class="note">укажите дату, и счётчик запомнится на этом устройстве</span></p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="row" style="justify-content:space-between">
+      <div>
+        <p class="eyebrow">Зубная формула ВОЗ (FDI)</p>
+        <h2>Нажмите на зуб</h2>
+      </div>
+      <div class="chips" role="group" aria-label="Прикус">
+        <button class="chip" id="dent-perm" aria-pressed="true">Постоянные</button>
+        <button class="chip" id="dent-milk" aria-pressed="false">Молочные</button>
+      </div>
+    </div>
+    <div style="margin-top:14px;overflow-x:auto">
+      <div class="midline"><span>правая сторона пациента</span><span>левая</span></div>
+      <div class="jaw upper" id="jaw-up"></div>
+      <div style="height:8px"></div>
+      <div class="jaw lower" id="jaw-low"></div>
+    </div>
+    <div class="tooth-info" id="tooth-info"><span class="note">Первая цифра — квадрант (1–4 постоянные, 5–8 молочные, по часовой стрелке от верхнего правого), вторая — зуб от центра.</span></div>
+  </div>
+
+  <div class="panel">
+    <p class="eyebrow">Чек-лист семестра</p>
+    <ul class="check" id="checklist"></ul>
+  </div>
+</section>
+
+<!-- КОНСПЕКТЫ -->
+<section class="view" id="v-lectures" hidden>
+  <div>
+    <h1>Конспекты лекций</h1>
+    <p class="lead">Сжатые конспекты по стандартным учебникам и клиническим рекомендациям СтАР. Официальные лекции и презентации кафедр лежат в СДО: <a href="http://sdo.omsk-osma.ru/" target="_blank" rel="noopener">sdo.omsk-osma.ru</a>. Если формулировки кафедры отличаются, на экзамене опирайтесь на кафедру.</p>
+  </div>
+  <div class="chips" id="subj-filter" role="group" aria-label="Дисциплина"></div>
+  <div id="lecture-list"></div>
+</section>
+
+<!-- ШПАРГАЛКИ -->
+<section class="view" id="v-cheats" hidden>
+  <div>
+    <h1>Шпаргалки</h1>
+    <p class="lead">Классификации, нормы, индексы и цифры, которые спрашивают на каждом зачёте.</p>
+  </div>
+  <div class="panel" id="calc">
+    <p class="eyebrow">Калькулятор</p>
+    <h2>Максимальная доза анестетика</h2>
+    <div class="row" style="margin-top:12px">
+      <label>Вес, кг <input id="w" type="number" min="10" max="150" value="70" style="width:90px"></label>
+      <select id="drug" aria-label="Препарат">
+        <option value="art">Артикаин 4% + эпинефрин</option>
+        <option value="lid">Лидокаин 2% + эпинефрин</option>
+        <option value="mep">Мепивакаин 3% без вазоконстриктора</option>
+      </select>
+    </div>
+    <p style="margin:.8em 0 0"><span class="stat" id="carp">—</span> <span class="note" id="carp-l"></span></p>
+    <p class="note">Карпула 1,7 мл. Расчёт ориентировочный: перед применением сверяйтесь с инструкцией препарата и учитывайте состояние пациента. Артикаин детям — с 4 лет.</p>
+  </div>
+  <div id="cheat-list"></div>
+</section>
+
+<!-- ЭКЗАМЕНЫ -->
+<section class="view" id="v-exam" hidden>
+  <div>
+    <h1>Подготовка к экзаменам</h1>
+    <p class="lead">Тест с разбором ответов. Ошибки запоминаются на этом устройстве, их можно прогнать отдельно.</p>
+  </div>
+  <div class="panel">
+    <div class="row" style="justify-content:space-between">
+      <div class="chips" id="quiz-subj" role="group" aria-label="Тема теста"></div>
+      <div class="row">
+        <button class="btn" id="quiz-start">Начать тест</button>
+        <button class="btn ghost" id="quiz-mistakes">Мои ошибки (<span id="mist-n">0</span>)</button>
+      </div>
+    </div>
+  </div>
+  <div class="panel" id="quiz-box">
+    <div class="progress"><i id="quiz-bar"></i></div>
+    <p class="note" id="quiz-count" style="margin:.6em 0 0"></p>
+    <div id="quiz-q"></div>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <p class="eyebrow">Аккредитация после 5 курса</p>
+      <h2>Как устроена</h2>
+      <ul style="padding-left:1.1em">
+        <li><b>Тестирование:</b> 80 заданий из банка, 60 минут, проходной порог 70%.</li>
+        <li><b>ОСКЭ:</b> станции с практическими навыками на симуляторах: базовая СЛР, осмотр и обследование, манипуляции по стоматологии.</li>
+        <li>Банк заданий и паспорта станций публикует Методический центр аккредитации: <a href="https://fmza.ru/" target="_blank" rel="noopener">fmza.ru</a>; репетиционный тест: <a href="https://selftest.mededtech.ru/" target="_blank" rel="noopener">selftest.mededtech.ru</a>.</li>
+      </ul>
+      <p class="note">Сроки и формат уточняйте в деканате: они меняются от года к году.</p>
+    </div>
+    <div class="panel">
+      <p class="eyebrow">Правила кафедр</p>
+      <h2>Порядок зачётов и экзаменов</h2>
+      <div class="tbl"><table>
+        <thead><tr><th>Кафедра</th><th>Зачёт</th><th>Экзамен</th><th>Долги</th></tr></thead>
+        <tbody>
+          <tr><td>Терапевтическая</td><td><a href="https://omsk-osma.ru/files/1194/por_prov_zachet_2026-09-15_17-07-29_1.pdf" target="_blank" rel="noopener">PDF</a></td><td><a href="https://omsk-osma.ru/files/1194/por_prov_eczam_2026-09-15_17-05-46_1.pdf" target="_blank" rel="noopener">Эндодонтия</a></td><td><a href="https://omsk-osma.ru/files/1194/reg_likv_zadol_2026-09-15_17-08-55_1.pdf" target="_blank" rel="noopener">PDF</a></td></tr>
+          <tr><td>Ортопедическая</td><td><a href="https://omsk-osma.ru/files/2269/Poriadok_zachet_2627.pdf" target="_blank" rel="noopener">PDF</a></td><td><a href="https://omsk-osma.ru/files/2269/Poriadok_ekzamen_2627.pdf" target="_blank" rel="noopener">PDF</a></td><td><a href="https://omsk-osma.ru/files/2269/Reglament_dolg_2627.pdf" target="_blank" rel="noopener">PDF</a></td></tr>
+          <tr><td>ЧЛХ</td><td><a href="https://omsk-osma.ru/files/832/zachet25.pdf" target="_blank" rel="noopener">PDF</a></td><td><a href="https://omsk-osma.ru/files/832/porex25.pdf" target="_blank" rel="noopener">PDF</a></td><td><a href="https://omsk-osma.ru/files/832/reglam24-25.pdf" target="_blank" rel="noopener">PDF</a></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+  <div class="panel">
+    <p class="eyebrow">План подготовки</p>
+    <h2>За 2 недели до экзамена</h2>
+    <ol style="padding-left:1.2em">
+      <li>Скачайте список вопросов к экзамену на странице кафедры (раздел «Учебный процесс» → «Специалитет») или возьмите у старосты.</li>
+      <li>Разбейте вопросы на 10 дней, оставьте 3–4 дня на повторение. Первыми берите классификации: их спрашивают в каждом билете.</li>
+      <li>Каждый вечер прогоняйте тест и карточки на этом сайте, ошибки — отдельно на следующий день.</li>
+      <li>За 3 дня — ситуационные задачи: диагноз, обоснование, дифдиагностика, план лечения. Это структура почти любого устного ответа.</li>
+      <li>Закройте отработки по графику консультаций: без них не допустят.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- КАРТОЧКИ -->
+<section class="view" id="v-cards" hidden>
+  <div>
+    <h1>Карточки</h1>
+    <p class="lead">Нажмите на карточку, чтобы увидеть ответ. «Знаю» убирает карточку из круга до конца сессии.</p>
+  </div>
+  <div class="chips" id="card-subj" role="group" aria-label="Тема карточек"></div>
+  <div class="panel card" id="card" tabindex="0" role="button" aria-label="Перевернуть карточку"></div>
+  <div class="row" style="justify-content:center">
+    <button class="btn ghost" id="card-no">Не знаю</button>
+    <button class="btn" id="card-yes">Знаю</button>
+  </div>
+  <p class="note" id="card-left" style="text-align:center"></p>
+</section>
+
+<!-- РАСПИСАНИЯ -->
+<section class="view" id="v-schedule" hidden>
+  <div>
+    <h1>Расписания на осень 2026–2027</h1>
+    <p class="lead">Общего расписания факультета на сайте нет: каждая кафедра выкладывает своё. Сводная таблица со страниц кафедр.</p>
+  </div>
+  <div class="panel tbl">
+    <table>
+      <thead><tr><th>Курс</th><th>Терапевтическая</th><th>Ортопедическая</th><th>ЧЛХ</th><th>Ортодонтия</th></tr></thead>
+      <tbody id="sched-body"></tbody>
+    </table>
+  </div>
+  <div class="panel">
+    <p class="eyebrow">Отработки</p>
+    <h2>Графики консультаций</h2>
+    <ul style="padding-left:1.1em">
+      <li><a href="https://omsk-osma.ru/files/1194/graf_kon_st_osen_2026-09-03_15-37-14_1.pdf" target="_blank" rel="noopener">Терапевтическая стоматология</a></li>
+      <li><a href="https://omsk-osma.ru/files/2269/Tekusch_kons_os26.pdf" target="_blank" rel="noopener">Ортопедическая стоматология</a></li>
+      <li><a href="https://omsk-osma.ru/files/832/25-26/otrabotki26-27.pdf" target="_blank" rel="noopener">Челюстно-лицевая хирургия</a></li>
+    </ul>
+    <p class="note">Практики терапевтической кафедры: зачёт по <a href="https://omsk-osma.ru/files/1194/Por_prov_pr_Uxod.pdf" target="_blank" rel="noopener">«Уходу за больными»</a> и по <a href="https://omsk-osma.ru/files/1194/Por_prov_sach_prak_4_kurs_2025-01-24_14-37-10_1.pdf" target="_blank" rel="noopener">«Помощнику врача-стоматолога (терапевта)»</a> на 4 курсе. Страница кафедры детской стоматологии не открывалась при сборе данных, её расписание смотрите на сайте кафедры. Общие расписания: <a href="https://omsk-osma.ru/studentam/raspisanie-zanyatiy" target="_blank" rel="noopener">занятия</a>, <a href="https://omsk-osma.ru/studentam/raspisanie-ekzamenov" target="_blank" rel="noopener">экзамены</a>, <a href="https://omsk-osma.ru/studentam/raspisanie-peresdach-zachetov" target="_blank" rel="noopener">пересдачи</a>.</p>
+  </div>
+</section>
+
+<!-- ВУЗ И ССЫЛКИ -->
+<section class="view" id="v-links" hidden>
+  <div>
+    <h1>Вуз и ссылки</h1>
+    <p class="lead">Деканат стоматологического факультета: главный корпус, ул. Ленина, 12, каб. 349, <span class="mono">+7 (3812) 23-22-60</span>; пн–чт 8:00–16:45, пт 8:00–15:30, обед 12:00–12:30. Декан — Ломиашвили Лариса Михайловна (<a href="https://omsk-osma.ru/obrazovanie/stomatologicheskiy-fakul-tet" target="_blank" rel="noopener">страница факультета</a>).</p>
+  </div>
+  <div class="panel">
+    <h2>Кафедры факультета</h2>
+    <p class="note">Пять профильных кафедр работают в ГКСП №1 на Волочаевской, 21А. У каждой одинаковые подразделы: «Сотрудники», «Учебный процесс» → «Специалитет», «Объявления».</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Кафедра</th><th>Где занятия</th><th>Контакты</th></tr></thead>
+      <tbody id="dept-body"></tbody>
+    </table></div>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <h2>Сервисы на каждый день</h2>
+      <ul id="svc" style="padding-left:1.1em"></ul>
+      <p class="note">Логин в СДО и доступ к ЭБС обычно выдают в деканате или библиотеке.</p>
+    </div>
+    <div class="panel">
+      <h2>Где брать материал</h2>
+      <ul style="padding-left:1.1em">
+        <li><b>ЭБС вуза</b>: лицензионные учебники бесплатно для студентов («Консультант студента» и другие), вход через библиотеку.</li>
+        <li><a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">PubMed</a>: статьи по стоматологии для курсовых и НОМУС.</li>
+        <li><a href="https://europepmc.org/" target="_blank" rel="noopener">Europe PMC</a>: статьи со ссылками на бесплатный полный текст.</li>
+        <li><a href="https://e-stomatology.ru/" target="_blank" rel="noopener">СтАР</a>: клинические рекомендации Стоматологической ассоциации России.</li>
+        <li><a href="https://cr.minzdrav.gov.ru/" target="_blank" rel="noopener">Рубрикатор КР Минздрава</a>: действующие клинические рекомендации.</li>
+        <li><a href="https://dailymed.nlm.nih.gov/" target="_blank" rel="noopener">DailyMed</a>: инструкции к анестетикам и антибиотикам (рынок США).</li>
+        <li><a href="https://github.com/pee4kaaa-hash/public-apisisi/blob/master/MED_STUDY_RU.md" target="_blank" rel="noopener">Подборка медицинских API на русском</a>.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer><div class="wrap">Учебный сайт для студентов-стоматологов ОмГМУ. Не официальный ресурс вуза. Конспекты не заменяют лекции кафедр и клинические рекомендации Минздрава РФ. Ссылки на документы кафедр собраны 30.10.2026.</div></footer>
+
+<script>
+(function(){
+"use strict";
+var store={get:function(k,d){try{var v=localStorage.getItem("stom:"+k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+           set:function(k,v){try{localStorage.setItem("stom:"+k,JSON.stringify(v))}catch(e){}}};
+function $(s,r){return (r||document).querySelector(s)}
+function el(tag,attrs,html){var e=document.createElement(tag);if(attrs)for(var k in attrs)e.setAttribute(k,attrs[k]);if(html!=null)e.innerHTML=html;return e}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+var EXT=' target="_blank" rel="noopener"';
+
+/* ---------- ДАННЫЕ: расписания, кафедры, сервисы ---------- */
+var F="https://omsk-osma.ru/files/";
+var SCHED={
+ 1:{ter:F+"1194/rasp_DpV_1_kurs.pdf",ort:F+"2269/1_kurs_stom_os2026.pdf"},
+ 2:{ter:F+"1194/rasp_2kurs.pdf",ort:F+"2269/2_kurs_stom_os2026.pdf"},
+ 3:{ter:F+"1194/rasp_3kurs.pdf",ort:F+"2269/3_kurs_stom_os26_page-0001.pdf",chlh:F+"832/25-26/3kurs_osen_2627.pdf"},
+ 4:{ter:F+"1194/rasp4kurs_2026-09-01_12-16-01_1.pdf",ort:F+"2269/4_kurs_stom_os2026_page-0001.pdf",chlh:F+"832/25-26/raspisanie_4_26-27.pdf"},
+ 5:{ter:F+"1194/rasp_5kurs.pdf",ort:F+"2269/5_kurs_stom_os2026.pdf",chlh:F+"832/25-26/5kursostn2627.pdf",
+    orto:[["Ортодонтия и детское протезирование",F+"209/rasporhto2026.pdf"],["Междисциплинарное ведение",F+"209/raspmezh2026.pdf"]]}
+};
+var SNAME={ter:"Терапевтическая стоматология",ort:"Ортопедическая стоматология",chlh:"Челюстно-лицевая хирургия"};
+var K="https://omsk-osma.ru/obrazovanie/stomatologicheskiy-fakul-tet/kafedry-stomatologicheskogo-fakul-teta/";
+var DEPTS=[
+ ["Терапевтической стоматологии","terapevticheskoy-stomatologii","ГКСП №1, Волочаевская, 21А","23-32-28, lomiashvili@mail.ru"],
+ ["Ортопедической стоматологии","ortopedicheskoy-stomatologii","ГКСП №1, Волочаевская, 21А, 2 этаж","23-45-70, kafedraort@mail.ru"],
+ ["Челюстно-лицевой хирургии","chelyustno-licevoy-hirurgii","ГКСП №1, Волочаевская, 21А","—"],
+ ["Детской стоматологии","detskoy-stomatologii","ГКСП №1, Волочаевская, 21А; ГДКБ №3, Магистральная, 31","—"],
+ ["Ортодонтии, восстановительных технологий и остеопатии","ortodontii-vosstanovitel-nyh-tehnologiy-i-osteopatii-dpo","Главный корпус, Ленина, 12","95-70-03, ortodontomsk@mail.ru"],
+ ["Лучевой диагностики","luchevoy-diagnostiki","—","—"],
+ ["Оториноларингологии","otorinolaringologii","—","—"],
+ ["Психиатрии, медицинской психологии","psihiatrii-medicinskoy-psihologii","—","—"],
+ ["Судебной медицины, правоведения","sudebnoy-mediciny-pravovedeniya","—","—"],
+ ["Физики, математики, медицинской информатики","fiziki-matematiki-medicinskoy-informatiki","—","—"],
+ ["Иностранных языков","inostrannyh-yazykov","—","—"]
+];
+var S="https://omsk-osma.ru/studentam/";
+var SVC=[
+ ["Учебная среда (СДО): лекции и тесты","http://sdo.omsk-osma.ru/"],
+ ["Учебные ресурсы",S+"uchebnye-resursy"],
+ ["Электронные библиотеки (ЭБС)","https://omsk-osma.ru/nauchno-medicinskaya-biblioteka/informacionnye-resursy/elektronnye-bibliotechnye-sistemy/"],
+ ["Каталог библиотеки","http://weblib.omsk-osma.ru/cgi-bin/irbis64r_15/cgiirbis_64.exe?C21COM=F&I21DBN=LIBRA&P21DBN=LIBRA"],
+ ["Практика",S+"praktika"],
+ ["Стипендии и матпомощь",S+"stipendii-material-naya-pomosch"],
+ ["Общежития",S+"obschezhitiya"],
+ ["Оплата обучения онлайн",S+"informaciya-ob-oplate-za-obuchenie-i-prozhivanie-v-obschezhitii/oplata-onlayn"],
+ ["НОМУС: научные кружки",S+"nauchnoe-obschestvo-molodyh-uchenyh-i-studentov-nomus"],
+ ["Банк локальных документов","https://omsk-osma.ru/bank-lokalnykh-dokumentov"]
+];
+
+/* ---------- КОНСПЕКТЫ ---------- */
+var SUBJ={prop:"Пропедевтика",ter:"Терапевтическая",endo:"Эндодонтия",paro:"Пародонтология",hir:"Хирургическая",ort:"Ортопедическая",det:"Детская и ортодонтия",mat:"Материаловедение"};
+var LECT=[
+{s:"prop",t:"Строение зуба и тканей пародонта",h:`
+<p>Зуб состоит из <b>коронки</b>, <b>шейки</b> и <b>корня</b>. Твёрдые ткани: эмаль, дентин, цемент; мягкая — пульпа.</p>
+<ul>
+<li><b>Эмаль</b> — самая твёрдая ткань организма, ~95% минеральных веществ (гидроксиапатит), не содержит клеток и не регенерирует. Структурная единица — эмалевая призма.</li>
+<li><b>Дентин</b> — ~70% минералов, пронизан дентинными трубочками с отростками одонтобластов (поэтому чувствителен). Виды: первичный, вторичный (физиологический), третичный (заместительный, в ответ на раздражение).</li>
+<li><b>Цемент</b> покрывает корень, ~65% минералов; бесклеточный (в верхней части корня) и клеточный (в апикальной трети).</li>
+<li><b>Пульпа</b> — рыхлая соединительная ткань с сосудами и нервами; слои: одонтобластов, субодонтобластический, центральный. Функции: пластическая, трофическая, сенсорная, защитная.</li>
+</ul>
+<p><b>Пародонт</b> = десна + периодонт + цемент + альвеолярная кость. Ширина периодонтальной щели в норме 0,15–0,35 мм.</p>`},
+{s:"prop",t:"Зубная формула и признаки принадлежности зуба",h:`
+<p><b>ВОЗ (FDI)</b>: двузначный номер. Первая цифра — квадрант: 1 верхний правый, 2 верхний левый, 3 нижний левый, 4 нижний правый; для молочных 5–8. Вторая — номер зуба от центральной линии (1–8 постоянные, 1–5 молочные). Пример: <span class="mono">36</span> — первый нижний левый моляр, <span class="mono">55</span> — второй верхний правый молочный моляр.</p>
+<p><b>Анатомическая формула</b> постоянных: <span class="mono">2·1·2·3</span> (резцы, клыки, премоляры, моляры в половине челюсти) = 32; молочных: <span class="mono">2·1·0·2</span> = 20.</p>
+<p><b>Признаки стороны</b> (по которым определяют, правый или левый зуб):</p>
+<ul><li>угла коронки — мезиальный угол режущего края острее дистального;</li><li>кривизны коронки — вестибулярная поверхность выпуклее у мезиального края;</li><li>корня — корень отклонён дистально.</li></ul>`},
+{s:"prop",t:"Методы обследования стоматологического больного",h:`
+<p><b>Основные</b>: опрос (жалобы, анамнез заболевания и жизни), внешний осмотр, осмотр полости рта, пальпация, зондирование, перкуссия (вертикальная и горизонтальная), определение подвижности.</p>
+<p><b>Дополнительные</b>: термодиагностика, электроодонтодиагностика (ЭОД), рентгенография (прицельная, ОПТГ, КЛКТ), витальное окрашивание, трансиллюминация, лабораторные методы.</p>
+<div class="key"><b>Подвижность по Энтину</b>: I — в вестибуло-оральном направлении; II — плюс в медио-дистальном; III — плюс вертикальная.</div>
+<p>Порядок записи в карте: жалобы → анамнез → объективно (внешний осмотр, лимфоузлы, ВНЧС, преддверие, зубная формула, прикус, слизистая) → предварительный диагноз → доп. методы → окончательный диагноз → план лечения.</p>`},
+{s:"ter",t:"Кариес: этиология и классификации",h:`
+<p>Кариес — патологический процесс, при котором происходит деминерализация и размягчение твёрдых тканей зуба с образованием полости. МКБ-10: <span class="mono">K02</span>.</p>
+<p><b>Факторы</b>: кариесогенные микроорганизмы (<i>Streptococcus mutans</i>, лактобациллы) + углеводы + восприимчивость зуба + время. Критическое pH эмали ≈ 5,5.</p>
+<p><b>Топографическая</b> классификация: кариес в стадии пятна (белого/пигментированного), поверхностный, средний, глубокий.</p>
+<div class="key"><b>Блэк</b>: I — фиссуры и ямки; II — контактные поверхности моляров и премоляров; III — контактные поверхности резцов и клыков без нарушения угла; IV — то же с нарушением угла и режущего края; V — пришеечная область всех зубов; VI (добавлен позже) — режущие края резцов и бугры.</div>
+<p><b>МКБ-10</b>: K02.0 кариес эмали, K02.1 кариес дентина, K02.2 кариес цемента, K02.3 приостановившийся кариес.</p>`},
+{s:"ter",t:"Кариес: диагностика и дифдиагностика",h:`
+<ul>
+<li><b>Стадия пятна</b>: меловое матовое пятно, эмаль гладкая, бессимптомно. Окрашивается 2% метиленовым синим (в отличие от флюороза и гипоплазии).</li>
+<li><b>Поверхностный</b>: дефект в пределах эмали, кратковременная боль от сладкого и химических раздражителей.</li>
+<li><b>Средний</b>: полость в плащевом дентине, зондирование болезненно по эмалево-дентинной границе; ЭОД в норме (2–6 мкА).</li>
+<li><b>Глубокий</b>: полость в околопульпарном дентине, боль от термических раздражителей проходит сразу после устранения; зондирование болезненно по дну; ЭОД до 10–20 мкА.</li>
+</ul>
+<div class="key"><b>Глубокий кариес vs пульпит</b>: при кариесе боль только от раздражителя и проходит сразу; при пульпите — самопроизвольная, ночная, приступообразная или долго не проходит после раздражителя.</div>`},
+{s:"ter",t:"Некариозные поражения",h:`
+<p><b>Возникающие до прорезывания</b>: гипоплазия (системная и местная — «зуб Турнера»), флюороз (эндемический, при фторе в воде >1,5 мг/л), наследственные нарушения (несовершенный амело- и дентиногенез), тетрациклиновые зубы.</p>
+<p><b>После прорезывания</b>: клиновидный дефект, эрозия эмали, патологическая стираемость, гиперестезия, травма, некроз эмали (кислотный).</p>
+<div class="key"><b>Флюороз vs кариес в стадии пятна</b>: при флюорозе пятна множественные, симметричные, на «иммунных» к кариесу участках, не окрашиваются метиленовым синим, появляются с прорезыванием.</div>`},
+{s:"endo",t:"Пульпит: классификации и клиника",h:`
+<p>МКБ-10: <span class="mono">K04.0</span>. В вузах РФ часто дают и клиническую классификацию ММСИ (1989):</p>
+<ul>
+<li><b>Острый</b>: очаговый, диффузный.</li>
+<li><b>Хронический</b>: фиброзный, гангренозный, гипертрофический.</li>
+<li><b>Обострение хронического</b>.</li>
+<li>Состояние после частичного или полного удаления пульпы.</li>
+</ul>
+<ul>
+<li><b>Острый очаговый</b>: самопроизвольная локализованная боль, приступы 10–30 мин, светлые промежутки длинные; ЭОД 15–20 мкА.</li>
+<li><b>Острый диффузный</b>: иррадиирующая боль по ветвям тройничного нерва, ночные приступы, короткие светлые промежутки; холод может успокаивать.</li>
+<li><b>Хронический фиброзный</b>: ноющая боль от раздражителей, долго не проходит; вскрытая полость зуба, кровоточивость при зондировании.</li>
+<li><b>Хронический гангренозный</b>: боль от горячего, гнилостный запах, серая пульпа, ЭОД 60–90 мкА.</li>
+<li><b>Хронический гипертрофический</b>: разрастание пульпы («полип») в кариозной полости, кровоточит.</li>
+</ul>`},
+{s:"endo",t:"Периодонтит: классификация и рентгенодиагностика",h:`
+<p>Классификация <b>И. Г. Лукомского</b>:</p>
+<ul><li><b>Острый</b>: серозный, гнойный.</li><li><b>Хронический</b>: фиброзный, гранулирующий, гранулематозный.</li><li><b>Обострение хронического</b>.</li></ul>
+<div class="key"><b>Рентген</b>: фиброзный — равномерное расширение периодонтальной щели; гранулирующий — очаг разрежения с нечёткими контурами («языки пламени»); гранулематозный — округлый очаг с чёткими контурами до 5 мм. Больший очаг с чёткой границей — подозрение на кистогранулёму или радикулярную кисту.</div>
+<p><b>Острый</b>: боль постоянная, усиливается при накусывании, «чувство выросшего зуба»; перкуссия резко болезненна; ЭОД >100 мкА. При гнойном — пульсирующая боль, отёк, может быть реакция лимфоузлов.</p>
+<p>МКБ-10: K04.4 острый апикальный периодонтит, K04.5 хронический апикальный периодонтит (гранулёма), K04.6–K04.7 периапикальный абсцесс со свищом и без.</p>`},
+{s:"endo",t:"Эндодонтическое лечение: этапы",h:`
+<ol>
+<li>Обезболивание, изоляция (коффердам).</li>
+<li>Препарирование кариозной полости, раскрытие и создание доступа к полости зуба.</li>
+<li>Поиск устьев, определение <b>рабочей длины</b> (апекслокатор + рентген); рабочая длина обычно на 0,5–1 мм короче рентгенологической верхушки.</li>
+<li>Инструментальная обработка: <i>Step-back</i> (от верхушки к устью) или <i>Crown-down</i> (от устья к верхушке).</li>
+<li>Ирригация: гипохлорит натрия 0,5–5,25% (растворяет органику), ЭДТА 17% (удаляет смазанный слой), хлоргексидин 2%.</li>
+<li>Временное пломбирование с гидроксидом кальция при периодонтите.</li>
+<li>Обтурация: силер + гуттаперча (латеральная или вертикальная конденсация).</li>
+<li>Рентген-контроль, постоянная реставрация.</li>
+</ol>`},
+{s:"paro",t:"Классификация болезней пародонта (2001)",h:`
+<p>Принята Пленумом секции пародонтологии СтАР:</p>
+<ul>
+<li><b>Гингивит</b>: катаральный, гипертрофический, язвенный; лёгкой, средней, тяжёлой степени; острый, хронический, обострение.</li>
+<li><b>Пародонтит</b>: лёгкой, средней, тяжёлой степени; хронический, обострение, абсцедирование, ремиссия; локализованный или генерализованный.</li>
+<li><b>Пародонтоз</b>: дистрофический процесс без воспаления.</li>
+<li><b>Идиопатические заболевания</b> с прогрессирующим лизисом тканей пародонта (синдромы Папийона–Лефевра, гистиоцитоз Х и др.).</li>
+<li><b>Пародонтомы</b>: эпулис, фиброматоз дёсен.</li>
+</ul>
+<div class="key"><b>Степени пародонтита</b>: лёгкая — карман до 4 мм, резорбция до 1/3 корня; средняя — до 6 мм, 1/3–1/2 корня; тяжёлая — более 6 мм, более 1/2 корня.</div>`},
+{s:"paro",t:"Гингивит vs пародонтит vs пародонтоз",h:`
+<div class="tbl"><table><thead><tr><th>Признак</th><th>Гингивит</th><th>Пародонтит</th><th>Пародонтоз</th></tr></thead><tbody>
+<tr><td>Воспаление</td><td>Есть</td><td>Есть</td><td>Нет</td></tr>
+<tr><td>Карман</td><td>Нет (ложный при гипертрофии)</td><td>Истинный</td><td>Нет</td></tr>
+<tr><td>Кость</td><td>Без изменений</td><td>Резорбция</td><td>Равномерная убыль, склероз</td></tr>
+<tr><td>Подвижность</td><td>Нет</td><td>Есть</td><td>Поздно</td></tr>
+<tr><td>Типично</td><td>Кровоточивость</td><td>Гноетечение, подвижность</td><td>Оголение шеек, клиновидные дефекты</td></tr>
+</tbody></table></div>`},
+{s:"hir",t:"Местное обезболивание",h:`
+<ul>
+<li><b>Туберальная</b>: задние верхние альвеолярные ветви — верхние моляры (медиальный щёчный корень 16 может иметь иннервацию средней ветви).</li>
+<li><b>Инфраорбитальная</b>: передние и средние верхние альвеолярные ветви — резцы, клык, премоляры, мягкие ткани верхней губы.</li>
+<li><b>Палатинальная</b>: большой нёбный нерв — слизистая нёба от третьего моляра до клыка.</li>
+<li><b>Резцовая</b>: носонёбный нерв — слизистая нёба между клыками.</li>
+<li><b>Мандибулярная</b>: нижний альвеолярный и язычный нервы.</li>
+<li><b>Торусальная</b> (по Вейсбрему): нижний альвеолярный, язычный и щёчный нервы одновременно.</li>
+<li><b>Ментальная</b>: подбородочный нерв — мягкие ткани подбородка, нижней губы, частично премоляры и клык.</li>
+<li>При ограниченном открывании рта: по Берше–Дубову, Акинози.</li>
+</ul>
+<div class="key"><b>Анафилактический шок</b>: прекратить введение, уложить, вызвать бригаду, эпинефрин 0,1% 0,3–0,5 мл в/м в переднебоковую поверхность бедра, кислород, при необходимости повтор через 5–15 минут.</div>`},
+{s:"hir",t:"Удаление зубов",h:`
+<p><b>Щипцы</b>: прямые — верхние резцы и клыки; S-образные — верхние премоляры; S-образные с шипом (правые и левые) — верхние моляры; байонетные — корни и третьи моляры верхней челюсти; клювовидные — нижние зубы (со щёчками — моляры); изогнутые по плоскости — нижние третьи моляры.</p>
+<p><b>Элеваторы</b>: прямой, угловые (левый и правый), Леклюза — нижние третьи моляры.</p>
+<p><b>Этапы</b>: отслаивание круговой связки → наложение щипцов → продвижение → смыкание (фиксация) → вывихивание (люксация или ротация) → тракция → ревизия лунки.</p>
+<div class="key"><b>Осложнения</b>: кровотечение; перфорация дна верхнечелюстной пазухи (положительная носоротовая проба); альвеолит (на 2–4 сутки, боль, распад сгустка, запах); перелом корня, челюсти; вывих ВНЧС.</div>`},
+{s:"hir",t:"Одонтогенные воспалительные заболевания",h:`
+<ul>
+<li><b>Периостит</b> (флюс): отёк мягких тканей, сглаженность переходной складки; лечение — периостотомия, удаление причинного зуба по показаниям.</li>
+<li><b>Остеомиелит</b>: острый, подострый, хронический; секвестры на рентгене с 3–4 недели.</li>
+<li><b>Абсцесс</b> — ограниченное гнойное воспаление с капсулой; <b>флегмона</b> — разлитое, без границ.</li>
+<li><b>Перикоронит</b>: воспаление капюшона над затруднённо прорезывающимся зубом (чаще 38, 48).</li>
+<li><b>Одонтогенный гайморит</b>: связь с корнями верхних премоляров и моляров.</li>
+</ul>
+<p>Общий принцип: устранить источник (зуб), вскрыть очаг и дренировать, антибактериальная и противовоспалительная терапия.</p>`},
+{s:"ort",t:"Дефекты зубных рядов: классификации",h:`
+<div class="key"><b>Кеннеди</b>: I — двусторонний концевой дефект; II — односторонний концевой; III — включённый в боковом отделе; IV — включённый во фронтальном отделе, пересекающий среднюю линию. Дополнительные дефекты — подклассы; у IV класса подклассов нет.</div>
+<p><b>Правила Эпплгейта</b> (ключевые): класс определяют после запланированных удалений; отсутствующие третьи моляры не учитывают, если их не будут замещать; самый дистальный дефект определяет класс.</p>
+<p><b>Гаврилов</b>: 1 — концевые (одно- и двусторонние); 2 — включённые (боковые и передние); 3 — комбинированные; 4 — челюсти с одиночно сохранившимися зубами.</p>
+<p><b>Беззубые челюсти по Шрёдеру</b> (верхняя): I тип — хорошо выраженные альвеолярные отростки и бугры, глубокое нёбо; II — средняя атрофия; III — резкая атрофия, плоское нёбо. <b>По Келлеру</b> (нижняя): четыре типа по степени и равномерности атрофии.</p>`},
+{s:"ort",t:"Окклюзия, прикус, выбор конструкции",h:`
+<p><b>Окклюзия</b>: центральная, передняя, боковые (правая и левая). Признаки центральной окклюзии — зубные, суставные, мышечные.</p>
+<p><b>Физиологические прикусы</b>: ортогнатический, прямой, физиологическая прогения, бипрогнатия. <b>Патологические</b>: дистальный, мезиальный, глубокий, открытый, перекрёстный.</p>
+<div class="key"><b>ИРОПЗ</b> (индекс разрушения окклюзионной поверхности по Миликевичу): до 0,55 — пломба; 0,55–0,6 — вкладка; 0,6–0,8 — искусственная коронка; более 0,8 — штифтовая конструкция.</div>
+<p><b>Оттискные материалы</b>: твёрдые (гипс, цинкоксидэвгенольные), термопластичные, эластичные — альгинатные, силиконы С- и А-типа, полиэфиры. Альгинат отливают сразу: он теряет и набирает воду.</p>`},
+{s:"det",t:"Сроки прорезывания зубов",h:`
+<div class="tbl"><table><thead><tr><th>Молочные</th><th>Возраст</th></tr></thead><tbody>
+<tr><td>Центральные резцы</td><td class="num">6–8 мес</td></tr><tr><td>Боковые резцы</td><td class="num">8–12 мес</td></tr>
+<tr><td>Первые моляры</td><td class="num">12–16 мес</td></tr><tr><td>Клыки</td><td class="num">16–20 мес</td></tr>
+<tr><td>Вторые моляры</td><td class="num">20–30 мес</td></tr></tbody></table></div>
+<div class="tbl"><table><thead><tr><th>Постоянные</th><th>Возраст</th></tr></thead><tbody>
+<tr><td>Первые моляры</td><td class="num">6–7 лет</td></tr><tr><td>Центральные резцы</td><td class="num">6–8 лет</td></tr>
+<tr><td>Боковые резцы</td><td class="num">8–9 лет</td></tr><tr><td>Первые премоляры</td><td class="num">10–11 лет</td></tr>
+<tr><td>Клыки</td><td class="num">9–12 лет</td></tr><tr><td>Вторые премоляры</td><td class="num">11–12 лет</td></tr>
+<tr><td>Вторые моляры</td><td class="num">12–13 лет</td></tr><tr><td>Третьи моляры</td><td class="num">17–25 лет</td></tr></tbody></table></div>
+<p>Нижние зубы, как правило, прорезываются раньше верхних. Порядок на нижней челюсти: 6-1-2-3-4-5-7; на верхней: 6-1-2-4-5-3-7.</p>`},
+{s:"det",t:"Особенности кариеса и пульпита у детей",h:`
+<ul>
+<li>Широкие дентинные трубочки, тонкая эмаль, большая пульпарная камера — процесс быстро доходит до пульпы.</li>
+<li><b>Кариес раннего детского возраста</b> («бутылочный»): поражение верхних резцов у детей до 3 лет.</li>
+<li>Пульпит молочных зубов часто протекает бессимптомно, хронически; возможны изменения в области бифуркации.</li>
+<li>Методы при пульпите молочных зубов: пульпотомия (витальная и девитальная), пульпэктомия; несформированные постоянные зубы — сохранять зону роста (апексогенез, апексификация).</li>
+<li>Профилактика: гигиена, фторлак и фторсодержащие пасты по возрасту, герметизация фиссур первых постоянных моляров сразу после прорезывания.</li>
+</ul>`},
+{s:"det",t:"Ортодонтия: классификация Энгля и индексы",h:`
+<div class="key"><b>Энгль</b> (по положению первых моляров): I класс — мезиально-щёчный бугор верхнего первого моляра в межбугорковой борозде нижнего, аномалии в положении отдельных зубов; II класс — дистальное соотношение (II/1 — с протрузией верхних резцов, II/2 — с ретрузией); III класс — мезиальное соотношение.</div>
+<p><b>Индекс Тона</b>: сумма ширины четырёх верхних резцов / четырёх нижних; в норме 1,33. <b>Индекс Пона</b> — для определения нормальной ширины зубного ряда в области премоляров и моляров.</p>
+<p>Методы лечения: аппаратурный (съёмные, несъёмные — брекет-системы, элайнеры), хирургический, миогимнастика, комбинированный.</p>`},
+{s:"mat",t:"Пломбировочные материалы",h:`
+<ul>
+<li><b>Временные</b>: искусственный дентин (водный дентин), дентин-паста, временные цементы.</li>
+<li><b>Цементы</b>: цинк-фосфатный (подкладки, фиксация), поликарбоксилатный, <b>стеклоиономерный (СИЦ)</b> — химическая адгезия к тканям зуба и выделение фтора.</li>
+<li><b>Композиты</b>: по отверждению — химического и светового; по наполнителю — макро-, микро-, гибридные, наногибридные; по консистенции — текучие, пакуемые, универсальные.</li>
+<li><b>Компомеры</b> — композиты, модифицированные поликислотами.</li>
+<li><b>Амальгама</b> — в РФ почти не используется.</li>
+</ul>
+<div class="key"><b>Тотальное протравливание</b> 37% ортофосфорной кислотой: эмаль 30 с, дентин не более 15 с, затем смыв и бережное подсушивание (дентин не пересушивать).</div>`}
+];
+
+/* ---------- ШПАРГАЛКИ ---------- */
+var CHEATS=[
+{t:"Индексы гигиены и пародонта",h:`
+<div class="tbl"><table><thead><tr><th>Индекс</th><th>Как</th><th>Оценка</th></tr></thead><tbody>
+<tr><td>Федорова–Володкиной</td><td>Йодный раствор, вестибулярные поверхности 43–33; 1–5 баллов</td><td class="num">1,1–1,5 хорошо · 1,6–2,0 удовл. · 2,1–2,5 неудовл. · 2,6–3,4 плохо · 3,5–5,0 очень плохо</td></tr>
+<tr><td>Грин–Вермиллиона (OHI-S)</td><td>Налёт + камень на 16, 11, 26, 31 (вестиб.) и 36, 46 (язычн.), 0–3</td><td class="num">0–0,6 хорошо · 0,7–1,6 удовл. · 1,7–2,5 неудовл. · ≥2,6 плохо</td></tr>
+<tr><td>ПМА (Парма)</td><td>Шиллер–Писарев; П=1, М=2, А=3; сумма / (3 × число зубов) × 100%</td><td class="num">до 30% лёгкий · 31–60% средний · >60% тяжёлый гингивит</td></tr>
+<tr><td>CPITN</td><td>Зонд ВОЗ, 6 секстантов, коды 0–4</td><td class="num">0 здоров · 1 кровоточивость · 2 камень · 3 карман 4–5 мм · 4 карман ≥6 мм</td></tr>
+<tr><td>КПУ / кп</td><td>Кариес + пломба + удалённые (кп — молочные)</td><td>Интенсивность кариеса у человека</td></tr>
+</tbody></table></div>`},
+{t:"ЭОД: значения",h:`
+<div class="tbl"><table><thead><tr><th>Состояние</th><th>мкА</th></tr></thead><tbody>
+<tr><td>Интактный зуб</td><td class="num">2–6</td></tr><tr><td>Глубокий кариес</td><td class="num">до 10–20</td></tr>
+<tr><td>Острый очаговый пульпит</td><td class="num">15–20</td></tr><tr><td>Острый диффузный, хронический фиброзный</td><td class="num">20–50</td></tr>
+<tr><td>Гангренозный пульпит</td><td class="num">60–90</td></tr><tr><td>Некроз пульпы, периодонтит</td><td class="num">более 100</td></tr>
+</tbody></table></div>
+<p class="note">Цифры ориентировочные и различаются в учебниках. У несформированных зубов ЭОД неинформативна.</p>`},
+{t:"Эндодонтические инструменты: цвета ISO",h:`
+<div class="tbl"><table><thead><tr><th>Цвет</th><th>Размеры</th></tr></thead><tbody>
+<tr><td>розовый · серый · фиолетовый</td><td class="num">06 · 08 · 10</td></tr>
+<tr><td>белый</td><td class="num">15 · 45 · 90</td></tr>
+<tr><td>жёлтый</td><td class="num">20 · 50 · 100</td></tr>
+<tr><td>красный</td><td class="num">25 · 55 · 110</td></tr>
+<tr><td>синий</td><td class="num">30 · 60 · 120</td></tr>
+<tr><td>зелёный</td><td class="num">35 · 70 · 130</td></tr>
+<tr><td>чёрный</td><td class="num">40 · 80 · 140</td></tr>
+</tbody></table></div>
+<p class="note">Номер = диаметр кончика в сотых долях миллиметра; конусность стандартных ручных файлов 2%. Цвета повторяются циклом: белый, жёлтый, красный, синий, зелёный, чёрный.</p>`},
+{t:"Анестетики: максимальные дозы",h:`
+<div class="tbl"><table><thead><tr><th>Препарат</th><th>мг/мл</th><th>Макс. доза</th></tr></thead><tbody>
+<tr><td>Артикаин 4% + эпинефрин 1:100 000 / 1:200 000</td><td class="num">40</td><td class="num">7 мг/кг</td></tr>
+<tr><td>Лидокаин 2% + эпинефрин</td><td class="num">20</td><td class="num">7 мг/кг, не более 500 мг</td></tr>
+<tr><td>Мепивакаин 3%</td><td class="num">30</td><td class="num">4,4 мг/кг, не более 300 мг</td></tr>
+</tbody></table></div>
+<p class="note">Пациентам с ССЗ, беременным, детям — препараты с низким содержанием вазоконстриктора (1:200 000) или без него. Калькулятор доз — выше на этой странице.</p>`},
+{t:"Корни и каналы постоянных зубов",h:`
+<div class="tbl"><table><thead><tr><th>Зуб</th><th>Корни</th><th>Каналы (типично)</th></tr></thead><tbody>
+<tr><td>Верхние резцы, клык</td><td class="num">1</td><td class="num">1</td></tr>
+<tr><td>Первый верхний премоляр (14, 24)</td><td class="num">2 (щёчный, нёбный)</td><td class="num">2</td></tr>
+<tr><td>Второй верхний премоляр</td><td class="num">1</td><td class="num">1, реже 2</td></tr>
+<tr><td>Верхние первый и второй моляры</td><td class="num">3 (2 щёчных, нёбный)</td><td class="num">3–4 (MB2)</td></tr>
+<tr><td>Нижние резцы</td><td class="num">1</td><td class="num">1, часто 2</td></tr>
+<tr><td>Нижний клык</td><td class="num">1, редко 2</td><td class="num">1</td></tr>
+<tr><td>Нижние премоляры</td><td class="num">1</td><td class="num">1</td></tr>
+<tr><td>Нижние первый и второй моляры</td><td class="num">2 (медиальный, дистальный)</td><td class="num">3 (2 медиальных, 1 дистальный)</td></tr>
+<tr><td>Третьи моляры</td><td>вариабельно, часто сросшиеся</td><td>вариабельно</td></tr>
+</tbody></table></div>`},
+{t:"Классификации одной строкой",h:`
+<ul>
+<li><b>Блэк</b>: I фиссуры · II контакт. боковых · III контакт. фронтальных · IV + угол · V пришеечные · VI бугры и режущий край.</li>
+<li><b>Кеннеди</b>: I двусторонний концевой · II односторонний концевой · III включённый боковой · IV включённый фронтальный.</li>
+<li><b>Энгль</b>: I нейтральный · II дистальный (1 — протрузия, 2 — ретрузия) · III мезиальный.</li>
+<li><b>Лукомский</b>: острый (серозный, гнойный) · хронический (фиброзный, гранулирующий, гранулематозный) · обострение.</li>
+<li><b>Пульпит (ММСИ)</b>: острый (очаговый, диффузный) · хронический (фиброзный, гангренозный, гипертрофический) · обострение.</li>
+<li><b>Пародонтит</b>: лёгкая ≤4 мм, ≤1/3 · средняя ≤6 мм, ≤1/2 · тяжёлая >6 мм, >1/2.</li>
+<li><b>Подвижность (Энтин)</b>: I вестибуло-оральная · II + медио-дистальная · III + вертикальная.</li>
+</ul>`},
+{t:"Неотложка в кресле",h:`
+<div class="tbl"><table><thead><tr><th>Состояние</th><th>Признаки</th><th>Помощь</th></tr></thead><tbody>
+<tr><td>Обморок</td><td>Бледность, потеря сознания на секунды–минуты</td><td>Горизонтально, ноги приподнять, свежий воздух, нашатырный спирт</td></tr>
+<tr><td>Коллапс</td><td>Падение АД, нитевидный пульс, сознание сохранено</td><td>Горизонтально, вызвать бригаду, инфузия, вазопрессоры по назначению</td></tr>
+<tr><td>Анафилаксия</td><td>Падение АД, бронхоспазм, отёк, крапивница</td><td>Эпинефрин 0,1% 0,3–0,5 мл в/м, бригада, кислород</td></tr>
+<tr><td>Гипогликемия</td><td>Потливость, дрожь, голод, спутанность</td><td>В сознании — сладкое внутрь; без сознания — глюкоза 40% в/в</td></tr>
+<tr><td>Остановка кровообращения</td><td>Нет сознания и дыхания</td><td>СЛР 30:2, частота 100–120/мин, глубина 5–6 см, АНД</td></tr>
+</tbody></table></div>`}
+];
+
+/* ---------- ТЕСТ ---------- */
+var QUIZ=[
+{s:"ter",q:"Кариес контактной поверхности премоляра по Блэку относится к классу:",o:["I","II","III","V"],a:1,e:"II класс — контактные поверхности моляров и премоляров."},
+{s:"ter",q:"Кариес пришеечной области по Блэку:",o:["III","IV","V","VI"],a:2,e:"V класс — пришеечная область всех групп зубов."},
+{s:"ter",q:"Кариес контактной поверхности резца с нарушением режущего края:",o:["II","III","IV","VI"],a:2,e:"IV класс — как III, но с нарушением угла и режущего края."},
+{s:"ter",q:"Чем отличают кариес в стадии пятна от флюороза?",o:["ЭОД","Окрашивание 2% метиленовым синим","Перкуссией","Термопробой"],a:1,e:"Кариозное пятно окрашивается красителем из-за повышенной проницаемости деминерализованной эмали, флюорозное — нет."},
+{s:"ter",q:"При глубоком кариесе боль от холодного:",o:["Самопроизвольная, ночная","Проходит сразу после устранения раздражителя","Длится более часа","Отсутствует всегда"],a:1,e:"Боль только от раздражителя и проходит сразу — главное отличие от пульпита."},
+{s:"endo",q:"Показатель ЭОД интактного зуба:",o:["2–6 мкА","15–20 мкА","60–90 мкА","более 100 мкА"],a:0,e:"Норма 2–6 мкА."},
+{s:"endo",q:"ЭОД более 100 мкА характерна для:",o:["Среднего кариеса","Острого очагового пульпита","Периодонтита","Гиперестезии"],a:2,e:"Реакция более 100 мкА говорит о гибели пульпы — некрозе или периодонтите."},
+{s:"endo",q:"Очаг разрежения с нечёткими контурами «языки пламени» у верхушки корня:",o:["Хронический фиброзный","Хронический гранулирующий","Хронический гранулематозный","Острый серозный"],a:1,e:"Гранулирующий — нечёткие контуры; гранулематозный — округлый очаг с чёткими контурами."},
+{s:"endo",q:"Гнилостный запах из полости зуба и боль от горячего характерны для пульпита:",o:["Острого очагового","Хронического фиброзного","Хронического гангренозного","Хронического гипертрофического"],a:2,e:"Гангренозный пульпит: распад пульпы, запах, боль от горячего."},
+{s:"endo",q:"ЭДТА для удаления смазанного слоя применяют в концентрации:",o:["3%","5,25%","17%","37%"],a:2,e:"ЭДТА 17% — хелатирующий агент."},
+{s:"endo",q:"Цвет эндодонтического файла размера 25 по ISO:",o:["Жёлтый","Красный","Синий","Зелёный"],a:1,e:"15 белый, 20 жёлтый, 25 красный, 30 синий, 35 зелёный, 40 чёрный."},
+{s:"paro",q:"Индекс ПМА определяют с помощью:",o:["Раствора Люголя на 6 фронтальных зубах","Раствора Шиллера–Писарева","Зонда ВОЗ","Метиленового синего"],a:1,e:"Шиллер–Писарев прокрашивает воспалённую десну: папиллярная = 1, маргинальная = 2, альвеолярная = 3."},
+{s:"paro",q:"Индекс Федорова–Володкиной оценивают на:",o:["16, 11, 26, 31, 36, 46","Вестибулярных поверхностях 43–33","Всех зубах","Молярах"],a:1,e:"Шесть нижних фронтальных зубов, окрашивание йодсодержащим раствором."},
+{s:"paro",q:"Пародонтит тяжёлой степени:",o:["Карман до 4 мм","Карман до 6 мм, резорбция до 1/2","Карман более 6 мм, резорбция более 1/2 корня","Нет кармана"],a:2,e:"Тяжёлая степень — более 6 мм и более половины длины корня."},
+{s:"paro",q:"Для пародонтоза характерно:",o:["Гноетечение из карманов","Отсутствие воспаления и карманов","Кровоточивость при чистке","Ложные карманы"],a:1,e:"Пародонтоз — дистрофия без воспаления: оголение шеек, клиновидные дефекты."},
+{s:"hir",q:"Туберальная анестезия блокирует:",o:["Подглазничный нерв","Задние верхние альвеолярные ветви","Большой нёбный нерв","Носонёбный нерв"],a:1,e:"Зона — верхние моляры и прилегающая слизистая с вестибулярной стороны."},
+{s:"hir",q:"Торусальная анестезия выключает:",o:["Только нижний альвеолярный нерв","Нижний альвеолярный и язычный","Нижний альвеолярный, язычный и щёчный","Подбородочный"],a:2,e:"На уровне нижнечелюстного валика нервы лежат рядом, поэтому выключаются три."},
+{s:"hir",q:"Максимальная доза артикаина с эпинефрином для взрослого:",o:["2 мг/кг","4,4 мг/кг","7 мг/кг","12 мг/кг"],a:2,e:"7 мг/кг; для 70 кг это около 7 карпул по 1,7 мл."},
+{s:"hir",q:"Первое действие врача при анафилактическом шоке после прекращения введения препарата:",o:["Преднизолон внутрь","Эпинефрин 0,1% 0,3–0,5 мл в/м","Супрастин в/м","Нашатырный спирт"],a:1,e:"Эпинефрин в/м — препарат первой линии."},
+{s:"hir",q:"Перфорацию дна верхнечелюстной пазухи после удаления выявляет:",o:["Перкуссия","Носоротовая проба","ЭОД","Зондирование десны"],a:1,e:"При выдохе через зажатый нос воздух выходит через лунку."},
+{s:"hir",q:"Альвеолит обычно развивается:",o:["Сразу после удаления","На 2–4 сутки","Через месяц","Через год"],a:1,e:"Распад сгустка, боль, неприятный запах на 2–4 сутки."},
+{s:"hir",q:"Нижние третьи моляры чаще удаляют элеватором:",o:["Прямым","Леклюза","Байонетным","Штыковидным"],a:1,e:"Элеватор Леклюза вводят между вторым и третьим молярами."},
+{s:"ort",q:"Односторонний концевой дефект по Кеннеди:",o:["I","II","III","IV"],a:1,e:"I двусторонний концевой, II односторонний концевой."},
+{s:"ort",q:"Включённый дефект фронтального отдела, пересекающий среднюю линию:",o:["I","II","III","IV"],a:3,e:"IV класс подклассов не имеет."},
+{s:"ort",q:"ИРОПЗ более 0,8 — показание к:",o:["Пломбе","Вкладке","Коронке","Штифтовой конструкции"],a:3,e:"0,6–0,8 коронка, больше 0,8 — штифтовая конструкция."},
+{s:"ort",q:"Какой оттискной материал нужно отливать сразу?",o:["А-силикон","Полиэфир","Альгинатный","Цинкоксидэвгенольный"],a:2,e:"Альгинат нестабилен по размеру: теряет и набирает воду."},
+{s:"det",q:"Количество молочных зубов:",o:["16","20","24","28"],a:1,e:"Формула 2·1·0·2 × 4 = 20."},
+{s:"det",q:"Номер по ВОЗ второго молочного моляра нижней челюсти слева:",o:["35","65","75","85"],a:2,e:"Нижний левый квадрант молочных — 7, второй моляр — 5."},
+{s:"det",q:"Какой постоянный зуб прорезывается в 6 лет и не имеет молочного предшественника?",o:["Центральный резец","Первый премоляр","Первый моляр","Клык"],a:2,e:"Первый постоянный моляр прорезывается позади молочных зубов."},
+{s:"det",q:"II класс по Энглю — это:",o:["Нейтральное соотношение моляров","Дистальное соотношение","Мезиальное соотношение","Открытый прикус"],a:1,e:"II класс — дистальный, III класс — мезиальный."},
+{s:"det",q:"Индекс Тона в норме:",o:["1,0","1,33","1,5","2,0"],a:1,e:"Сумма ширины четырёх верхних резцов, делённая на сумму четырёх нижних."},
+{s:"mat",q:"Какой материал химически связывается с дентином и выделяет фтор?",o:["Композит светового отверждения","Стеклоиономерный цемент","Цинк-фосфатный цемент","Амальгама"],a:1,e:"СИЦ — химическая адгезия и фтор."},
+{s:"mat",q:"Время протравливания дентина 37% ортофосфорной кислотой:",o:["Не более 15 с","60 с","2 минуты","Дентин не травят никогда"],a:0,e:"Эмаль 30 с, дентин до 15 с: дольше — коллапс коллагена и чувствительность."},
+{s:"prop",q:"Верхний первый премоляр обычно имеет корней:",o:["1","2","3","4"],a:1,e:"Щёчный и нёбный."},
+{s:"prop",q:"Подвижность зуба III степени по Энтину:",o:["Только вестибуло-оральная","Плюс медио-дистальная","Плюс вертикальная","Отсутствует"],a:2,e:"III степень — во всех направлениях, включая вертикальное."},
+{s:"prop",q:"Буква «У» в индексе КПУ означает:",o:["Устойчивые","Удалённые","Уплотнённые","Ушибленные"],a:1,e:"К — кариес, П — пломба, У — удалённые зубы."}
+];
+
+/* ---------- КАРТОЧКИ ---------- */
+var CARDS=[
+{s:"ter",f:"Критическое pH эмали",b:"≈ 5,5"},
+{s:"ter",f:"Главный кариесогенный микроорганизм",b:"Streptococcus mutans"},
+{s:"ter",f:"VI класс по Блэку",b:"Режущие края резцов и бугры жевательных зубов"},
+{s:"ter",f:"Зуб Турнера",b:"Местная гипоплазия постоянного зуба из-за воспаления у корня молочного предшественника"},
+{s:"ter",f:"Флюороз возникает при фторе в воде более…",b:"1,5 мг/л"},
+{s:"endo",f:"Рабочая длина канала",b:"Обычно на 0,5–1 мм короче рентгенологической верхушки; определяется апекслокатором и рентгеном"},
+{s:"endo",f:"Crown-down",b:"Обработка канала от устья к верхушке"},
+{s:"endo",f:"Step-back",b:"Обработка канала от верхушки к устью с уменьшением рабочей длины для больших файлов"},
+{s:"endo",f:"Гипохлорит натрия в эндодонтии",b:"0,5–5,25%, растворяет органику, антисептик"},
+{s:"endo",f:"Гранулематозный периодонтит на снимке",b:"Округлый очаг разрежения с чёткими контурами до 5 мм"},
+{s:"paro",f:"Ширина периодонтальной щели в норме",b:"0,15–0,35 мм"},
+{s:"paro",f:"CPITN код 3",b:"Карман 4–5 мм"},
+{s:"paro",f:"OHI-S: какие зубы",b:"16, 11, 26, 31 (вестибулярно), 36, 46 (язычно)"},
+{s:"paro",f:"ПМА: формула",b:"Сумма баллов / (3 × число зубов) × 100%"},
+{s:"hir",f:"Резцовая анестезия",b:"Носонёбный нерв, слизистая нёба между клыками"},
+{s:"hir",f:"Инфраорбитальная анестезия",b:"Передние и средние верхние альвеолярные ветви: резцы, клык, премоляры, верхняя губа"},
+{s:"hir",f:"Щипцы для верхних моляров",b:"S-образные с шипом: правые и левые (шип — к щеке, между щёчными корнями)"},
+{s:"hir",f:"Абсцесс vs флегмона",b:"Абсцесс ограничен капсулой; флегмона — разлитое гнойное воспаление"},
+{s:"hir",f:"Карпула артикаина 4% 1,7 мл содержит",b:"68 мг"},
+{s:"ort",f:"Кеннеди III",b:"Включённый дефект в боковом отделе"},
+{s:"ort",f:"Шрёдер III тип",b:"Резкая атрофия альвеолярных отростков верхней челюсти, плоское нёбо"},
+{s:"ort",f:"Признаки центральной окклюзии",b:"Зубные, суставные, мышечные"},
+{s:"ort",f:"ИРОПЗ 0,6–0,8",b:"Искусственная коронка"},
+{s:"det",f:"Порядок прорезывания на верхней челюсти",b:"6-1-2-4-5-3-7"},
+{s:"det",f:"Прорезывание молочных клыков",b:"16–20 месяцев"},
+{s:"det",f:"Энгль II/2",b:"Дистальный прикус с ретрузией верхних резцов"},
+{s:"det",f:"Кариес раннего детского возраста",b:"Поражение верхних резцов у детей до 3 лет («бутылочный»)"},
+{s:"mat",f:"Компомер",b:"Композит, модифицированный поликислотами"},
+{s:"mat",f:"Протравливание эмали",b:"37% ортофосфорная кислота, 30 с"},
+{s:"prop",f:"Анатомическая формула постоянных зубов",b:"2·1·2·3 — резцы, клыки, премоляры, моляры в половине челюсти"},
+{s:"prop",f:"Признак угла коронки",b:"Мезиальный угол режущего края острее дистального"}
+];
+
+/* ---------- ЗУБЫ ---------- */
+var PERM={1:["Центральный резец","1 корень, 1 канал","6–8 лет"],2:["Боковой резец","1 корень, 1 канал","8–9 лет"],3:["Клык","1 корень, самый длинный","9–12 лет"],
+ 4:["Первый премоляр",null,"10–11 лет"],5:["Второй премоляр","1 корень","11–12 лет"],6:["Первый моляр",null,"6–7 лет"],7:["Второй моляр",null,"12–13 лет"],8:["Третий моляр","корни вариабельны, часто сросшиеся","17–25 лет"]};
+var MILK={1:["Центральный резец","6–8 мес"],2:["Боковой резец","8–12 мес"],3:["Клык","16–20 мес"],4:["Первый моляр","12–16 мес"],5:["Второй моляр","20–30 мес"]};
+var QN={1:"верхний правый",2:"верхний левый",3:"нижний левый",4:"нижний правый",5:"верхний правый",6:"верхний левый",7:"нижний левый",8:"нижний правый"};
+function roots(q,t){var up=(q===1||q===2);
+ if(t===4)return up?"2 корня (щёчный и нёбный), 2 канала":"1 корень, 1 канал";
+ if(t===6||t===7)return up?"3 корня (2 щёчных, нёбный), 3–4 канала":"2 корня (медиальный, дистальный), 3 канала";
+ if((t===1||t===2)&&!up)return "1 корень, 1–2 канала";
+ return PERM[t][1]}
+var milk=false, selTooth=null;
+function drawJaws(){
+  var up=$("#jaw-up"), lo=$("#jaw-low"); up.innerHTML="";lo.innerHTML="";
+  var n=milk?5:8, qs=milk?[5,6,8,7]:[1,2,4,3];
+  up.style.gridTemplateColumns=lo.style.gridTemplateColumns="repeat("+(n*2)+",minmax(0,1fr))";
+  function add(row,q,t){var id=""+q+t;var b=el("button",{"class":"tooth","aria-pressed":String(selTooth===id),"aria-label":"Зуб "+id},id);
+    b.addEventListener("click",function(){selTooth=id;showTooth(q,t);drawJaws()});row.appendChild(b)}
+  for(var t=n;t>=1;t--)add(up,qs[0],t); for(t=1;t<=n;t++)add(up,qs[1],t);
+  for(t=n;t>=1;t--)add(lo,qs[2],t); for(t=1;t<=n;t++)add(lo,qs[3],t);
+}
+function showTooth(q,t){var box=$("#tooth-info");
+  if(q>=5){var m=MILK[t];box.innerHTML='<b class="num">'+q+t+'</b><b>'+m[0]+'</b>, '+QN[q]+' квадрант, молочный<br><span class="note">Прорезывание: '+m[1]+'. Корни молочных моляров тонкие и сильно расходятся: между ними лежит зачаток постоянного зуба.</span>';return}
+  var p=PERM[t];box.innerHTML='<b class="num">'+q+t+'</b><b>'+p[0]+'</b>, '+QN[q]+' квадрант<br><span class="note">'+roots(q,t)+'. Прорезывание: '+p[2]+(t<=5?'. Сменяет молочный зуб '+(q+4)+t+'.':'. Молочного предшественника нет.')+'</span>';
+}
+$("#dent-perm").addEventListener("click",function(){milk=false;selTooth=null;this.setAttribute("aria-pressed","true");$("#dent-milk").setAttribute("aria-pressed","false");drawJaws()});
+$("#dent-milk").addEventListener("click",function(){milk=true;selTooth=null;this.setAttribute("aria-pressed","true");$("#dent-perm").setAttribute("aria-pressed","false");drawJaws()});
+
+/* ---------- ГЛАВНАЯ ---------- */
+function renderMySched(){var c=+$("#course").value;store.set("course",c);var d=SCHED[c],ul=$("#my-sched");ul.innerHTML="";
+  ["ter","ort","chlh"].forEach(function(k){if(d[k])ul.appendChild(el("li",null,'<a href="'+d[k]+'"'+EXT+'>'+SNAME[k]+'</a>'))});
+  (d.orto||[]).forEach(function(o){ul.appendChild(el("li",null,'<a href="'+o[1]+'"'+EXT+'>'+o[0]+'</a>'))});
+}
+$("#course").value=String(store.get("course",1));$("#course").addEventListener("change",renderMySched);
+function renderDays(){var d=$("#exam-date").value,n=$("#exam-name").value;store.set("exam",{d:d,n:n});
+  if(!d){$("#days-left").textContent="—";$("#days-label").textContent="укажите дату, и счётчик запомнится на этом устройстве";return}
+  var now=new Date();now.setHours(0,0,0,0);var diff=Math.round((new Date(d+"T00:00:00")-now)/864e5);
+  $("#days-left").textContent=diff<0?"0":String(diff);
+  var w=diff%10===1&&diff%100!==11?"день":(diff%10>=2&&diff%10<=4&&(diff%100<10||diff%100>=20))?"дня":"дней";
+  $("#days-label").textContent=diff<0?"экзамен уже прошёл":w+(n?" до экзамена: "+n:" до экзамена");
+}
+var ex=store.get("exam",{d:"",n:""});$("#exam-date").value=ex.d||"";$("#exam-name").value=ex.n||"";
+$("#exam-date").addEventListener("change",renderDays);$("#exam-name").addEventListener("input",renderDays);
+var CHECK=["Сохранить расписания своего курса (вкладка «Расписания»)","Скачать «Порядок зачёта» и «Порядок экзамена» профильных кафедр","Получить логин в СДО и ЭБС в деканате, каб. 349","Раз в неделю проверять «Объявления» на страницах кафедр","Записать даты отработок из графиков консультаций в календарь","Взять список экзаменационных вопросов у кафедры или старосты","Проходить тест на этом сайте хотя бы раз в неделю"];
+function renderCheck(){var st=store.get("check",{}),ul=$("#checklist");ul.innerHTML="";
+  CHECK.forEach(function(t,i){var li=el("li");var lab=el("label");var cb=el("input",{type:"checkbox",id:"chk"+i});cb.checked=!!st[i];
+    cb.addEventListener("change",function(){st[i]=cb.checked;store.set("check",st)});lab.appendChild(cb);lab.appendChild(el("span",null,t));li.appendChild(lab);ul.appendChild(li)})}
+
+/* ---------- КОНСПЕКТЫ ---------- */
+var curSubj=store.get("subj","all");
+function renderSubjChips(box,cur,onPick,counts){box.innerHTML="";
+  var all=[["all","Все"]].concat(Object.keys(SUBJ).filter(function(k){return !counts||counts[k]}).map(function(k){return [k,SUBJ[k]]}));
+  all.forEach(function(p){var b=el("button",{"class":"chip","aria-pressed":String(cur===p[0])},p[1]);b.addEventListener("click",function(){onPick(p[0])});box.appendChild(b)})}
+function renderLectures(){
+  renderSubjChips($("#subj-filter"),curSubj,function(k){curSubj=k;store.set("subj",k);renderLectures()});
+  var list=$("#lecture-list");list.innerHTML="";
+  Object.keys(SUBJ).forEach(function(k){if(curSubj!=="all"&&curSubj!==k)return;
+    var items=LECT.filter(function(l){return l.s===k});if(!items.length)return;
+    var g=el("div",{"class":"subj-group"});g.appendChild(el("h2",{"class":"subj-h"},SUBJ[k]+' <small>'+items.length+'</small>'));
+    items.forEach(function(l){var d=el("details",{"class":"topic searchable"});d.innerHTML='<summary>'+l.t+'</summary><div class="body">'+l.h+'</div>';g.appendChild(d)});
+    list.appendChild(g)});
+  applySearch();
+}
+function renderCheats(){var list=$("#cheat-list");list.innerHTML="";
+  CHEATS.forEach(function(c){var d=el("details",{"class":"topic searchable"});d.open=true;d.innerHTML='<summary>'+c.t+'</summary><div class="body" style="max-width:none">'+c.h+'</div>';list.appendChild(d)})}
+
+/* ---------- ПОИСК ---------- */
+function applySearch(){var q=$("#q").value.trim().toLowerCase();
+  document.querySelectorAll(".searchable").forEach(function(d){var hit=!q||d.textContent.toLowerCase().indexOf(q)>=0;d.classList.toggle("hidden-by-search",!hit);if(q&&hit)d.open=true});
+  document.querySelectorAll(".subj-group").forEach(function(g){g.classList.toggle("hidden-by-search",!g.querySelector(".searchable:not(.hidden-by-search)"))});
+}
+$("#q").addEventListener("input",function(){var v=location.hash.slice(1);if(this.value&&v!=="lectures"&&v!=="cheats")location.hash="lectures";applySearch()});
+
+/* ---------- ТЕСТ ---------- */
+var quizSubj="all",qset=[],qi=0,score=0;
+function counts(arr){var c={};arr.forEach(function(x){c[x.s]=1});return c}
+function renderQuizChips(){renderSubjChips($("#quiz-subj"),quizSubj,function(k){quizSubj=k;renderQuizChips()},counts(QUIZ))}
+function mistakes(){return store.get("mist",[])}
+function updMist(){$("#mist-n").textContent=mistakes().length}
+function startQuiz(set){qset=shuffle(set).slice(0,15);qi=0;score=0;renderQ()}
+function renderQ(){var box=$("#quiz-q");
+  if(!qset.length){box.innerHTML='<p class="note">Ошибок пока нет. Пройдите тест, и сюда попадут вопросы, где вы ошиблись.</p>';$("#quiz-count").textContent="";$("#quiz-bar").style.width="0";return}
+  $("#quiz-bar").style.width=(qi/qset.length*100)+"%";
+  if(qi>=qset.length){var pct=Math.round(score/qset.length*100);
+    $("#quiz-count").textContent="Готово";
+    box.innerHTML='<p style="margin:.8em 0"><span class="stat">'+score+' / '+qset.length+'</span> <span class="note">'+pct+'%. '+(pct>=70?"Порог аккредитации (70%) пройден.":"До порога аккредитации 70% не хватает. Прогоните ошибки.")+'</span></p>';
+    var again=el("button",{"class":"btn"},"Ещё раз");again.addEventListener("click",function(){startQuiz(pool())});box.appendChild(again);return}
+  var it=qset[qi];$("#quiz-count").textContent="Вопрос "+(qi+1)+" из "+qset.length+" · "+SUBJ[it.s];
+  box.innerHTML='<p class="q">'+it.q+'</p>';var opts=el("div",{"class":"opts"});box.appendChild(opts);
+  it.o.forEach(function(o,i){var b=el("button",{"class":"opt"},o);b.addEventListener("click",function(){answer(i,opts,it)});opts.appendChild(b)});
+}
+function answer(i,opts,it){var bs=opts.querySelectorAll(".opt");bs.forEach(function(b){b.disabled=true});
+  bs[it.a].classList.add("right");var m=mistakes(),key=it.q;
+  if(i===it.a){score++;m=m.filter(function(x){return x!==key})}else{bs[i].classList.add("wrong");if(m.indexOf(key)<0)m.push(key)}
+  store.set("mist",m);updMist();
+  var ex=el("div",{"class":"explain"},(i===it.a?"<b>Верно.</b> ":"<b>Неверно.</b> ")+it.e);opts.parentNode.appendChild(ex);
+  var nx=el("button",{"class":"btn",style:"margin-top:12px"},qi+1<qset.length?"Следующий вопрос":"Результат");nx.addEventListener("click",function(){qi++;renderQ()});opts.parentNode.appendChild(nx);nx.focus();
+}
+function pool(){return QUIZ.filter(function(x){return quizSubj==="all"||x.s===quizSubj})}
+$("#quiz-start").addEventListener("click",function(){startQuiz(pool())});
+$("#quiz-mistakes").addEventListener("click",function(){var m=mistakes();startQuiz(QUIZ.filter(function(x){return m.indexOf(x.q)>=0}))});
+
+/* ---------- КАРТОЧКИ ---------- */
+var cardSubj="all",deck=[],flipped=false;
+function renderCardChips(){renderSubjChips($("#card-subj"),cardSubj,function(k){cardSubj=k;renderCardChips();newDeck()},counts(CARDS))}
+function newDeck(){deck=shuffle(CARDS.filter(function(c){return cardSubj==="all"||c.s===cardSubj}));flipped=false;renderCard()}
+function renderCard(){var c=$("#card");
+  if(!deck.length){c.innerHTML='<div>Все карточки этой темы отмечены как известные.<br><span class="note">Выберите тему заново, чтобы начать круг.</span></div>';$("#card-left").textContent="";return}
+  var it=deck[0];c.innerHTML=flipped?'<div><div class="note">'+it.f+'</div><div style="margin-top:8px">'+it.b+'</div></div>':'<div>'+it.f+'<div class="note" style="margin-top:10px">нажмите, чтобы перевернуть</div></div>';
+  $("#card-left").textContent="Осталось: "+deck.length+" · "+SUBJ[it.s];
+}
+function flip(){flipped=!flipped;renderCard()}
+$("#card").addEventListener("click",flip);$("#card").addEventListener("keydown",function(e){if(e.key===" "||e.key==="Enter"){e.preventDefault();flip()}});
+$("#card-yes").addEventListener("click",function(){deck.shift();flipped=false;renderCard()});
+$("#card-no").addEventListener("click",function(){if(deck.length)deck.push(deck.shift());flipped=false;renderCard()});
+
+/* ---------- РАСПИСАНИЯ И ССЫЛКИ ---------- */
+function renderSched(){var tb=$("#sched-body");
+  for(var c=1;c<=5;c++){var d=SCHED[c];var cell=function(u){return u?'<a href="'+u+'"'+EXT+'>PDF</a>':'<span class="note">—</span>'};
+    var orto=d.orto?d.orto.map(function(o){return '<a href="'+o[1]+'"'+EXT+'>'+o[0]+'</a>'}).join("<br>"):'<span class="note">—</span>';
+    tb.appendChild(el("tr",null,'<td class="num">'+c+'</td><td>'+cell(d.ter)+'</td><td>'+cell(d.ort)+'</td><td>'+cell(d.chlh)+'</td><td>'+orto+'</td>'))}
+  var db=$("#dept-body");DEPTS.forEach(function(r){db.appendChild(el("tr",null,'<td><a href="'+K+r[1]+'"'+EXT+'>'+r[0]+'</a></td><td>'+r[2]+'</td><td class="mono" style="font-size:.85rem">'+r[3]+'</td>'))});
+  var sv=$("#svc");SVC.forEach(function(s){sv.appendChild(el("li",null,'<a href="'+s[1]+'"'+EXT+'>'+s[0]+'</a>'))});
+}
+
+/* ---------- КАЛЬКУЛЯТОР ---------- */
+var DRUG={art:{mg:40,kg:7,cap:500,n:"артикаина 4%"},lid:{mg:20,kg:7,cap:500,n:"лидокаина 2%"},mep:{mg:30,kg:4.4,cap:300,n:"мепивакаина 3%"}};
+function calc(){var w=parseFloat($("#w").value),d=DRUG[$("#drug").value];
+  if(!(w>0)){$("#carp").textContent="—";$("#carp-l").textContent="введите вес";return}
+  var mg=Math.min(w*d.kg,d.cap),carp=Math.floor(mg/(d.mg*1.7)*10)/10;
+  $("#carp").textContent=String(carp).replace(".",",");
+  $("#carp-l").textContent="карпул "+d.n+" максимум (≈ "+Math.round(mg)+" мг, "+d.kg.toString().replace(".",",")+" мг/кг"+(w*d.kg>d.cap?", упёрлись в потолок "+d.cap+" мг":"")+")";
+}
+$("#w").addEventListener("input",calc);$("#drug").addEventListener("change",calc);
+
+/* ---------- РОУТИНГ ---------- */
+var VIEWS=["home","lectures","cheats","exam","cards","schedule","links"];
+function route(){var v=location.hash.slice(1);if(VIEWS.indexOf(v)<0)v="home";
+  VIEWS.forEach(function(x){$("#v-"+x).hidden=x!==v});
+  document.querySelectorAll("nav.tabs a").forEach(function(a){if(a.getAttribute("href")==="#"+v)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  applySearch();
+}
+window.addEventListener("hashchange",function(){route();window.scrollTo(0,0)});
+
+drawJaws();renderMySched();renderDays();renderCheck();renderLectures();renderCheats();
+renderQuizChips();updMist();startQuiz(pool());renderCardChips();newDeck();renderSched();calc();route();
+})();
+</script>
+</body>
+</html>
