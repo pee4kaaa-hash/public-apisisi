@@ -132,6 +132,12 @@ details.qa .qa-a{margin-top:6px;padding:8px 10px;background:var(--surface-2);bor
 .kind.lec{background:var(--accent-soft);color:var(--accent)}
 .kind.sem{background:var(--surface-2);color:var(--muted)}
 .panel.today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+
+.st{display:inline-block;font-size:.72rem;color:var(--muted);white-space:nowrap}
+.st.done{color:var(--bad)}
+.st.soon{color:var(--accent);font-weight:600}
+.cls-done{opacity:.45}
+.cls-done b{text-decoration:line-through}
 </style>
 </head>
 <body>
@@ -2054,7 +2060,23 @@ CARDS=[
 ].concat(CARDS);
 LECT.sort(function(a,b){return (a.over?0:1)-(b.over?0:1)});
 /* ============ НОВЫЕ ПРЕДМЕТЫ ЭТОГО СЕМЕСТРА ============ */
-var SVG_TOOTH='<div class="fig"><svg viewBox="0 0 160 200" role="img" aria-label="Строение зуба"><g fill="none" stroke="currentColor" stroke-width="1.4"><path d="M50 20 Q80 6 110 20 Q126 40 118 70 L110 95 Q104 150 96 185 Q90 196 84 185 L80 150 L76 185 Q70 196 64 185 Q56 150 50 95 L42 70 Q34 40 50 20Z"/><path d="M44 70 Q80 82 116 70" /><path d="M58 95 Q80 100 102 95"/><path d="M80 100 L80 150"/></g><g font-size="8" font-family="monospace" fill="var(--accent)" stroke="none"><text x="122" y="45">эмаль</text><text x="120" y="92">дентин</text><text x="84" y="130">пульпа</text><text x="112" y="150">цемент</text><text x="2" y="72">коронка</text><text x="2" y="150">корень</text></g></svg><figcaption>Зуб: коронка, шейка, корень. Твёрдые ткани — эмаль (снаружи коронки), дентин (основа), цемент (корень); внутри — пульпа с сосудами и нервами.</figcaption></div>';
+var SVG_TOOTH='<div class="fig"><svg viewBox="0 0 260 280" role="img" aria-label="Продольный разрез зуба">'
++'<g stroke="none">'
++'<rect x="30" y="128" width="55" height="118" fill="var(--surface-2)"/><rect x="175" y="128" width="55" height="118" fill="var(--surface-2)"/>'
++'<path d="M85 122 Q130 150 175 122 L175 134 Q130 162 85 134 Z" fill="var(--accent-soft)"/>'
++'</g>'
++'<path d="M70 62 Q70 30 130 30 Q190 30 190 62 Q197 98 168 120 L92 120 Q63 98 70 62 Z" fill="var(--surface)" stroke="currentColor" stroke-width="1.6"/>'
++'<path d="M88 62 Q88 46 130 46 Q172 46 172 62 Q178 94 160 118 L154 172 Q149 250 130 252 Q111 250 106 172 L100 118 Q82 94 88 62 Z" fill="var(--surface-2)" stroke="currentColor" stroke-width="1.2"/>'
++'<path d="M118 72 Q118 64 130 64 Q142 64 142 72 L138 165 Q135 205 130 206 Q125 205 122 165 Z" fill="var(--accent)" stroke="none"/>'
++'<g font-size="10" font-family="monospace" fill="var(--accent)" stroke="none">'
++'<text x="196" y="58">эмаль</text><text x="196" y="96">дентин</text><text x="150" y="120">пульпа</text>'
++'<text x="2" y="150">цемент</text><text x="2" y="110">десна</text><text x="2" y="200">кость</text></g>'
++'<g stroke="currentColor" stroke-width="0.8" fill="none" opacity="0.6">'
++'<path d="M194 55 L180 50"/><path d="M194 93 L176 88"/><path d="M148 116 L140 120"/><path d="M34 147 L150 175"/><path d="M34 107 L86 128"/></g>'
++'<g font-size="9" font-family="monospace" fill="currentColor" stroke="none" opacity="0.8"><text x="205" y="26">коронка</text><text x="205" y="240">корень</text></g>'
++'<line x1="60" y1="122" x2="200" y2="122" stroke="currentColor" stroke-dasharray="3 3" stroke-width="0.8" opacity="0.5"/>'
++'<text x="202" y="126" font-size="8" font-family="monospace" fill="currentColor" opacity="0.6">шейка</text>'
++'</svg><figcaption>Продольный разрез. Коронка покрыта эмалью (самая твёрдая ткань), основа — дентин; внутри пульпа с сосудами и нервами (пульпарная камера и корневой канал). Корень покрыт цементом, окружён десной, периодонтом и альвеолярной костью. Шейка — граница коронки и корня.</figcaption></div>';
 var LECT_STOM=[
 {s:"stom",t:"О предмете: Стоматология (введение)",over:true,h:`
 <div class="about">
@@ -2449,20 +2471,37 @@ var PLACES=[
   ["СГК","спортивный корпус (физкультура)"]
 ];
 var DAYNUM={"Понедельник":1,"Вторник":2,"Среда":3,"Четверг":4,"Пятница":5,"Суббота":6};
+var MONTHS=["янв","фев","мар","апр","мая","июн","июл","авг","сен","окт","ноя","дек"];
+// все даты DD.MM в строке периода -> массив Date (учебный год: 09-12 => 2026, 01-02 => 2027)
+function parseDates(d){var out=[];var re=/(\d{2})\.(\d{2})/g,m;while((m=re.exec(d))){var mo=+m[2];var y=mo>=8?2026:2027;out.push(new Date(y,mo-1,+m[1]));}return out;}
+function classEnd(d){var ds=parseDates(d);if(!ds.length)return null;return ds[ds.length-1];}
+function fmt(dt){return dt.getDate()+" "+MONTHS[dt.getMonth()];}
+function dayWord(n){return n%10===1&&n%100!==11?"день":(n%10>=2&&n%10<=4&&(n%100<10||n%100>=20))?"дня":"дней";}
 function renderRasp(){
   var box=$("#rasp-days");if(!box)return;box.innerHTML="";
-  var today=new Date().getDay();
-  SCHEDULE168.forEach(function(day){
-    var isToday=DAYNUM[day[0]]===today;
+  var now=new Date();now.setHours(0,0,0,0);var today=now.getDay(); // 0=вс..6=сб
+  // порядок дней: начиная с сегодняшнего (вс -> с понедельника)
+  var order=[];for(var i=0;i<6;i++){var dn=((today-1+i)%7);order.push(dn<0?dn+7:dn);} // индексы 0..5 => Пн..Сб смещение
+  var start=today===0?0:today-1; // индекс в SCHEDULE168 (0=Пн)
+  var seq=[];for(var j=0;j<6;j++)seq.push((start+j)%6);
+  if(today===0){seq=[0,1,2,3,4,5];box.appendChild(el("p",{"class":"note",style:"margin:.2em 0 10px"},"Сегодня воскресенье — выходной. Показана неделя с понедельника."));}
+  seq.forEach(function(idx,pos){
+    var day=SCHEDULE168[idx];var isToday=(pos===0&&today!==0);
     var p=el("div",{"class":"panel"+(isToday?" today":""),style:"margin-bottom:12px"});
-    p.appendChild(el("p",{"class":"eyebrow"},day[0]+(isToday?" · сегодня":"")));
+    p.appendChild(el("p",{"class":"eyebrow"},day[0]+(isToday?" · сегодня":(pos===1&&today!==0?" · завтра":""))));
     var ul=el("div",{style:"display:grid;gap:8px;margin-top:8px"});
     day[1].forEach(function(c){
-      var row=el("div",{style:"display:grid;grid-template-columns:72px 1fr;gap:10px;align-items:baseline;border-top:1px solid var(--line);padding-top:8px"});
+      var end=classEnd(c.d);var ended=end&&end<now;
+      var days=end?Math.round((end-now)/864e5):null;
+      var status='';
+      if(ended)status='<span class="st done">завершено</span>';
+      else if(days!==null&&days<=14)status='<span class="st soon">до '+fmt(end)+' · '+days+' '+dayWord(days)+'</span>';
+      else if(end)status='<span class="st">до '+fmt(end)+'</span>';
+      var row=el("div",{"class":"cls"+(ended?" cls-done":""),style:"display:grid;grid-template-columns:72px 1fr;gap:10px;align-items:baseline;border-top:1px solid var(--line);padding-top:8px"});
       row.innerHTML='<span class="mono" style="font-size:.82rem;color:var(--muted)">'+c.t+'</span>'
         +'<span><b>'+c.n+'</b> <span class="kind '+(c.k==="лек"?"lec":"sem")+'">'+c.k+'</span>'
-        +(c.p?'<br><span class="note">📍 '+c.p+'</span>':'')
-        +' <span class="note">· '+c.d+'</span></span>';
+        +(c.p?'<br><span class="note">📍 '+c.p+'</span> ':' ')
+        +status+'</span>';
       ul.appendChild(row);
     });
     p.appendChild(ul);box.appendChild(p);
