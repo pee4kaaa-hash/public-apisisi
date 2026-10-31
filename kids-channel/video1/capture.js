@@ -18,7 +18,7 @@ const only = process.argv[2] ? process.argv[2].split(',').map(Number) : null; //
     return b.close();
   }
   const ff = spawn('ffmpeg', ['-y', '-hide_banner', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-',
-    '-i', 'instrumental.wav', '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-pix_fmt', 'yuv420p',
+    '-i', 'mix.wav', '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-pix_fmt', 'yuv420p',
     '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', 'Brush_Brush_Shiny_Teeth.mp4'], { stdio: ['pipe', 'inherit', 'inherit'] });
   const n = Math.round(tl.total * FPS);
   for (let i = 0; i < n; i++) {

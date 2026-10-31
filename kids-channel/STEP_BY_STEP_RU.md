@@ -108,7 +108,7 @@ Shiny teeth, open wide!
 [Verse 2]
 Brush the front and brush the back,
 Little circles, clickety-clack,
-Don't forget your tongue — ha ha!
+Don't forget your tongue — hee hee!
 Now we spit it out — ptoo! Ta-da!
 
 [Chorus]

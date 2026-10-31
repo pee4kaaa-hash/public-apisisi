@@ -13,51 +13,47 @@ def midi(n):
     return 12*(int(n[-1])+1)+names[n[0]]
 def hz(m): return 440*2**((m-69)/12)
 
-VA = [('C4',1),('C4',1),('E4',1),('E4',1),('G4',1),('G4',1),('E4',2)]
-VB = [('F4',1),('F4',1),('E4',1),('E4',1),('D4',1),('D4',1),('C4',2)]
-C1 = [('G4',1),('G4',1),('A4',1),('G4',1),('E4',1),('E4',1),('E4',1),('R',1)]
-C2 = [('F4',1),('F4',1),('G4',1),('F4',1),('D4',1),('D4',1),('D4',1),('R',1)]
-C3 = [('E4',.5),('E4',.5),('G4',1),('C5',1),('B4',1),('A4',1),('A4',1),('G4',2)]
-C4 = [('G4',1),('E4',1),('D4',2),('C4',4)]
-INTRO = [('G4',1),('E4',1),('G4',1),('E4',1),('C5',2),('R',2)]
-OUTRO = [('E4',1),('E4',1),('G4',1),('G4',1),('C5',1),('B4',.5),('C5',2.5)]
+# Each line: (section, on-screen text, syllables, chords per bar).
+# Syllable = (word to sing | '-' continues previous word | None for rest, note, beats). 8 beats per line.
+def S(*a): return [tuple(x) for x in a]
+L_VA = lambda w: S((w[0],'C4',1),(w[1],'C4',1),(w[2],'E4',1),(w[3],'E4',1),(w[4],'G4',1),(w[5],'G4',1),(w[6],'E4',2))
+CH1 = S(('brush','G4',1),('brush','G4',1),('top','A4',1),('teeth','G4',1),('swish','E4',1),('swish','E4',1),('swish','E4',1),(None,'R',1))
+CH2 = S(('brush','F4',1),('brush','F4',1),('bottom','G4',.5),('-','G4',.5),('teeth','F4',1),('make','D4',1),('a','D4',1),('wish','D4',1),(None,'R',1))
+CH3 = S(('round','E4',1),('and','E4',.5),('round','G4',1.5),('and','C5',1),('side','B4',1),('to','A4',1),('side','G4',2))
+CH4 = S(('shiny','G4',.5),('-','G4',.5),('teeth','E4',1),('open','D4',1),('-','D4',1),('wide','C4',4))
 
-# section, lyric, melody, chords (one per bar)
 LINES = [
- ('intro',  '(bzz bzz) Good morning, Sprout!',          INTRO, ['C','G']),
- ('verse1', 'Wake up, Sprout, the sun is high,',        VA, ['C','C']),
- ('verse1', 'Grab your brush and say hi-hi!',           VB, ['F','G']),
- ('verse1', 'A little dot of minty paste,',             VA, ['C','C']),
- ('verse1', "Let's make our smile a shiny place!",      VB, ['F','G']),
- ('chorus', 'Brush brush, top teeth, swish swish swish,', C1, ['C','C']),
- ('chorus', 'Brush brush, bottom teeth, make a wish!',  C2, ['F','G']),
- ('chorus', 'Round and round and side to side,',        C3, ['C','F']),
- ('chorus', 'Shiny teeth, open wide!',                  C4, ['G','C']),
- ('verse2', 'Brush the front and brush the back,',      VA, ['C','C']),
- ('verse2', 'Little circles, clickety-clack,',          VB, ['F','G']),
- ('verse2', "Don't forget your tongue — ha ha!",        VA, ['C','C']),
- ('verse2', 'Now we spit it out — ptoo! Ta-da!',        VB, ['F','G']),
- ('chorus2','Brush brush, top teeth, swish swish swish,', C1, ['C','C']),
- ('chorus2','Brush brush, bottom teeth, make a wish!',  C2, ['F','G']),
- ('chorus2','Round and round and side to side,',        C3, ['Am','F']),
- ('chorus2','Shiny teeth, open wide!',                  C4, ['G','C']),
- ('outro',  'All done, Sprout! Big shiny smile!',       OUTRO, ['F','C']),
+ ('intro',  'Good morning, Sprout!', S((None,'R',2),('good','G4',1),('morning','E4',1),('-','G4',1),('sprout','C5',2),(None,'R',1)), ['C','G']),
+ ('verse1', 'Wake up, Sprout, the sun is high,', L_VA(['wake','up','sprout','the','sun','is','high']), ['C','C']),
+ ('verse1', 'Grab your brush and say hi, hi!', S(('grab','F4',1),('your','F4',1),('brush','E4',1),('and','E4',1),('say','D4',1),('hi','D4',1),('hi','C4',2)), ['F','G']),
+ ('verse1', 'A little dot of minty paste,', S(('a','C4',.5),('little','C4',.5),('-','C4',1),('dot','E4',1),('of','E4',1),('minty','G4',1),('-','G4',1),('paste','E4',2)), ['C','C']),
+ ('verse1', "Let's make our smile a shiny place!", S(("let's",'F4',.5),('make','F4',.5),('our','F4',1),('smile','E4',1),('a','E4',1),('shiny','D4',1),('-','D4',1),('place','C4',2)), ['F','G']),
+ ('chorus', 'Brush brush, top teeth, swish swish swish,', CH1, ['C','C']),
+ ('chorus', 'Brush brush, bottom teeth, make a wish!', CH2, ['F','G']),
+ ('chorus', 'Round and round and side to side,', CH3, ['C','F']),
+ ('chorus', 'Shiny teeth, open wide!', CH4, ['G','C']),
+ ('verse2', 'Brush the front and brush the back,', L_VA(['brush','the','front','and','brush','the','back']), ['C','C']),
+ ('verse2', 'Little circles, clickety clack,', S(('little','F4',.5),('-','F4',.5),('circles','E4',1),('-','E4',1),('clickety','D4',.5),('-','D4',.5),('-','D4',1),('clack','C4',3)), ['F','G']),
+ ('verse2', "Don't forget your tongue, hee hee!", S(("don't",'C4',1),('forget','C4',1),('-','E4',1),('your','E4',1),('tongue','G4',1),('hee','G4',1),('hee','E4',2)), ['C','C']),
+ ('verse2', 'Now we spit it out, ptoo! Ta-da!', S(('now','F4',.5),('we','F4',.5),('spit','F4',1),('it','E4',1),('out','E4',1),('ptoo','D4',1),('ta-da','D4',1),('-','C4',2)), ['F','G']),
+ ('chorus2','Brush brush, top teeth, swish swish swish,', CH1, ['C','C']),
+ ('chorus2','Brush brush, bottom teeth, make a wish!', CH2, ['F','G']),
+ ('chorus2','Round and round and side to side,', CH3, ['Am','F']),
+ ('chorus2','Shiny teeth, open wide!', CH4, ['G','C']),
+ ('outro',  'All done, Sprout! Big shiny smile!', S(('all','E4',1),('done','E4',1),('sprout','G4',1),(None,'R',1),('big','C5',1),('shiny','B4',.5),('-','B4',.5),('smile','C5',2)), ['F','C']),
 ]
 TAIL = 3.0
 TOTAL = len(LINES) * 2 * BAR + TAIL
 
 def timeline():
     out, t = [], 0.0
-    for sec, lyr, mel, ch in LINES:
-        notes, b = [], 0.0
-        for n, d in mel:
-            if n != 'R': notes.append(t + b * BEAT)
+    for sec, lyr, syl, ch in LINES:
+        wt, b = [], 0.0
+        for w, n, d in syl:
+            if w and w != '-': wt.append(t + b * BEAT)
             b += d
         words = lyr.split()
-        sung_end = t + sum(d for n, d in mel if True) * BEAT
-        # spread words across note onsets
-        k = len(notes)
-        wt = [notes[min(int(i * k / len(words)), k - 1)] for i in range(len(words))]
+        assert len(words) == len(wt), (lyr, len(words), len(wt))
         out.append(dict(section=sec, text=lyr, start=t, end=t + 2 * BAR, words=words, wordTimes=wt))
         t += 2 * BAR
     return out
@@ -114,7 +110,8 @@ def render(path):
         i = int(t * SR); mix[i:i+len(sig)] += sig[:len(mix)-i]
     cache = {}
     t = 0.0
-    for li, (sec, lyr, mel, chords) in enumerate(LINES):
+    for li, (sec, lyr, syl, chords) in enumerate(LINES):
+        mel = [(n, d) for w, n, d in syl]
         for bi, c in enumerate(chords):
             bt = t + bi * BAR
             for beat in range(4):
@@ -140,8 +137,8 @@ def render(path):
         for nn, d in mel:
             if nn != 'R':
                 f = hz(midi(nn))
-                add(glock(f*2, 1.0, .10), t + b*BEAT)
-                add(flute(f, d*BEAT*.92, .16), t + b*BEAT)
+                add(glock(f*2, 1.0, .07), t + b*BEAT)
+                add(flute(f, d*BEAT*.92, .06), t + b*BEAT)
             b += d
         if sec == 'intro': add(bzz(1.0, .05), t)
         if sec == 'outro': add(bzz(1.0, .05), t + 3*BAR/2)
