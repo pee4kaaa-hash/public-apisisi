@@ -1,5 +1,6 @@
 // Brush Brush, Shiny Teeth — frame-by-frame animation. Runs inside the page; draw(t) returns SVG markup.
-const W = 1080, H = 1920, BEAT = 0.5;
+const W = 1080, H = 1920;
+let BEAT = 0.5;
 let TL; // timeline injected from timeline_<lang>.json
 const TEXT = {
   en: { title: 'BRUSH BRUSH!', titleSize: 140, sub: 'Shiny Teeth 🦷', brand: 'Sprout &amp; Drizzle', more: 'More songs every day! 🌱', moreSize: 64 },
@@ -9,7 +10,16 @@ const T_ = () => TEXT[TL.lang];
 const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
 const ease = x => { x = clamp(x); return x * x * (3 - 2 * x); };
 const elastic = x => { x = clamp(x); return x === 1 ? 1 : 1 - Math.pow(2, -10 * x) * Math.cos(x * 10.5); };
-const lineAt = t => TL.lines.find(l => t >= l.start && t < l.end);
+// current line = last line that has started; works with gaps (instrumental breaks) between lines
+const lineAt = t => { let c = null; for (const l of TL.lines) if (l.start <= t + 0.15) c = l; return c; };
+// karaoke shows a line while it is sung (plus a short tail) and the next one slightly early
+const karaokeLine = t => {
+  const i = TL.lines.indexOf(lineAt(t + 0.5));
+  if (i < 0) return null;
+  const l = TL.lines[i];
+  return t <= l.wordTimes[l.wordTimes.length - 1] + 1.6 || l.start - t > 0 ? l : null;
+};
+const S = (role, n = 0) => { const ls = TL.lines.filter(l => l.role === role); return (ls[n] || ls[0]).start; };
 
 function eyes(kind) {
   if (kind === 'closed') return `<path d="M-45,-5 Q-32,5 -19,-5 M19,-5 Q32,5 45,-5" stroke="#2d3a22" stroke-width="7" fill="none" stroke-linecap="round"/>`;
@@ -135,27 +145,32 @@ function karaoke(t, line) {
 }
 
 function draw(t) {
-  if (t >= 72) return endCard(t - 72);
+  BEAT = 60 / (TL.bpm || 120);
+  const END = TL.endCard ?? TL.total - 3;
+  if (t >= END) return endCard(t - END);
+  const tWake = S('wake'), tGrab = S('grab'), tPaste = S('paste'), tSmile = S('smile'), tTop = S('top'), tOutro = S('outro');
+  const titleEnd = Math.max(3.5, tWake - 0.2);
   const line = lineAt(t);
-  const sec = line ? line.section : 'outro';
+  const sec = line ? line.section : 'intro';
   const beatPh = (t / BEAT) % 1;
-  const bounce = t > 4 ? -Math.abs(Math.sin(Math.PI * beatPh)) * 16 : 0;
-  const rot = t > 4 ? Math.sin(t * Math.PI) * 3 : 0;
+  const live = t > titleEnd - 0.5;
+  const bounce = live ? -Math.abs(Math.sin(Math.PI * beatPh)) * 16 : 0;
+  const rot = live ? Math.sin(t * Math.PI) * 3 : 0;
   let sx = 540, sy = 860 + bounce, ss = 2.4;
   let eye = 'open', m = 'smile', extra = '', fx = '';
   let br = null; // {x,y,ang,paste} in sprout-local coords
-  const P = t >= 13 ? elastic((t - 13) / 0.6) : 0;
+  const P = t >= tPaste + 0.8 ? elastic((t - tPaste - 0.8) / 0.6) : 0;
 
   // intro: pop in
-  if (t < 4) { ss = 2.4 * elastic((t - 0.4) / 1.0); if (t < 2.5) eye = 'happy'; }
+  if (t < tWake) { ss = 2.4 * elastic((t - 0.4) / 1.0); eye = 'happy'; }
   // verse 1
-  if (t >= 4 && t < 20) {
-    if (t < 5.6) { eye = 'closed'; m = t < 5 ? 'yawn' : 'smile'; }
-    if (t >= 8) {
-      const k = ease((t - 8) / 0.8);
-      br = { x: 140 + 300 * (1 - k), y: 40 + Math.sin(t * 6) * 12 * (t < 12 ? 1 : 0), ang: -30, paste: P };
+  if (t >= tWake && t < tTop) {
+    if (t < tWake + 1.6) { eye = 'closed'; m = t < tWake + 1.0 ? 'yawn' : 'smile'; }
+    if (t >= tGrab) {
+      const k = ease((t - tGrab) / 0.8);
+      br = { x: 140 + 300 * (1 - k), y: 40 + Math.sin(t * 6) * 12 * (t < tPaste ? 1 : 0), ang: -30, paste: P };
     }
-    if (t >= 16) { m = 'wide'; eye = 'happy'; fx += sparkles(t, 16.2, sx, sy, 280); }
+    if (t >= tSmile) { m = 'wide'; eye = 'happy'; fx += sparkles(t, tSmile + 0.2, sx, sy, 280); }
   }
   // brushing sections
   const brushing = (sec === 'chorus' || sec === 'chorus2');
@@ -198,37 +213,37 @@ function draw(t) {
   }
   // outro
   let dz = 0;
-  if (sec === 'outro' || t >= 68) {
-    m = 'wide'; eye = 'happy'; dz = clamp((t - 68) / 1.2);
+  if (t >= tOutro) {
+    m = 'wide'; eye = 'happy'; dz = clamp((t - tOutro) / 1.2);
     br = { x: 150, y: -10, ang: -50, paste: 0 };
-    fx += sparkles(t, 68.2, sx, sy, 300) + sparkles(t, 69.8, sx, sy, 330);
+    fx += sparkles(t, tOutro + 0.2, sx, sy, 300) + sparkles(t, tOutro + 1.8, sx, sy, 330);
   }
 
   if (br) extra += brush(br.x, br.y, br.ang, br.paste);
-  const sunUp = t < 4 ? 0 : (t - 4) / 2.5;
+  const sunUp = t < tWake ? 0 : (t - tWake) / 2.5;
   let svg = background(t, sunUp, dz);
   // mirror
   svg += `<rect x="170" y="430" width="740" height="720" rx="70" fill="#f7fcff" stroke="#9fc9e6" stroke-width="16"/>
           <path d="M240,520 L330,470 M240,580 L400,480" stroke="#fff" stroke-width="18" stroke-linecap="round" opacity=".8"/>`;
   svg += sprout({ x: sx, y: sy, s: ss, rot, eye, m, extra }) + fx;
   // bees
-  if (t < 4.5 || sec === 'chorus2' || t >= 66) {
+  if (t < titleEnd + 0.5 || sec === 'chorus2' || t >= tOutro - 2) {
     for (let i = 0; i < 3; i++) {
       const p = t * 0.9 + i * 2.1;
       const bx = 540 + Math.sin(p) * 380, by = 520 + Math.sin(p * 2) * 80 + i * 30;
-      const enter = t < 4.5 ? clamp((t - i * 0.25) / 1.0) : 1;
+      const enter = t < titleEnd + 0.5 ? clamp((t - i * 0.25) / 1.0) : 1;
       svg += bee(bx + (1 - ease(enter)) * 700, by, 1.1, Math.cos(p) * 15, t);
     }
   }
   // title
-  if (t < 4.2) {
-    const k = elastic((t - 0.1) / 0.9), o = t > 3.6 ? 1 - (t - 3.6) / 0.6 : 1;
+  if (t < titleEnd) {
+    const k = elastic((t - 0.1) / 0.9), o = t > titleEnd - 0.6 ? (titleEnd - t) / 0.6 : 1;
     svg += `<g opacity="${o}" transform="translate(540,300) scale(${k})"><text x="0" y="0" text-anchor="middle" font-size="${T_().titleSize}" fill="#2f6b2a" stroke="#fff" stroke-width="20" paint-order="stroke">${T_().title}</text>
     <text x="0" y="110" text-anchor="middle" font-size="80" fill="#3d7fb3" stroke="#fff" stroke-width="12" paint-order="stroke">${T_().sub}</text></g>`;
   } else {
     svg += `<text x="1040" y="90" text-anchor="end" font-size="40" fill="#5aa3d8" opacity=".75">${T_().brand}</text>`;
   }
-  svg += karaoke(t, line);
+  svg += karaoke(t, karaokeLine(t));
   return svg;
 }
 

@@ -69,6 +69,7 @@ ROLES = ['intro','wake','grab','paste','smile','top','bottom','round','shiny',
          'frontback','circles','tongue','spit','top','bottom','round','shiny','outro']
 # word index inside the 'tongue' / 'spit' lines where the action happens
 EVENTS = {'en': {'tongue': 3, 'spit': 5}, 'ru': {'tongue': 2, 'spit': 1}}
+LINES_EN = LINES
 LANG = os.environ.get('SONG_LANG', 'en')
 if LANG == 'ru': LINES = LINES_RU
 assert len(LINES) == len(ROLES)
@@ -187,6 +188,6 @@ def render(path):
 
 if __name__ == '__main__':
     lines, ev = timeline()
-    json.dump(dict(lang=LANG, bpm=BPM, total=TOTAL, lines=lines, events=ev), open(f'timeline_{LANG}.json', 'w'), indent=1, ensure_ascii=False)
+    json.dump(dict(lang=LANG, bpm=BPM, total=TOTAL, endCard=TOTAL - TAIL, lines=lines, events=ev), open(f'timeline_{LANG}.json', 'w'), indent=1, ensure_ascii=False)
     render(f'music_{LANG}.wav')
     print('total', TOTAL)
