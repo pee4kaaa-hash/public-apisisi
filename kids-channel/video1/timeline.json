@@ -1,0 +1,410 @@
+{
+ "bpm": 120,
+ "total": 75.0,
+ "lines": [
+  {
+   "section": "intro",
+   "text": "(bzz bzz) Good morning, Sprout!",
+   "start": 0.0,
+   "end": 4.0,
+   "words": [
+    "(bzz",
+    "bzz)",
+    "Good",
+    "morning,",
+    "Sprout!"
+   ],
+   "wordTimes": [
+    0.0,
+    0.5,
+    1.0,
+    1.5,
+    2.0
+   ]
+  },
+  {
+   "section": "verse1",
+   "text": "Wake up, Sprout, the sun is high,",
+   "start": 4.0,
+   "end": 8.0,
+   "words": [
+    "Wake",
+    "up,",
+    "Sprout,",
+    "the",
+    "sun",
+    "is",
+    "high,"
+   ],
+   "wordTimes": [
+    4.0,
+    4.5,
+    5.0,
+    5.5,
+    6.0,
+    6.5,
+    7.0
+   ]
+  },
+  {
+   "section": "verse1",
+   "text": "Grab your brush and say hi-hi!",
+   "start": 8.0,
+   "end": 12.0,
+   "words": [
+    "Grab",
+    "your",
+    "brush",
+    "and",
+    "say",
+    "hi-hi!"
+   ],
+   "wordTimes": [
+    8.0,
+    8.5,
+    9.0,
+    9.5,
+    10.0,
+    10.5
+   ]
+  },
+  {
+   "section": "verse1",
+   "text": "A little dot of minty paste,",
+   "start": 12.0,
+   "end": 16.0,
+   "words": [
+    "A",
+    "little",
+    "dot",
+    "of",
+    "minty",
+    "paste,"
+   ],
+   "wordTimes": [
+    12.0,
+    12.5,
+    13.0,
+    13.5,
+    14.0,
+    14.5
+   ]
+  },
+  {
+   "section": "verse1",
+   "text": "Let's make our smile a shiny place!",
+   "start": 16.0,
+   "end": 20.0,
+   "words": [
+    "Let's",
+    "make",
+    "our",
+    "smile",
+    "a",
+    "shiny",
+    "place!"
+   ],
+   "wordTimes": [
+    16.0,
+    16.5,
+    17.0,
+    17.5,
+    18.0,
+    18.5,
+    19.0
+   ]
+  },
+  {
+   "section": "chorus",
+   "text": "Brush brush, top teeth, swish swish swish,",
+   "start": 20.0,
+   "end": 24.0,
+   "words": [
+    "Brush",
+    "brush,",
+    "top",
+    "teeth,",
+    "swish",
+    "swish",
+    "swish,"
+   ],
+   "wordTimes": [
+    20.0,
+    20.5,
+    21.0,
+    21.5,
+    22.0,
+    22.5,
+    23.0
+   ]
+  },
+  {
+   "section": "chorus",
+   "text": "Brush brush, bottom teeth, make a wish!",
+   "start": 24.0,
+   "end": 28.0,
+   "words": [
+    "Brush",
+    "brush,",
+    "bottom",
+    "teeth,",
+    "make",
+    "a",
+    "wish!"
+   ],
+   "wordTimes": [
+    24.0,
+    24.5,
+    25.0,
+    25.5,
+    26.0,
+    26.5,
+    27.0
+   ]
+  },
+  {
+   "section": "chorus",
+   "text": "Round and round and side to side,",
+   "start": 28.0,
+   "end": 32.0,
+   "words": [
+    "Round",
+    "and",
+    "round",
+    "and",
+    "side",
+    "to",
+    "side,"
+   ],
+   "wordTimes": [
+    28.0,
+    28.25,
+    28.5,
+    29.0,
+    29.5,
+    30.0,
+    30.5
+   ]
+  },
+  {
+   "section": "chorus",
+   "text": "Shiny teeth, open wide!",
+   "start": 32.0,
+   "end": 36.0,
+   "words": [
+    "Shiny",
+    "teeth,",
+    "open",
+    "wide!"
+   ],
+   "wordTimes": [
+    32.0,
+    32.5,
+    33.0,
+    34.0
+   ]
+  },
+  {
+   "section": "verse2",
+   "text": "Brush the front and brush the back,",
+   "start": 36.0,
+   "end": 40.0,
+   "words": [
+    "Brush",
+    "the",
+    "front",
+    "and",
+    "brush",
+    "the",
+    "back,"
+   ],
+   "wordTimes": [
+    36.0,
+    36.5,
+    37.0,
+    37.5,
+    38.0,
+    38.5,
+    39.0
+   ]
+  },
+  {
+   "section": "verse2",
+   "text": "Little circles, clickety-clack,",
+   "start": 40.0,
+   "end": 44.0,
+   "words": [
+    "Little",
+    "circles,",
+    "clickety-clack,"
+   ],
+   "wordTimes": [
+    40.0,
+    41.0,
+    42.0
+   ]
+  },
+  {
+   "section": "verse2",
+   "text": "Don't forget your tongue \u2014 ha ha!",
+   "start": 44.0,
+   "end": 48.0,
+   "words": [
+    "Don't",
+    "forget",
+    "your",
+    "tongue",
+    "\u2014",
+    "ha",
+    "ha!"
+   ],
+   "wordTimes": [
+    44.0,
+    44.5,
+    45.0,
+    45.5,
+    46.0,
+    46.5,
+    47.0
+   ]
+  },
+  {
+   "section": "verse2",
+   "text": "Now we spit it out \u2014 ptoo! Ta-da!",
+   "start": 48.0,
+   "end": 52.0,
+   "words": [
+    "Now",
+    "we",
+    "spit",
+    "it",
+    "out",
+    "\u2014",
+    "ptoo!",
+    "Ta-da!"
+   ],
+   "wordTimes": [
+    48.0,
+    48.0,
+    48.5,
+    49.0,
+    49.5,
+    50.0,
+    50.5,
+    51.0
+   ]
+  },
+  {
+   "section": "chorus2",
+   "text": "Brush brush, top teeth, swish swish swish,",
+   "start": 52.0,
+   "end": 56.0,
+   "words": [
+    "Brush",
+    "brush,",
+    "top",
+    "teeth,",
+    "swish",
+    "swish",
+    "swish,"
+   ],
+   "wordTimes": [
+    52.0,
+    52.5,
+    53.0,
+    53.5,
+    54.0,
+    54.5,
+    55.0
+   ]
+  },
+  {
+   "section": "chorus2",
+   "text": "Brush brush, bottom teeth, make a wish!",
+   "start": 56.0,
+   "end": 60.0,
+   "words": [
+    "Brush",
+    "brush,",
+    "bottom",
+    "teeth,",
+    "make",
+    "a",
+    "wish!"
+   ],
+   "wordTimes": [
+    56.0,
+    56.5,
+    57.0,
+    57.5,
+    58.0,
+    58.5,
+    59.0
+   ]
+  },
+  {
+   "section": "chorus2",
+   "text": "Round and round and side to side,",
+   "start": 60.0,
+   "end": 64.0,
+   "words": [
+    "Round",
+    "and",
+    "round",
+    "and",
+    "side",
+    "to",
+    "side,"
+   ],
+   "wordTimes": [
+    60.0,
+    60.25,
+    60.5,
+    61.0,
+    61.5,
+    62.0,
+    62.5
+   ]
+  },
+  {
+   "section": "chorus2",
+   "text": "Shiny teeth, open wide!",
+   "start": 64.0,
+   "end": 68.0,
+   "words": [
+    "Shiny",
+    "teeth,",
+    "open",
+    "wide!"
+   ],
+   "wordTimes": [
+    64.0,
+    64.5,
+    65.0,
+    66.0
+   ]
+  },
+  {
+   "section": "outro",
+   "text": "All done, Sprout! Big shiny smile!",
+   "start": 68.0,
+   "end": 72.0,
+   "words": [
+    "All",
+    "done,",
+    "Sprout!",
+    "Big",
+    "shiny",
+    "smile!"
+   ],
+   "wordTimes": [
+    68.0,
+    68.5,
+    69.0,
+    69.5,
+    70.0,
+    70.5
+   ]
+  }
+ ]
+}
