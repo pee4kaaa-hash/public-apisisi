@@ -178,7 +178,7 @@ async function runTry() {
   if (!current) return;
   if (controller) controller.abort();
   controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 15000);
+  const timer = setTimeout(() => controller.abort(), 25000);
   const started = performance.now();
   $('#try-status').textContent = 'Загрузка…';
   $('#try-out').hidden = true;
@@ -197,7 +197,7 @@ async function runTry() {
       : `Ответ ${res.status} ${res.statusText} за ${ms} мс`;
   } catch (e) {
     $('#try-status').textContent = e.name === 'AbortError'
-      ? 'Сервис не ответил за 15 секунд. Откройте ссылку в новой вкладке.'
+      ? 'Сервис не ответил за 25 секунд. Откройте ссылку в новой вкладке.'
       : 'Не удалось выполнить запрос (нет сети или сервис недоступен). Откройте ссылку в новой вкладке.';
   } finally {
     clearTimeout(timer);
