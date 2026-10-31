@@ -1,0 +1,375 @@
+{
+  "title": "Бесплатные API для учёбы в медколледже",
+  "categories": [
+    {
+      "id": "c1",
+      "name": "Лекарственные препараты и фармакология"
+    },
+    {
+      "id": "c2",
+      "name": "Генетика, биохимия, молекулярная биология"
+    },
+    {
+      "id": "c3",
+      "name": "Научная литература"
+    },
+    {
+      "id": "c4",
+      "name": "Питание и диетология"
+    },
+    {
+      "id": "c5",
+      "name": "Эпидемиология и статистика"
+    },
+    {
+      "id": "c6",
+      "name": "Клиническое мышление и терминология"
+    },
+    {
+      "id": "c7",
+      "name": "Английский для медика"
+    }
+  ],
+  "apis": [
+    {
+      "name": "DailyMed",
+      "url": "https://dailymed.nlm.nih.gov/dailymed/app-support-web-services.cfm",
+      "description": "Официальные инструкции к препаратам (FDA): показания, дозировки, противопоказания",
+      "key": false,
+      "category": "c1"
+    },
+    {
+      "name": "RxNorm",
+      "url": "https://lhncbc.nlm.nih.gov/RxNav/APIs/RxNormAPIs.html",
+      "description": "Нормализованные названия лекарств: связь торгового названия с действующим веществом",
+      "key": false,
+      "category": "c1",
+      "example": {
+        "label": "Найти препараты с аспирином",
+        "url": "https://rxnav.nlm.nih.gov/REST/drugs.json?name=aspirin",
+        "cors": true
+      }
+    },
+    {
+      "name": "openFDA",
+      "url": "https://open.fda.gov",
+      "description": "Данные FDA о препаратах, побочных эффектах и медизделиях",
+      "key": true,
+      "category": "c1",
+      "example": {
+        "label": "Инструкция к эпинефрину (без ключа, лимит 1000 запросов в день)",
+        "url": "https://api.fda.gov/drug/label.json?search=openfda.generic_name:epinephrine&limit=1",
+        "cors": true
+      }
+    },
+    {
+      "name": "NHS Health A-Z",
+      "url": "https://digital.nhs.uk/developer/api-catalogue/health-a-to-z",
+      "description": "Справочник NHS по заболеваниям, лекарствам и рекомендациям",
+      "key": true,
+      "category": "c1"
+    },
+    {
+      "name": "FDA Recalls",
+      "url": "https://rapidapi.com/crisp-point-studio-crisp-point-studio-default/api/live-fda-product-food-recalls",
+      "description": "Свежие отзывы препаратов и продуктов с рынка",
+      "key": true,
+      "category": "c1"
+    },
+    {
+      "name": "MedlinePlus Genetics",
+      "url": "https://medlineplus.gov/about/developers/geneticsdatafilesapi/",
+      "description": "Генетические заболевания, гены, хромосомы — понятным языком",
+      "key": false,
+      "category": "c2",
+      "example": {
+        "label": "Муковисцидоз: описание и гены",
+        "url": "https://medlineplus.gov/download/genetics/condition/cystic-fibrosis.json",
+        "cors": false
+      }
+    },
+    {
+      "name": "KEGG",
+      "url": "https://www.kegg.jp/kegg/rest/keggapi.html",
+      "description": "Метаболические пути, ферменты, соединения — для биохимии",
+      "key": false,
+      "category": "c2",
+      "example": {
+        "label": "Найти соединение «глюкоза»",
+        "url": "https://rest.kegg.jp/find/compound/glucose",
+        "cors": false
+      }
+    },
+    {
+      "name": "MyGene.info",
+      "url": "https://docs.mygene.info/",
+      "description": "Справка по любому гену: функция, расположение, идентификаторы",
+      "key": false,
+      "category": "c2",
+      "example": {
+        "label": "Ген TP53 у человека",
+        "url": "https://mygene.info/v3/query?q=symbol:TP53&species=human",
+        "cors": true
+      }
+    },
+    {
+      "name": "RCSB PDB",
+      "url": "https://data.rcsb.org/",
+      "description": "3D-структуры белков и нуклеиновых кислот",
+      "key": false,
+      "category": "c2",
+      "example": {
+        "label": "Гемоглобин (структура 4HHB)",
+        "url": "https://data.rcsb.org/rest/v1/core/entry/4HHB",
+        "cors": true
+      }
+    },
+    {
+      "name": "Open Targets",
+      "url": "https://platform-docs.opentargets.org/",
+      "description": "Связи «ген — болезнь — лекарство-мишень»",
+      "key": false,
+      "category": "c2"
+    },
+    {
+      "name": "Chempirical",
+      "url": "https://chempirical.com/api/",
+      "description": "Химические соединения, их свойства и реакции",
+      "key": false,
+      "category": "c2"
+    },
+    {
+      "name": "DeepDNA",
+      "url": "https://deepdna.ai/docs/",
+      "description": "Гены, варианты и фармакогенетика: как гены влияют на действие лекарств",
+      "key": false,
+      "category": "c2"
+    },
+    {
+      "name": "ENA",
+      "url": "https://www.ebi.ac.uk/ena/browser/api/swagger-ui/index.html",
+      "description": "Нуклеотидные последовательности и геномы",
+      "key": false,
+      "category": "c2",
+      "example": {
+        "label": "Сборки генома человека",
+        "url": "https://www.ebi.ac.uk/ena/portal/api/search?result=assembly&query=tax_eq(9606)&limit=3&format=json",
+        "cors": true
+      }
+    },
+    {
+      "name": "NCBI E-utilities",
+      "url": "https://www.ncbi.nlm.nih.gov/books/NBK25501/",
+      "description": "Доступ к PubMed и другим базам NCBI — поиск статей для рефератов и курсовых",
+      "key": false,
+      "category": "c3",
+      "example": {
+        "label": "Статьи PubMed про бронхиальную астму",
+        "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=asthma&retmode=json&retmax=5",
+        "cors": true
+      }
+    },
+    {
+      "name": "Europe PMC",
+      "url": "https://europepmc.org/RestfulWebService",
+      "description": "Статьи по медицине и биологии с аннотациями и ссылками на полный текст",
+      "key": false,
+      "category": "c3",
+      "example": {
+        "label": "Статьи про артериальную гипертензию",
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=hypertension&format=json&pageSize=3",
+        "cors": true
+      }
+    },
+    {
+      "name": "Semantic Scholar",
+      "url": "https://api.semanticscholar.org/",
+      "description": "Поиск статей, авторов и цитирований",
+      "key": false,
+      "category": "c3",
+      "example": {
+        "label": "Статьи про сепсис",
+        "url": "https://api.semanticscholar.org/graph/v1/paper/search?query=sepsis&limit=3",
+        "cors": false
+      }
+    },
+    {
+      "name": "OpenAlex",
+      "url": "https://docs.openalex.org/",
+      "description": "Открытый каталог научных работ",
+      "key": false,
+      "category": "c3",
+      "example": {
+        "label": "Работы про сахарный диабет",
+        "url": "https://api.openalex.org/works?search=diabetes&per-page=3",
+        "cors": true
+      }
+    },
+    {
+      "name": "Crossref Metadata Search",
+      "url": "https://github.com/CrossRef/rest-api-doc",
+      "description": "Выходные данные статей и книг — для оформления списка литературы",
+      "key": false,
+      "category": "c3",
+      "example": {
+        "label": "Публикации про сестринский уход",
+        "url": "https://api.crossref.org/works?query=nursing+care&rows=3",
+        "cors": true
+      }
+    },
+    {
+      "name": "Wikipedia",
+      "url": "https://www.mediawiki.org/wiki/API:Main_page",
+      "description": "Быстрая справка по терминам, в том числе в русской Википедии",
+      "key": false,
+      "category": "c3",
+      "example": {
+        "label": "Краткая статья «Адреналин» из русской Википедии",
+        "url": "https://ru.wikipedia.org/api/rest_v1/page/summary/%D0%90%D0%B4%D1%80%D0%B5%D0%BD%D0%B0%D0%BB%D0%B8%D0%BD",
+        "cors": true
+      }
+    },
+    {
+      "name": "arXiv",
+      "url": "https://info.arxiv.org/help/api/user-manual.html",
+      "description": "Препринты научных статей",
+      "key": false,
+      "category": "c3",
+      "example": {
+        "label": "Препринты по эпидемиологии",
+        "url": "https://export.arxiv.org/api/query?search_query=all:epidemiology&max_results=3",
+        "cors": false
+      }
+    },
+    {
+      "name": "Open Library",
+      "url": "https://openlibrary.org/developers/api",
+      "description": "Поиск книг и учебников",
+      "key": false,
+      "category": "c3",
+      "example": {
+        "label": "Книги по анатомии",
+        "url": "https://openlibrary.org/search.json?q=anatomy&limit=3",
+        "cors": true
+      }
+    },
+    {
+      "name": "FoodData Central",
+      "url": "https://fdc.nal.usda.gov/",
+      "description": "Состав продуктов: белки, жиры, углеводы, витамины, минералы",
+      "key": true,
+      "category": "c4"
+    },
+    {
+      "name": "Edamam",
+      "url": "https://developer.edamam.com/",
+      "description": "Пищевая ценность блюд и рецептов",
+      "key": true,
+      "category": "c4"
+    },
+    {
+      "name": "Nutritionix",
+      "url": "https://developer.nutritionix.com/",
+      "description": "Большая база пищевой ценности продуктов",
+      "key": true,
+      "category": "c4"
+    },
+    {
+      "name": "Open Disease",
+      "url": "https://disease.sh/",
+      "description": "Статистика по COVID-19 и гриппу по странам",
+      "key": false,
+      "category": "c5",
+      "example": {
+        "label": "Статистика COVID-19 по России",
+        "url": "https://disease.sh/v3/covid-19/countries/Russia",
+        "cors": true
+      }
+    },
+    {
+      "name": "Monitly",
+      "url": "https://monit.ly/api-docs",
+      "description": "Статистика ВОЗ, Всемирного банка и других организаций по 150+ странам",
+      "key": true,
+      "category": "c5"
+    },
+    {
+      "name": "Humanitarian Data Exchange",
+      "url": "https://data.humdata.org/",
+      "description": "Открытые данные о здоровье населения в разных странах",
+      "key": false,
+      "category": "c5"
+    },
+    {
+      "name": "Open Data NHS Scotland",
+      "url": "https://www.opendata.nhs.scot",
+      "description": "Медицинская статистика Шотландии — пример реальных данных здравоохранения",
+      "key": false,
+      "category": "c5"
+    },
+    {
+      "name": "Infermedica",
+      "url": "https://developer.infermedica.com/docs/",
+      "description": "Проверка симптомов и сортировка пациентов — можно сверять себя на ситуационных задачах",
+      "key": true,
+      "category": "c6"
+    },
+    {
+      "name": "Lexigram",
+      "url": "https://docs.lexigram.io/",
+      "description": "Выделение клинических терминов из текста, медицинская онтология",
+      "key": true,
+      "category": "c6"
+    },
+    {
+      "name": "Free Dictionary",
+      "url": "https://dictionaryapi.dev/",
+      "description": "Значение, произношение и примеры английских слов, включая медицинские термины",
+      "key": false,
+      "category": "c7",
+      "example": {
+        "label": "Слово tachycardia",
+        "url": "https://api.dictionaryapi.dev/api/v2/entries/en/tachycardia",
+        "cors": true
+      }
+    },
+    {
+      "name": "Wiktionary",
+      "url": "https://en.wiktionary.org/w/api.php",
+      "description": "Словарь с этимологией: удобно разбирать латинские и греческие корни терминов",
+      "key": false,
+      "category": "c7",
+      "example": {
+        "label": "Статья cardiology",
+        "url": "https://en.wiktionary.org/w/api.php?action=parse&page=cardiology&prop=wikitext&format=json&origin=*",
+        "cors": true
+      }
+    }
+  ],
+  "start": [
+    {
+      "task": "Нужна инструкция к препарату",
+      "api": "DailyMed"
+    },
+    {
+      "task": "Готовите реферат или курсовую",
+      "api": "NCBI E-utilities"
+    },
+    {
+      "task": "Учите биохимию",
+      "api": "KEGG"
+    },
+    {
+      "task": "Считаете рацион на занятии по диетологии",
+      "api": "FoodData Central"
+    },
+    {
+      "task": "Оформляете список литературы",
+      "api": "Crossref Metadata Search"
+    }
+  ],
+  "notes": [
+    "Совет: в англоязычных базах ищите препараты по МНН на латинице, например `epinephrine` вместо «адреналин». Справочники США описывают американский рынок, поэтому для практики сверяйтесь с российскими инструкциями.",
+    "Данные из этих источников предназначены для обучения и не заменяют клинические рекомендации Минздрава РФ."
+  ]
+}
