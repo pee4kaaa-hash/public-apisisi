@@ -1,0 +1,15 @@
+{
+ "lm_model": "acestep-5Hz-lm-1.7B-Q8_0.gguf",
+ "synth_model": "acestep-v15-turbo-Q8_0.gguf",
+ "caption": "children's song, nursery rhyme, preschool, cheerful, ukulele, glockenspiel, hand claps, soft drums, sweet young female vocal, clear diction, happy, warm, sing-along",
+ "lyrics": "[Intro]\nДоброе утро, Росток!\n\n[Verse 1]\nПросыпайся, наш Росток,\nСолнце светит на порог!\nЩётку, пасту, капельку,\nУлыбнёмся солнышку!\n\n[Chorus]\nЧистим, чистим верхний ряд,\nЧистим, чистим нижний ряд!\nВправо, влево, по кругу,\nЗубки белые, как снег!\n\n[Verse 2]\nЧистим спереди и сзади,\nМаленькими кружками,\nЯзычок почистим, хи-хи!\nСплюнем, тьфу! И всё, ура!\n\n[Chorus]\nЧистим, чистим верхний ряд,\nЧистим, чистим нижний ряд!\nВправо, влево, по кругу,\nЗубки белые, как снег!\n\n[Outro]\nВсё, Росток! Улыбка — блеск!",
+ "duration": 75,
+ "bpm": 120,
+ "vocal_language": "ru",
+ "keyscale": "C major",
+ "timesignature": "4",
+ "inference_steps": 8,
+ "guidance_scale": 1.0,
+ "shift": 3.0,
+ "seed": 42
+}
