@@ -28,6 +28,14 @@
     {
       "id": "c7",
       "name": "Английский для медика"
+    },
+    {
+      "id": "c8",
+      "name": "Заболевания и памятки для пациентов"
+    },
+    {
+      "id": "c9",
+      "name": "Анатомия и медицинские изображения"
     }
   ],
   "apis": [
@@ -75,6 +83,54 @@
       "description": "Свежие отзывы препаратов и продуктов с рынка",
       "key": true,
       "category": "c1"
+    },
+    {
+      "name": "RxClass",
+      "url": "https://lhncbc.nlm.nih.gov/RxNav/APIs/RxClassAPIs.html",
+      "description": "Фармгруппа препарата по АТХ-классификации — удобно для зачётов по фармакологии",
+      "key": false,
+      "category": "c1",
+      "example": {
+        "label": "К какой фармгруппе по АТХ относится метформин",
+        "url": "https://rxnav.nlm.nih.gov/REST/rxclass/class/byDrugName.json?drugName=metformin&relaSource=ATC",
+        "cors": true
+      }
+    },
+    {
+      "name": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest",
+      "description": "Химическая формула, молекулярная масса и свойства действующего вещества",
+      "key": false,
+      "category": "c1",
+      "example": {
+        "label": "Формула и молекулярная масса аспирина",
+        "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/aspirin/property/MolecularFormula,MolecularWeight,IUPACName/JSON",
+        "cors": true
+      }
+    },
+    {
+      "name": "ChEMBL",
+      "url": "https://www.ebi.ac.uk/chembl/api/data/docs",
+      "description": "Механизм действия лекарства и его мишени в организме",
+      "key": false,
+      "category": "c1",
+      "example": {
+        "label": "Механизм действия аспирина (CHEMBL25)",
+        "url": "https://www.ebi.ac.uk/chembl/api/data/mechanism.json?molecule_chembl_id=CHEMBL25",
+        "cors": true
+      }
+    },
+    {
+      "name": "openFDA: побочные эффекты",
+      "url": "https://open.fda.gov/apis/drug/event/",
+      "description": "Самые частые нежелательные реакции на препарат по сообщениям врачей и пациентов",
+      "key": false,
+      "category": "c1",
+      "example": {
+        "label": "Самые частые нежелательные реакции на ибупрофен",
+        "url": "https://api.fda.gov/drug/event.json?search=patient.drug.medicinalproduct:ibuprofen&count=patient.reaction.reactionmeddrapt.exact&limit=10",
+        "cors": true
+      }
     },
     {
       "name": "MedlinePlus Genetics",
@@ -154,6 +210,54 @@
       "example": {
         "label": "Сборки генома человека",
         "url": "https://www.ebi.ac.uk/ena/portal/api/search?result=assembly&query=tax_eq(9606)&limit=3&format=json",
+        "cors": true
+      }
+    },
+    {
+      "name": "UniProt",
+      "url": "https://www.uniprot.org/help/api",
+      "description": "Белки: функция, строение, связанные болезни (например, инсулин)",
+      "key": false,
+      "category": "c2",
+      "example": {
+        "label": "Белок инсулин человека (P01308)",
+        "url": "https://rest.uniprot.org/uniprotkb/P01308.json?fields=accession,protein_name,cc_function,cc_disease",
+        "cors": true
+      }
+    },
+    {
+      "name": "Ensembl",
+      "url": "https://rest.ensembl.org/",
+      "description": "Гены человека: где расположены, какие белки кодируют",
+      "key": false,
+      "category": "c2",
+      "example": {
+        "label": "Ген BRCA1",
+        "url": "https://rest.ensembl.org/lookup/symbol/homo_sapiens/BRCA1?content-type=application/json",
+        "cors": true
+      }
+    },
+    {
+      "name": "Reactome",
+      "url": "https://reactome.org/dev/content-service",
+      "description": "Биохимические процессы в клетке: гликолиз, цикл Кребса, свёртывание крови",
+      "key": false,
+      "category": "c2",
+      "example": {
+        "label": "Процесс «гликолиз» у человека",
+        "url": "https://reactome.org/ContentService/search/query?query=glycolysis&species=Homo%20sapiens&rows=3",
+        "cors": true
+      }
+    },
+    {
+      "name": "ClinVar",
+      "url": "https://www.ncbi.nlm.nih.gov/clinvar/docs/maintenance_use/",
+      "description": "Мутации и их значение для здоровья — к темам по наследственным болезням",
+      "key": false,
+      "category": "c2",
+      "example": {
+        "label": "Мутации в гене CFTR (муковисцидоз)",
+        "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=clinvar&term=CFTR%5Bgene%5D&retmode=json&retmax=5",
         "cors": true
       }
     },
@@ -254,6 +358,18 @@
       }
     },
     {
+      "name": "ClinicalTrials.gov",
+      "url": "https://clinicaltrials.gov/data-api/api",
+      "description": "Клинические исследования по всему миру: что и как сейчас испытывают",
+      "key": false,
+      "category": "c3",
+      "example": {
+        "label": "Исследования по бронхиальной астме",
+        "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=asthma&pageSize=3",
+        "cors": true
+      }
+    },
+    {
       "name": "FoodData Central",
       "url": "https://fdc.nal.usda.gov/",
       "description": "Состав продуктов: белки, жиры, углеводы, витамины, минералы",
@@ -308,6 +424,30 @@
       "category": "c5"
     },
     {
+      "name": "World Bank: здоровье",
+      "url": "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392",
+      "description": "Продолжительность жизни, младенческая смертность и другие показатели по странам",
+      "key": false,
+      "category": "c5",
+      "example": {
+        "label": "Ожидаемая продолжительность жизни в России",
+        "url": "https://api.worldbank.org/v2/country/RU/indicator/SP.DYN.LE00.IN?format=json&per_page=10",
+        "cors": true
+      }
+    },
+    {
+      "name": "CDC Open Data",
+      "url": "https://data.cdc.gov/",
+      "description": "Открытые данные Центров по контролю заболеваний США",
+      "key": false,
+      "category": "c5",
+      "example": {
+        "label": "Смертность от COVID-19 в США по полу и возрасту",
+        "url": "https://data.cdc.gov/resource/9bhg-hcku.json?$limit=5",
+        "cors": true
+      }
+    },
+    {
       "name": "Infermedica",
       "url": "https://developer.infermedica.com/docs/",
       "description": "Проверка симптомов и сортировка пациентов — можно сверять себя на ситуационных задачах",
@@ -320,6 +460,49 @@
       "description": "Выделение клинических терминов из текста, медицинская онтология",
       "key": true,
       "category": "c6"
+    },
+    {
+      "name": "МКБ-10 (NLM Clinical Tables)",
+      "url": "https://clinicaltables.nlm.nih.gov/apidoc/icd10cm/v3/doc.html",
+      "description": "Поиск кода диагноза по МКБ-10 по названию болезни",
+      "key": false,
+      "category": "c6",
+      "example": {
+        "label": "Коды МКБ-10 для астмы",
+        "url": "https://clinicaltables.nlm.nih.gov/api/icd10cm/v3/search?sf=code,name&terms=asthma",
+        "cors": true
+      }
+    },
+    {
+      "name": "МКБ-11 (ВОЗ)",
+      "url": "https://icd.who.int/icdapi",
+      "description": "Официальный API новой классификации болезней ВОЗ, есть русский язык",
+      "key": true,
+      "category": "c6"
+    },
+    {
+      "name": "MeSH",
+      "url": "https://id.nlm.nih.gov/mesh/",
+      "description": "Медицинские предметные рубрики — правильные термины для поиска в PubMed",
+      "key": false,
+      "category": "c6",
+      "example": {
+        "label": "Рубрика MeSH «Asthma»",
+        "url": "https://id.nlm.nih.gov/mesh/lookup/descriptor?label=Asthma&match=exact&limit=3",
+        "cors": true
+      }
+    },
+    {
+      "name": "Human Phenotype Ontology",
+      "url": "https://ontology.jax.org/api/hp/docs",
+      "description": "Симптомы и признаки с точными определениями",
+      "key": false,
+      "category": "c6",
+      "example": {
+        "label": "Что такое «fever» (лихорадка)",
+        "url": "https://ontology.jax.org/api/hp/search?q=fever&limit=3",
+        "cors": true
+      }
     },
     {
       "name": "Free Dictionary",
@@ -344,6 +527,66 @@
         "url": "https://en.wiktionary.org/w/api.php?action=parse&page=cardiology&prop=wikitext&format=json&origin=*",
         "cors": true
       }
+    },
+    {
+      "name": "MedlinePlus Connect",
+      "url": "https://medlineplus.gov/medlineplus-connect/web-service/",
+      "description": "Понятные памятки о болезни по коду МКБ-10 — пригодятся для санпросвета и бесед с пациентами",
+      "key": false,
+      "category": "c8",
+      "example": {
+        "label": "Памятка по коду J45 (астма)",
+        "url": "https://connect.medlineplus.gov/service?mainSearchCriteria.v.c=J45&mainSearchCriteria.v.cs=2.16.840.1.113883.6.90&knowledgeResponseType=application/json",
+        "cors": true
+      }
+    },
+    {
+      "name": "Orphadata",
+      "url": "https://api.orphadata.com/",
+      "description": "Редкие (орфанные) заболевания: описание, коды, распространённость",
+      "key": false,
+      "category": "c8",
+      "example": {
+        "label": "Синдром Марфана (ORPHA:558)",
+        "url": "https://api.orphadata.com/rd-cross-referencing/orphacodes/558?lang=en",
+        "cors": true
+      }
+    },
+    {
+      "name": "Open-i",
+      "url": "https://openi.nlm.nih.gov/services",
+      "description": "Рентгенограммы, КТ и иллюстрации из научных статей с подписями",
+      "key": false,
+      "category": "c9",
+      "example": {
+        "label": "Рентгенограммы при пневмонии",
+        "url": "https://openi.nlm.nih.gov/api/search?query=pneumonia&m=1&n=3",
+        "cors": false
+      }
+    },
+    {
+      "name": "Wikimedia Commons",
+      "url": "https://commons.wikimedia.org/wiki/Commons:API",
+      "description": "Свободные анатомические рисунки и схемы для презентаций",
+      "key": false,
+      "category": "c9",
+      "example": {
+        "label": "Схемы анатомии сердца",
+        "url": "https://commons.wikimedia.org/w/api.php?action=query&list=search&srsearch=heart%20anatomy&srnamespace=6&srlimit=5&format=json&origin=*",
+        "cors": true
+      }
+    },
+    {
+      "name": "Ontology Lookup Service",
+      "url": "https://www.ebi.ac.uk/ols4/help",
+      "description": "Анатомические структуры и их связи (онтология Uberon)",
+      "key": false,
+      "category": "c9",
+      "example": {
+        "label": "Бедренная кость в анатомической онтологии",
+        "url": "https://www.ebi.ac.uk/ols4/api/search?q=femur&ontology=uberon&rows=3",
+        "cors": true
+      }
     }
   ],
   "start": [
@@ -366,6 +609,18 @@
     {
       "task": "Оформляете список литературы",
       "api": "Crossref Metadata Search"
+    },
+    {
+      "task": "Нужен код диагноза",
+      "api": "МКБ-10 (NLM Clinical Tables)"
+    },
+    {
+      "task": "Готовите памятку для пациента",
+      "api": "MedlinePlus Connect"
+    },
+    {
+      "task": "Учите фармгруппы",
+      "api": "RxClass"
     }
   ],
   "notes": [

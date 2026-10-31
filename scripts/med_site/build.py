@@ -117,6 +117,101 @@ EXAMPLES: Dict[str, dict] = {
         'url': 'https://en.wiktionary.org/w/api.php?action=parse&page=cardiology&prop=wikitext&format=json&origin=*',
         'cors': True,
     },
+    'RxClass': {
+        'label': 'К какой фармгруппе по АТХ относится метформин',
+        'url': 'https://rxnav.nlm.nih.gov/REST/rxclass/class/byDrugName.json?drugName=metformin&relaSource=ATC',
+        'cors': True,
+    },
+    'PubChem': {
+        'label': 'Формула и молекулярная масса аспирина',
+        'url': 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/aspirin/property/MolecularFormula,MolecularWeight,IUPACName/JSON',
+        'cors': True,
+    },
+    'ChEMBL': {
+        'label': 'Механизм действия аспирина (CHEMBL25)',
+        'url': 'https://www.ebi.ac.uk/chembl/api/data/mechanism.json?molecule_chembl_id=CHEMBL25',
+        'cors': True,
+    },
+    'openFDA: побочные эффекты': {
+        'label': 'Самые частые нежелательные реакции на ибупрофен',
+        'url': 'https://api.fda.gov/drug/event.json?search=patient.drug.medicinalproduct:ibuprofen&count=patient.reaction.reactionmeddrapt.exact&limit=10',
+        'cors': True,
+    },
+    'UniProt': {
+        'label': 'Белок инсулин человека (P01308)',
+        'url': 'https://rest.uniprot.org/uniprotkb/P01308.json?fields=accession,protein_name,cc_function,cc_disease',
+        'cors': True,
+    },
+    'Ensembl': {
+        'label': 'Ген BRCA1',
+        'url': 'https://rest.ensembl.org/lookup/symbol/homo_sapiens/BRCA1?content-type=application/json',
+        'cors': True,
+    },
+    'Reactome': {
+        'label': 'Процесс «гликолиз» у человека',
+        'url': 'https://reactome.org/ContentService/search/query?query=glycolysis&species=Homo%20sapiens&rows=3',
+        'cors': True,
+    },
+    'ClinVar': {
+        'label': 'Мутации в гене CFTR (муковисцидоз)',
+        'url': 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=clinvar&term=CFTR%5Bgene%5D&retmode=json&retmax=5',
+        'cors': True,
+    },
+    'ClinicalTrials.gov': {
+        'label': 'Исследования по бронхиальной астме',
+        'url': 'https://clinicaltrials.gov/api/v2/studies?query.cond=asthma&pageSize=3',
+        'cors': True,
+    },
+    'World Bank: здоровье': {
+        'label': 'Ожидаемая продолжительность жизни в России',
+        'url': 'https://api.worldbank.org/v2/country/RU/indicator/SP.DYN.LE00.IN?format=json&per_page=10',
+        'cors': True,
+    },
+    'CDC Open Data': {
+        'label': 'Смертность от COVID-19 в США по полу и возрасту',
+        'url': 'https://data.cdc.gov/resource/9bhg-hcku.json?$limit=5',
+        'cors': True,
+    },
+    'МКБ-10 (NLM Clinical Tables)': {
+        'label': 'Коды МКБ-10 для астмы',
+        'url': 'https://clinicaltables.nlm.nih.gov/api/icd10cm/v3/search?sf=code,name&terms=asthma',
+        'cors': True,
+    },
+    'MeSH': {
+        'label': 'Рубрика MeSH «Asthma»',
+        'url': 'https://id.nlm.nih.gov/mesh/lookup/descriptor?label=Asthma&match=exact&limit=3',
+        'cors': True,
+    },
+    'Human Phenotype Ontology': {
+        'label': 'Что такое «fever» (лихорадка)',
+        'url': 'https://ontology.jax.org/api/hp/search?q=fever&limit=3',
+        'cors': True,
+    },
+    'MedlinePlus Connect': {
+        'label': 'Памятка по коду J45 (астма)',
+        'url': 'https://connect.medlineplus.gov/service?mainSearchCriteria.v.c=J45&mainSearchCriteria.v.cs=2.16.840.1.113883.6.90&knowledgeResponseType=application/json',
+        'cors': True,
+    },
+    'Orphadata': {
+        'label': 'Синдром Марфана (ORPHA:558)',
+        'url': 'https://api.orphadata.com/rd-cross-referencing/orphacodes/558?lang=en',
+        'cors': True,
+    },
+    'Open-i': {
+        'label': 'Рентгенограммы при пневмонии',
+        'url': 'https://openi.nlm.nih.gov/api/search?query=pneumonia&m=1&n=3',
+        'cors': False,
+    },
+    'Wikimedia Commons': {
+        'label': 'Схемы анатомии сердца',
+        'url': 'https://commons.wikimedia.org/w/api.php?action=query&list=search&srsearch=heart%20anatomy&srnamespace=6&srlimit=5&format=json&origin=*',
+        'cors': True,
+    },
+    'Ontology Lookup Service': {
+        'label': 'Бедренная кость в анатомической онтологии',
+        'url': 'https://www.ebi.ac.uk/ols4/api/search?q=femur&ontology=uberon&rows=3',
+        'cors': True,
+    },
 }
 
 

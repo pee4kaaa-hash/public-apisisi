@@ -1,5 +1,5 @@
 // Офлайн-режим: оболочка сайта из кэша, список API — сначала из сети.
-const CACHE = 'med-apis-v1';
+const CACHE = 'med-apis-v2';
 const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'data.json', 'icon.svg', 'manifest.webmanifest'];
 
 self.addEventListener('install', (e) => {
