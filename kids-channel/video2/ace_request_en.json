@@ -1,0 +1,15 @@
+{
+ "lm_model": "acestep-5Hz-lm-1.7B-Q8_0.gguf",
+ "synth_model": "acestep-v15-turbo-Q8_0.gguf",
+ "caption": "children's song, nursery rhyme, preschool, cheerful, bouncy, ukulele, xylophone, hand claps, soft drums, sweet young female vocal, clear diction, happy, playful, sing-along",
+ "lyrics": "[Intro]\nSplish splash, hello, Sprout!\n\n[Verse 1]\nSprout played out in the muddy rain,\nLook at those hands, a muddy stain!\nTurn on the water, nice and warm,\nSqueeze the soap and make it foam!\n\n[Chorus]\nRub rub, palms together,\nScrub the backs, now that's much better!\nWiggle fingers in between,\nBubbles, bubbles, squeaky clean!\n\n[Verse 2]\nSing along and count with me,\nThumbs and nails, one, two, three!\nRinse the bubbles down the drain,\nDry your hands, they're clean again!\n\n[Chorus]\nRub rub, palms together,\nScrub the backs, now that's much better!\nWiggle fingers in between,\nBubbles, bubbles, squeaky clean!\n\n[Outro]\nClean hands, happy Sprout! Yay!",
+ "duration": 75,
+ "bpm": 120,
+ "vocal_language": "en",
+ "keyscale": "G major",
+ "timesignature": "4",
+ "inference_steps": 8,
+ "guidance_scale": 1.0,
+ "shift": 3.0,
+ "seed": 7
+}

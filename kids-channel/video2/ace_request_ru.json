@@ -1,0 +1,15 @@
+{
+ "lm_model": "acestep-5Hz-lm-1.7B-Q8_0.gguf",
+ "synth_model": "acestep-v15-turbo-Q8_0.gguf",
+ "caption": "children's song, nursery rhyme, preschool, cheerful, bouncy, ukulele, xylophone, hand claps, soft drums, sweet young female vocal, clear diction, happy, playful, sing-along",
+ "lyrics": "[Intro]\nПлюх-плюх, привет, Росток!\n\n[Verse 1]\nНаш Росток гулял в саду,\nРучки в грязи, ну и ну!\nОткрываем кран с водой,\nМыло пенится горой!\n\n[Chorus]\nТрём, трём ладошки,\nТрём и спинки понемножку,\nПальчики и между ними,\nПузыри, и ручки чистые!\n\n[Verse 2]\nПосчитаем: раз, два, три,\nНоготочки ты потри!\nСмоем пену мы водой,\nВытрем, чистый наш герой!\n\n[Chorus]\nТрём, трём ладошки,\nТрём и спинки понемножку,\nПальчики и между ними,\nПузыри, и ручки чистые!\n\n[Outro]\nЧистые ручки! Ура, Росток!",
+ "duration": 75,
+ "bpm": 120,
+ "vocal_language": "ru",
+ "keyscale": "G major",
+ "timesignature": "4",
+ "inference_steps": 8,
+ "guidance_scale": 1.0,
+ "shift": 3.0,
+ "seed": 7
+}

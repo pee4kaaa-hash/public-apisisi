@@ -1,0 +1,423 @@
+{
+ "lang": "en",
+ "bpm": 120,
+ "total": 76.0,
+ "endCard": 73.0,
+ "lines": [
+  {
+   "section": "intro",
+   "role": "intro",
+   "text": "Splish splash, hello, Sprout!",
+   "words": [
+    "Splish",
+    "splash,",
+    "hello,",
+    "Sprout!"
+   ],
+   "wordTimes": [
+    1.0,
+    1.8,
+    2.6,
+    3.4000000000000004
+   ],
+   "start": 0.75,
+   "end": 5.0,
+   "sung": true
+  },
+  {
+   "section": "verse1",
+   "role": "mud",
+   "text": "Sprout played out in the muddy rain,",
+   "words": [
+    "Sprout",
+    "played",
+    "out",
+    "in",
+    "the",
+    "muddy",
+    "rain,"
+   ],
+   "wordTimes": [
+    5.0,
+    5.457142857142857,
+    5.914285714285715,
+    6.371428571428572,
+    6.828571428571429,
+    7.285714285714286,
+    7.742857142857144
+   ],
+   "start": 4.75,
+   "end": 9.0,
+   "sung": true
+  },
+  {
+   "section": "verse1",
+   "role": "look",
+   "text": "Look at those hands, a muddy stain!",
+   "words": [
+    "Look",
+    "at",
+    "those",
+    "hands,",
+    "a",
+    "muddy",
+    "stain!"
+   ],
+   "wordTimes": [
+    9.0,
+    9.457142857142857,
+    9.914285714285715,
+    10.371428571428572,
+    10.82857142857143,
+    11.285714285714285,
+    11.742857142857144
+   ],
+   "start": 8.75,
+   "end": 13.0,
+   "sung": true
+  },
+  {
+   "section": "verse1",
+   "role": "water",
+   "text": "Turn on the water, nice and warm,",
+   "words": [
+    "Turn",
+    "on",
+    "the",
+    "water,",
+    "nice",
+    "and",
+    "warm,"
+   ],
+   "wordTimes": [
+    13.0,
+    13.457142857142857,
+    13.914285714285715,
+    14.371428571428572,
+    14.82857142857143,
+    15.285714285714285,
+    15.742857142857144
+   ],
+   "start": 12.75,
+   "end": 17.0,
+   "sung": true
+  },
+  {
+   "section": "verse1",
+   "role": "soap",
+   "text": "Squeeze the soap and make it foam!",
+   "words": [
+    "Squeeze",
+    "the",
+    "soap",
+    "and",
+    "make",
+    "it",
+    "foam!"
+   ],
+   "wordTimes": [
+    17.0,
+    17.457142857142856,
+    17.914285714285715,
+    18.37142857142857,
+    18.82857142857143,
+    19.285714285714285,
+    19.742857142857144
+   ],
+   "start": 16.75,
+   "end": 21.0,
+   "sung": true
+  },
+  {
+   "section": "chorus",
+   "role": "rub",
+   "text": "Rub rub, palms together,",
+   "words": [
+    "Rub",
+    "rub,",
+    "palms",
+    "together,"
+   ],
+   "wordTimes": [
+    21.0,
+    21.8,
+    22.6,
+    23.4
+   ],
+   "start": 20.75,
+   "end": 25.0,
+   "sung": true
+  },
+  {
+   "section": "chorus",
+   "role": "backs",
+   "text": "Scrub the backs, now that's much better!",
+   "words": [
+    "Scrub",
+    "the",
+    "backs,",
+    "now",
+    "that's",
+    "much",
+    "better!"
+   ],
+   "wordTimes": [
+    25.0,
+    25.457142857142856,
+    25.914285714285715,
+    26.37142857142857,
+    26.82857142857143,
+    27.285714285714285,
+    27.742857142857144
+   ],
+   "start": 24.75,
+   "end": 29.0,
+   "sung": true
+  },
+  {
+   "section": "chorus",
+   "role": "fingers",
+   "text": "Wiggle fingers in between,",
+   "words": [
+    "Wiggle",
+    "fingers",
+    "in",
+    "between,"
+   ],
+   "wordTimes": [
+    29.0,
+    29.8,
+    30.6,
+    31.4
+   ],
+   "start": 28.75,
+   "end": 33.0,
+   "sung": true
+  },
+  {
+   "section": "chorus",
+   "role": "clean",
+   "text": "Bubbles, bubbles, squeaky clean!",
+   "words": [
+    "Bubbles,",
+    "bubbles,",
+    "squeaky",
+    "clean!"
+   ],
+   "wordTimes": [
+    33.0,
+    33.8,
+    34.6,
+    35.4
+   ],
+   "start": 32.75,
+   "end": 37.0,
+   "sung": true
+  },
+  {
+   "section": "verse2",
+   "role": "count",
+   "text": "Sing along and count with me,",
+   "words": [
+    "Sing",
+    "along",
+    "and",
+    "count",
+    "with",
+    "me,"
+   ],
+   "wordTimes": [
+    37.0,
+    37.53333333333333,
+    38.06666666666667,
+    38.6,
+    39.13333333333333,
+    39.666666666666664
+   ],
+   "start": 36.75,
+   "end": 41.0,
+   "sung": true
+  },
+  {
+   "section": "verse2",
+   "role": "thumbs",
+   "text": "Thumbs and nails, one, two, three!",
+   "words": [
+    "Thumbs",
+    "and",
+    "nails,",
+    "one,",
+    "two,",
+    "three!"
+   ],
+   "wordTimes": [
+    41.0,
+    41.53333333333333,
+    42.06666666666667,
+    42.6,
+    43.13333333333333,
+    43.666666666666664
+   ],
+   "start": 40.75,
+   "end": 45.0,
+   "sung": true
+  },
+  {
+   "section": "verse2",
+   "role": "rinse",
+   "text": "Rinse the bubbles down the drain,",
+   "words": [
+    "Rinse",
+    "the",
+    "bubbles",
+    "down",
+    "the",
+    "drain,"
+   ],
+   "wordTimes": [
+    45.0,
+    45.53333333333333,
+    46.06666666666667,
+    46.6,
+    47.13333333333333,
+    47.666666666666664
+   ],
+   "start": 44.75,
+   "end": 49.0,
+   "sung": true
+  },
+  {
+   "section": "verse2",
+   "role": "dry",
+   "text": "Dry your hands, they're clean again!",
+   "words": [
+    "Dry",
+    "your",
+    "hands,",
+    "they're",
+    "clean",
+    "again!"
+   ],
+   "wordTimes": [
+    49.0,
+    49.53333333333333,
+    50.06666666666667,
+    50.6,
+    51.13333333333333,
+    51.666666666666664
+   ],
+   "start": 48.75,
+   "end": 53.0,
+   "sung": true
+  },
+  {
+   "section": "chorus2",
+   "role": "rub",
+   "text": "Rub rub, palms together,",
+   "words": [
+    "Rub",
+    "rub,",
+    "palms",
+    "together,"
+   ],
+   "wordTimes": [
+    53.0,
+    53.8,
+    54.6,
+    55.4
+   ],
+   "start": 52.75,
+   "end": 57.0,
+   "sung": true
+  },
+  {
+   "section": "chorus2",
+   "role": "backs",
+   "text": "Scrub the backs, now that's much better!",
+   "words": [
+    "Scrub",
+    "the",
+    "backs,",
+    "now",
+    "that's",
+    "much",
+    "better!"
+   ],
+   "wordTimes": [
+    57.0,
+    57.457142857142856,
+    57.91428571428571,
+    58.371428571428574,
+    58.82857142857143,
+    59.285714285714285,
+    59.74285714285714
+   ],
+   "start": 56.75,
+   "end": 61.0,
+   "sung": true
+  },
+  {
+   "section": "chorus2",
+   "role": "fingers",
+   "text": "Wiggle fingers in between,",
+   "words": [
+    "Wiggle",
+    "fingers",
+    "in",
+    "between,"
+   ],
+   "wordTimes": [
+    61.0,
+    61.8,
+    62.6,
+    63.4
+   ],
+   "start": 60.75,
+   "end": 65.0,
+   "sung": true
+  },
+  {
+   "section": "chorus2",
+   "role": "clean",
+   "text": "Bubbles, bubbles, squeaky clean!",
+   "words": [
+    "Bubbles,",
+    "bubbles,",
+    "squeaky",
+    "clean!"
+   ],
+   "wordTimes": [
+    65.0,
+    65.8,
+    66.6,
+    67.4
+   ],
+   "start": 64.75,
+   "end": 69.0,
+   "sung": true
+  },
+  {
+   "section": "outro",
+   "role": "outro",
+   "text": "Clean hands, happy Sprout! Yay!",
+   "words": [
+    "Clean",
+    "hands,",
+    "happy",
+    "Sprout!",
+    "Yay!"
+   ],
+   "wordTimes": [
+    69.0,
+    69.64,
+    70.28,
+    70.92,
+    71.56
+   ],
+   "start": 68.75,
+   "end": 73.0,
+   "sung": true
+  }
+ ],
+ "events": {}
+}
