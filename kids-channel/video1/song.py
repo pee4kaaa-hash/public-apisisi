@@ -1,5 +1,5 @@
 """Brush Brush, Shiny Teeth — song data + instrumental synth (120 bpm, C major)."""
-import json, wave
+import json, os, wave
 import numpy as np
 
 BPM = 120
@@ -42,21 +42,52 @@ LINES = [
  ('chorus2','Shiny teeth, open wide!', CH4, ['G','C']),
  ('outro',  'All done, Sprout! Big shiny smile!', S(('all','E4',1),('done','E4',1),('sprout','G4',1),(None,'R',1),('big','C5',1),('shiny','B4',.5),('-','B4',.5),('smile','C5',2)), ['F','C']),
 ]
+
+# Russian version: same structure, roles and chords; melody adapted to Russian syllables.
+LINES_RU = [
+ ('intro',  'Доброе утро, Росток!', S((None,'R',1),('доброе','G4',.5),('-','G4',.5),('-','E4',1),('утро','G4',1),('-','E4',1),('росток','G4',1),('-','C5',2)), ['C','G']),
+ ('verse1', 'Просыпайся, наш Росток,', S(('просыпайся','C4',1),('-','C4',1),('-','E4',1),('-','E4',1),('наш','G4',1),('росток','G4',1),('-','E4',2)), ['C','C']),
+ ('verse1', 'Солнце светит на порог!', S(('солнце','F4',1),('-','F4',1),('светит','E4',1),('-','E4',1),('на','D4',1),('порог','D4',1),('-','C4',2)), ['F','G']),
+ ('verse1', 'Щётку, пасту, капельку,', S(('щётку','C4',1),('-','C4',1),('пасту','E4',1),('-','E4',1),('капельку','G4',1),('-','G4',1),('-','E4',2)), ['C','C']),
+ ('verse1', 'Улыбнёмся солнышку!', S(('улыбнёмся','F4',1),('-','F4',1),('-','E4',1),('-','E4',1),('солнышку','D4',1),('-','D4',1),('-','C4',2)), ['F','G']),
+ ('chorus', 'Чистим, чистим верхний ряд,', S(('чистим','G4',1),('-','G4',1),('чистим','A4',1),('-','G4',1),('верхний','E4',1),('-','E4',1),('ряд','E4',1),(None,'R',1)), ['C','C']),
+ ('chorus', 'Чистим, чистим нижний ряд!', S(('чистим','F4',1),('-','F4',1),('чистим','G4',1),('-','F4',1),('нижний','D4',1),('-','D4',1),('ряд','D4',1),(None,'R',1)), ['F','G']),
+ ('chorus', 'Вправо, влево, по кругу,', S(('вправо','E4',1),('-','E4',.5),('влево','G4',1.5),('-','C5',1),('по','B4',1),('кругу','A4',1),('-','G4',2)), ['C','F']),
+ ('chorus', 'Зубки белые, как снег!', S(('зубки','G4',.5),('-','G4',.5),('белые','E4',1),('-','D4',.5),('-','D4',.5),('как','D4',1),('снег','C4',4)), ['G','C']),
+ ('verse2', 'Чистим спереди и сзади,', S(('чистим','C4',.5),('-','C4',.5),('спереди','C4',1),('-','E4',1),('-','E4',1),('и','G4',1),('сзади','G4',1),('-','E4',2)), ['C','C']),
+ ('verse2', 'Маленькими кружками,', S(('маленькими','F4',.5),('-','F4',.5),('-','E4',1),('-','E4',1),('кружками','D4',1),('-','D4',1),('-','C4',3)), ['F','G']),
+ ('verse2', 'Язычок почистим, хи, хи!', S(('язычок','C4',.5),('-','C4',.5),('-','C4',1),('почистим','E4',1),('-','E4',1),('-','G4',1),('хи','G4',1),('хи','E4',2)), ['C','C']),
+ ('verse2', 'Сплюнем, тьфу! И всё, ура!', S(('сплюнем','F4',1),('-','F4',1),('тьфу','E4',1),('и','E4',1),('всё','D4',1),('ура','D4',1),('-','C4',2)), ['F','G']),
+]
+LINES_RU += [('chorus2',) + l[1:] if l[0] == 'chorus' else l for l in LINES_RU[5:9]]
+LINES_RU[-4] = ('chorus2', LINES_RU[-4][1], LINES_RU[-4][2], ['C','C'])
+LINES_RU[-2] = ('chorus2', LINES_RU[-2][1], LINES_RU[-2][2], ['Am','F'])
+LINES_RU.append(('outro', 'Всё, Росток! Улыбка, блеск!', S(('всё','E4',1),('росток','E4',1),('-','G4',1),(None,'R',1),('улыбка','C5',1),('-','B4',.5),('-','B4',.5),('блеск','C5',2)), ['F','C']))
+
+# what each line shows on screen (same for every language)
+ROLES = ['intro','wake','grab','paste','smile','top','bottom','round','shiny',
+         'frontback','circles','tongue','spit','top','bottom','round','shiny','outro']
+# word index inside the 'tongue' / 'spit' lines where the action happens
+EVENTS = {'en': {'tongue': 3, 'spit': 5}, 'ru': {'tongue': 2, 'spit': 1}}
+LANG = os.environ.get('SONG_LANG', 'en')
+if LANG == 'ru': LINES = LINES_RU
+assert len(LINES) == len(ROLES)
 TAIL = 3.0
 TOTAL = len(LINES) * 2 * BAR + TAIL
 
 def timeline():
-    out, t = [], 0.0
-    for sec, lyr, syl, ch in LINES:
+    out, t, ev = [], 0.0, {}
+    for li, (sec, lyr, syl, ch) in enumerate(LINES):
         wt, b = [], 0.0
         for w, n, d in syl:
             if w and w != '-': wt.append(t + b * BEAT)
             b += d
         words = lyr.split()
         assert len(words) == len(wt), (lyr, len(words), len(wt))
-        out.append(dict(section=sec, text=lyr, start=t, end=t + 2 * BAR, words=words, wordTimes=wt))
+        if ROLES[li] in EVENTS[LANG] and ROLES[li] not in ev: ev[ROLES[li]] = wt[EVENTS[LANG][ROLES[li]]]
+        out.append(dict(section=sec, role=ROLES[li], text=lyr, start=t, end=t + 2 * BAR, words=words, wordTimes=wt))
         t += 2 * BAR
-    return out
+    return out, ev
 
 # ---------- synth ----------
 def env(n, a, d):
@@ -155,6 +186,7 @@ def render(path):
         w.writeframes((st * 32767).astype('<i2').tobytes())
 
 if __name__ == '__main__':
-    json.dump(dict(bpm=BPM, total=TOTAL, lines=timeline()), open('timeline.json', 'w'), indent=1)
-    render('music.wav')
+    lines, ev = timeline()
+    json.dump(dict(lang=LANG, bpm=BPM, total=TOTAL, lines=lines, events=ev), open(f'timeline_{LANG}.json', 'w'), indent=1, ensure_ascii=False)
+    render(f'music_{LANG}.wav')
     print('total', TOTAL)

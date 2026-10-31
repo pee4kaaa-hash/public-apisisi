@@ -1,6 +1,6 @@
 const { chromium } = require('playwright');
 const { sprout, drizzle, bee } = require('./chars.js');
-const font = `<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&display=block" rel="stylesheet">
+const font = `<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@900&display=block" rel="stylesheet">
 <style>html,body{margin:0}text{font-family:Fredoka,'DejaVu Sans',sans-serif;font-weight:700}</style>`;
 const sky = `<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfe6ff"/><stop offset="1" stop-color="#fff6d8"/></linearGradient></defs>`;
 const hills = (w,h) => `<path d="M0,${h*.78} C${w*.2},${h*.68} ${w*.35},${h*.74} ${w*.5},${h*.76} C${w*.7},${h*.8} ${w*.85},${h*.68} ${w},${h*.74} V${h} H0Z" fill="#a6dd7c"/>
@@ -47,9 +47,14 @@ ${[ [300,560],[820,620],[260,1060],[860,1120] ].map(([x,y])=>`<g transform="tran
 <text x="540" y="1420" text-anchor="middle" font-size="96" fill="#3d7fb3" stroke="#fff" stroke-width="14" paint-order="stroke">Shiny Teeth 🦷</text>
 </svg>`;
 
+const ru = x => x.replace(/<text /g, '<text style="font-family:Nunito;font-weight:900" ');
+const bannerRu = ru(banner.replace('Sprout &amp; Drizzle', 'Росток и Тучка').replace('font-size="132"', 'font-size="122"')
+  .replace('Little songs for growing hearts 🌱', 'Добрые песенки для малышей 🌱').replace('New songs every day!', 'Новые песенки каждый день!'));
+const thumbRu = ru(thumb.replace('font-size="140" fill="#2f6b2a"', 'font-size="104" fill="#2f6b2a"').replace('BRUSH BRUSH!', 'ЧИСТИМ ЗУБКИ!')
+  .replace('Shiny Teeth 🦷', 'Песенка 🦷').replace('font-size="96"', 'font-size="96"'));
 (async () => {
   const b = await chromium.launch();
-  for (const [name, svg, w, h] of [['avatar', avatar, 800, 800], ['banner', banner, W, H], ['video1-thumbnail', thumb, 1080, 1920]]) {
+  for (const [name, svg, w, h] of [['avatar', avatar, 800, 800], ['banner', banner, W, H], ['video1-thumbnail', thumb, 1080, 1920], ['banner_ru', bannerRu, W, H], ['video1-thumbnail_ru', thumbRu, 1080, 1920]]) {
     const p = await b.newPage({ viewport: { width: w, height: h } });
     await p.setContent(font + svg, { waitUntil: 'networkidle' }).catch(()=>{});
     await p.evaluate(() => document.fonts.ready);

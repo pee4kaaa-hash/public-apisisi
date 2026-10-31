@@ -1,11 +1,15 @@
 // Brush Brush, Shiny Teeth — frame-by-frame animation. Runs inside the page; draw(t) returns SVG markup.
 const W = 1080, H = 1920, BEAT = 0.5;
-let TL; // timeline injected from timeline.json
+let TL; // timeline injected from timeline_<lang>.json
+const TEXT = {
+  en: { title: 'BRUSH BRUSH!', titleSize: 140, sub: 'Shiny Teeth 🦷', brand: 'Sprout &amp; Drizzle', more: 'More songs every day! 🌱', moreSize: 64 },
+  ru: { title: 'ЧИСТИМ ЗУБКИ!', titleSize: 118, sub: 'Песенка для малышей 🦷', brand: 'Росток и Тучка', more: 'Новые песенки каждый день! 🌱', moreSize: 52 },
+};
+const T_ = () => TEXT[TL.lang];
 const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
 const ease = x => { x = clamp(x); return x * x * (3 - 2 * x); };
 const elastic = x => { x = clamp(x); return x === 1 ? 1 : 1 - Math.pow(2, -10 * x) * Math.cos(x * 10.5); };
 const lineAt = t => TL.lines.find(l => t >= l.start && t < l.end);
-const wordTime = (i, w) => { const l = TL.lines[i]; return l.wordTimes[l.words.findIndex(x => x.toLowerCase().startsWith(w))]; };
 
 function eyes(kind) {
   if (kind === 'closed') return `<path d="M-45,-5 Q-32,5 -19,-5 M19,-5 Q32,5 45,-5" stroke="#2d3a22" stroke-width="7" fill="none" stroke-linecap="round"/>`;
@@ -104,7 +108,15 @@ function karaoke(t, line) {
   if (!line) return '';
   const words = line.words, n = words.length;
   const len = line.text.length;
-  const rows = len > 24 ? [words.slice(0, Math.ceil(n / 2)), words.slice(Math.ceil(n / 2))] : [words];
+  let rows = [words];
+  if (len > 21) { // split into two rows of balanced length
+    let best = 1, bestW = 1e9;
+    for (let i = 1; i < n; i++) {
+      const w = Math.max(words.slice(0, i).join(' ').length, words.slice(i).join(' ').length);
+      if (w < bestW) { bestW = w; best = i; }
+    }
+    rows = [words.slice(0, best), words.slice(best)];
+  }
   const fs = 70;
   let out = `<rect x="60" y="1500" width="960" height="${rows.length === 2 ? 290 : 200}" rx="50" fill="#fff" stroke="#b8e986" stroke-width="8" opacity=".96"/>`;
   let idx = 0;
@@ -148,31 +160,29 @@ function draw(t) {
   // brushing sections
   const brushing = (sec === 'chorus' || sec === 'chorus2');
   if (brushing) {
-    const li = TL.lines.indexOf(line) % 4; // 1..4 within chorus
     const k = (t - line.start);
     m = 'wide'; eye = 'happy';
     let bx = 60 + Math.sin(t * Math.PI * 4) * 28, by = 30;
-    if (line.text.startsWith('Brush brush, bottom')) by = 48;
-    if (line.text.startsWith('Round')) {
+    if (line.role === 'bottom') by = 48;
+    if (line.role === 'round') {
       if (k < 2) { bx = 60 + Math.cos(t * 9) * 25; by = 38 + Math.sin(t * 9) * 12; }
       else { bx = 60 + Math.sin(t * Math.PI * 2) * 45; by = 38; }
     }
-    if (line.text.startsWith('Shiny')) { br = { x: 150, y: -10, ang: -50, paste: 0 }; fx += sparkles(t, line.start + 0.2, sx, sy, 280); }
+    if (line.role === 'shiny') { br = { x: 150, y: -10, ang: -50, paste: 0 }; fx += sparkles(t, line.start + 0.2, sx, sy, 280); }
     else br = { x: bx + 10, y: by, ang: 20, paste: 0 };
     extra += bubbles(t, 5 + Math.min(6, Math.floor(k * 2)), 0, 30).replace(/r="(\d+)"/g, (_, r) => `r="${r / 2.4}"`);
   }
   // verse 2
   if (sec === 'verse2') {
-    const i0 = TL.lines.indexOf(line);
     m = 'wide'; eye = 'open';
     br = { x: 70 + Math.sin(t * Math.PI * 4) * 25, y: 36, ang: 20, paste: 0 };
-    if (line.text.startsWith('Little')) br = { x: 70 + Math.cos(t * 10) * 14, y: 36 + Math.sin(t * 10) * 10, ang: 20, paste: 0 };
-    if (line.text.startsWith("Don't")) {
-      const tt = wordTime(i0, 'tongue');
+    if (line.role === 'circles') br = { x: 70 + Math.cos(t * 10) * 14, y: 36 + Math.sin(t * 10) * 10, ang: 20, paste: 0 };
+    if (line.role === 'tongue') {
+      const tt = TL.events.tongue;
       if (t >= tt) { m = 'tongue'; eye = 'happy'; br = { x: 85, y: 52, ang: 25, paste: 0 }; }
     }
-    if (line.text.startsWith('Now')) {
-      const tp = wordTime(i0, 'ptoo');
+    if (line.role === 'spit') {
+      const tp = TL.events.spit;
       if (t < tp) { m = 'puff'; br = { x: 140, y: 20, ang: -35, paste: 0 }; }
       else {
         m = 'wide'; eye = 'happy'; br = { x: 150, y: -50, ang: -60, paste: 0 };
@@ -184,7 +194,7 @@ function draw(t) {
         if (k > 0.5) fx += sparkles(t, tp + 0.6, sx, sy, 280);
       }
     }
-    if (line.text.startsWith('Brush the') && t > line.start + 2) br.x += 30;
+    if (line.role === 'frontback' && t > line.start + 2) br.x += 30;
   }
   // outro
   let dz = 0;
@@ -213,10 +223,10 @@ function draw(t) {
   // title
   if (t < 4.2) {
     const k = elastic((t - 0.1) / 0.9), o = t > 3.6 ? 1 - (t - 3.6) / 0.6 : 1;
-    svg += `<g opacity="${o}" transform="translate(540,300) scale(${k})"><text x="0" y="0" text-anchor="middle" font-size="140" fill="#2f6b2a" stroke="#fff" stroke-width="20" paint-order="stroke">BRUSH BRUSH!</text>
-    <text x="0" y="110" text-anchor="middle" font-size="80" fill="#3d7fb3" stroke="#fff" stroke-width="12" paint-order="stroke">Shiny Teeth 🦷</text></g>`;
+    svg += `<g opacity="${o}" transform="translate(540,300) scale(${k})"><text x="0" y="0" text-anchor="middle" font-size="${T_().titleSize}" fill="#2f6b2a" stroke="#fff" stroke-width="20" paint-order="stroke">${T_().title}</text>
+    <text x="0" y="110" text-anchor="middle" font-size="80" fill="#3d7fb3" stroke="#fff" stroke-width="12" paint-order="stroke">${T_().sub}</text></g>`;
   } else {
-    svg += `<text x="1040" y="90" text-anchor="end" font-size="40" fill="#5aa3d8" opacity=".75">Sprout &amp; Drizzle</text>`;
+    svg += `<text x="1040" y="90" text-anchor="end" font-size="40" fill="#5aa3d8" opacity=".75">${T_().brand}</text>`;
   }
   svg += karaoke(t, line);
   return svg;
@@ -229,7 +239,7 @@ function endCard(k) {
   <path d="M0,1500 C300,1420 600,1480 1080,1430 V1920 H0Z" fill="#a6dd7c"/><path d="M0,1650 C400,1600 700,1680 1080,1620 V1920 H0Z" fill="#86c95d"/>
   <circle cx="900" cy="260" r="90" fill="#ffe27a"/>`;
   s += drizzle(780, 520, 1.1 * a) + sprout({ x: 400, y: 880, s: 2.2 * a, eye: 'happy', m: 'wide' });
-  s += `<text x="540" y="1330" text-anchor="middle" font-size="110" fill="#2f6b2a" stroke="#fff" stroke-width="18" paint-order="stroke" opacity="${clamp(k * 2)}">Sprout &amp; Drizzle</text>
-  <text x="540" y="1430" text-anchor="middle" font-size="64" fill="#3d7fb3" stroke="#fff" stroke-width="10" paint-order="stroke" opacity="${clamp(k * 2 - 0.5)}">More songs every day! 🌱</text>`;
+  s += `<text x="540" y="1330" text-anchor="middle" font-size="110" fill="#2f6b2a" stroke="#fff" stroke-width="18" paint-order="stroke" opacity="${clamp(k * 2)}">${T_().brand}</text>
+  <text x="540" y="1430" text-anchor="middle" font-size="${T_().moreSize}" fill="#3d7fb3" stroke="#fff" stroke-width="10" paint-order="stroke" opacity="${clamp(k * 2 - 0.5)}">${T_().more}</text>`;
   return s;
 }

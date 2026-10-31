@@ -1,9 +1,11 @@
 {
+ "lang": "en",
  "bpm": 120,
  "total": 75.0,
  "lines": [
   {
    "section": "intro",
+   "role": "intro",
    "text": "Good morning, Sprout!",
    "start": 0.0,
    "end": 4.0,
@@ -20,6 +22,7 @@
   },
   {
    "section": "verse1",
+   "role": "wake",
    "text": "Wake up, Sprout, the sun is high,",
    "start": 4.0,
    "end": 8.0,
@@ -44,6 +47,7 @@
   },
   {
    "section": "verse1",
+   "role": "grab",
    "text": "Grab your brush and say hi, hi!",
    "start": 8.0,
    "end": 12.0,
@@ -68,6 +72,7 @@
   },
   {
    "section": "verse1",
+   "role": "paste",
    "text": "A little dot of minty paste,",
    "start": 12.0,
    "end": 16.0,
@@ -90,6 +95,7 @@
   },
   {
    "section": "verse1",
+   "role": "smile",
    "text": "Let's make our smile a shiny place!",
    "start": 16.0,
    "end": 20.0,
@@ -114,6 +120,7 @@
   },
   {
    "section": "chorus",
+   "role": "top",
    "text": "Brush brush, top teeth, swish swish swish,",
    "start": 20.0,
    "end": 24.0,
@@ -138,6 +145,7 @@
   },
   {
    "section": "chorus",
+   "role": "bottom",
    "text": "Brush brush, bottom teeth, make a wish!",
    "start": 24.0,
    "end": 28.0,
@@ -162,6 +170,7 @@
   },
   {
    "section": "chorus",
+   "role": "round",
    "text": "Round and round and side to side,",
    "start": 28.0,
    "end": 32.0,
@@ -186,6 +195,7 @@
   },
   {
    "section": "chorus",
+   "role": "shiny",
    "text": "Shiny teeth, open wide!",
    "start": 32.0,
    "end": 36.0,
@@ -204,6 +214,7 @@
   },
   {
    "section": "verse2",
+   "role": "frontback",
    "text": "Brush the front and brush the back,",
    "start": 36.0,
    "end": 40.0,
@@ -228,6 +239,7 @@
   },
   {
    "section": "verse2",
+   "role": "circles",
    "text": "Little circles, clickety clack,",
    "start": 40.0,
    "end": 44.0,
@@ -246,6 +258,7 @@
   },
   {
    "section": "verse2",
+   "role": "tongue",
    "text": "Don't forget your tongue, hee hee!",
    "start": 44.0,
    "end": 48.0,
@@ -268,6 +281,7 @@
   },
   {
    "section": "verse2",
+   "role": "spit",
    "text": "Now we spit it out, ptoo! Ta-da!",
    "start": 48.0,
    "end": 52.0,
@@ -292,6 +306,7 @@
   },
   {
    "section": "chorus2",
+   "role": "top",
    "text": "Brush brush, top teeth, swish swish swish,",
    "start": 52.0,
    "end": 56.0,
@@ -316,6 +331,7 @@
   },
   {
    "section": "chorus2",
+   "role": "bottom",
    "text": "Brush brush, bottom teeth, make a wish!",
    "start": 56.0,
    "end": 60.0,
@@ -340,6 +356,7 @@
   },
   {
    "section": "chorus2",
+   "role": "round",
    "text": "Round and round and side to side,",
    "start": 60.0,
    "end": 64.0,
@@ -364,6 +381,7 @@
   },
   {
    "section": "chorus2",
+   "role": "shiny",
    "text": "Shiny teeth, open wide!",
    "start": 64.0,
    "end": 68.0,
@@ -382,6 +400,7 @@
   },
   {
    "section": "outro",
+   "role": "outro",
    "text": "All done, Sprout! Big shiny smile!",
    "start": 68.0,
    "end": 72.0,
@@ -402,5 +421,9 @@
     71.0
    ]
   }
- ]
+ ],
+ "events": {
+  "tongue": 46.0,
+  "spit": 50.0
+ }
 }
