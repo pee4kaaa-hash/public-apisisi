@@ -156,6 +156,7 @@ details.qa .qa-a{margin-top:6px;padding:8px 10px;background:var(--surface-2);bor
       <a href="#cheats">Шпаргалки</a>
       <a href="#exam">Экзамены</a>
       <a href="#cards">Карточки</a>
+      <a href="#progress">Прогресс</a>
       <a href="#schedule">Курсы СДО</a>
       <a href="#links">Вуз и ссылки</a>
     </nav>
@@ -393,6 +394,25 @@ details.qa .qa-a{margin-top:6px;padding:8px 10px;background:var(--surface-2);bor
   </div>
 </section>
 
+<!-- ПРОГРЕСС И ПОМОЩНИКИ -->
+<section class="view" id="v-progress" hidden>
+  <div>
+    <h1>Мой прогресс</h1>
+    <p class="lead">Как ты продвигаешься по предметам: прочитанные конспекты, выученные карточки, верные ответы в тесте. Считается на твоём устройстве — у каждого, кто открывает сайт, свой прогресс, чужого никто не видит.</p>
+  </div>
+  <div class="panel"><div id="my-progress"></div>
+    <div class="row" style="margin-top:12px"><button class="btn ghost" id="progress-reset">Сбросить мой прогресс</button></div>
+  </div>
+  <div>
+    <h2 style="margin:8px 0">Помощники</h2>
+    <p class="note" style="margin:0 0 10px">Автоматические помощники сайта и журнал их работы — что проверено и найдено.</p>
+    <div id="agents"></div>
+  </div>
+  <div class="panel">
+    <p class="eyebrow">Журнал работы помощников</p>
+    <ul id="agents-log" style="list-style:none;padding:0;margin:8px 0 0;display:grid;gap:8px"></ul>
+  </div>
+</section>
 </main>
 <footer><div class="wrap">Учебный сайт для студентов-стоматологов ОмГМУ. Не официальный ресурс вуза. Конспекты не заменяют лекции кафедр и клинические рекомендации Минздрава РФ. Ссылки на документы кафедр собраны 30.10.2026. Иллюстрации — атлас Грея (общественное достояние), Blausen Medical (CC BY), Wikimedia Commons (CC BY-SA).</div></footer>
 
@@ -2351,7 +2371,7 @@ function renderLectures(){
   Object.keys(SUBJ).forEach(function(k){if(!inSubj(k,curSubj))return;
     var items=LECT.filter(function(l){return l.s===k});if(!items.length)return;
     var g=el("div",{"class":"subj-group"});g.appendChild(el("h2",{"class":"subj-h"},SUBJ[k]+' <small>'+items.length+'</small>'));
-    items.forEach(function(l){var d=el("details",{"class":"topic searchable"+(l.over?" over":"")});if(l.over)d.open=true;d.innerHTML='<summary>'+l.t+'</summary><div class="body">'+l.h+'</div>';g.appendChild(d)});
+    items.forEach(function(l){var d=el("details",{"class":"topic searchable"+(l.over?" over":"")});if(l.over)d.open=true;d.innerHTML='<summary>'+l.t+'</summary><div class="body">'+l.h+'</div>';d.addEventListener("toggle",function(){if(d.open&&!l.over)markRead(l.s,l.t)});g.appendChild(d)});
     list.appendChild(g)});
   applySearch();
 }
@@ -2385,7 +2405,7 @@ function renderQ(){var box=$("#quiz-q");
 }
 function answer(i,opts,it){var bs=opts.querySelectorAll(".opt");bs.forEach(function(b){b.disabled=true});
   bs[it.a].classList.add("right");var m=mistakes(),key=it.q;
-  if(i===it.a){score++;m=m.filter(function(x){return x!==key})}else{bs[i].classList.add("wrong");if(m.indexOf(key)<0)m.push(key)}
+  if(i===it.a){score++;m=m.filter(function(x){return x!==key});markQuizOk(it.q)}else{bs[i].classList.add("wrong");if(m.indexOf(key)<0)m.push(key)}
   store.set("mist",m);updMist();
   var ex=el("div",{"class":"explain"},(i===it.a?"<b>Верно.</b> ":"<b>Неверно.</b> ")+it.e);opts.parentNode.appendChild(ex);
   var nx=el("button",{"class":"btn",style:"margin-top:12px"},qi+1<qset.length?"Следующий вопрос":"Результат");nx.addEventListener("click",function(){qi++;renderQ()});opts.parentNode.appendChild(nx);nx.focus();
@@ -2405,7 +2425,7 @@ function renderCard(){var c=$("#card");
 }
 function flip(){flipped=!flipped;renderCard()}
 $("#card").addEventListener("click",flip);$("#card").addEventListener("keydown",function(e){if(e.key===" "||e.key==="Enter"){e.preventDefault();flip()}});
-$("#card-yes").addEventListener("click",function(){deck.shift();flipped=false;renderCard()});
+$("#card-yes").addEventListener("click",function(){if(deck[0])markKnown(deck[0].f);deck.shift();flipped=false;renderCard()});
 $("#card-no").addEventListener("click",function(){if(deck.length)deck.push(deck.shift());flipped=false;renderCard()});
 
 /* ---------- РАСПИСАНИЯ И ССЫЛКИ ---------- */
@@ -2434,10 +2454,11 @@ function calc(){var w=parseFloat($("#w").value),d=DRUG[$("#drug").value];
 $("#w").addEventListener("input",calc);$("#drug").addEventListener("change",calc);
 
 /* ---------- РОУТИНГ ---------- */
-var VIEWS=["rasp","home","lectures","cheats","exam","cards","schedule","links"];
+var VIEWS=["rasp","home","lectures","cheats","exam","cards","progress","schedule","links"];
 function route(){var v=location.hash.slice(1);if(VIEWS.indexOf(v)<0)v="rasp";
   VIEWS.forEach(function(x){$("#v-"+x).hidden=x!==v});
   document.querySelectorAll("nav.tabs a").forEach(function(a){if(a.getAttribute("href")==="#"+v)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  if(v==="progress")renderProgress();
   applySearch();
 }
 window.addEventListener("hashchange",function(){route();window.scrollTo(0,0)});
@@ -2542,7 +2563,51 @@ function renderRasp(){
   });
   var pl=$("#rasp-places");if(pl){pl.innerHTML="";PLACES.forEach(function(x){pl.appendChild(el("li",null,'<b>'+x[0]+'</b> — '+x[1]))});}
 }
-drawJaws();renderDeadlines();renderRasp();renderDays();renderCheck();renderLectures();renderCheats();
+/* ---------- ПРОГРЕСС И ПОМОЩНИКИ ---------- */
+function markRead(s,t){var r=store.get("read",{});if(!r[s])r[s]={};if(!r[s][t]){r[s][t]=1;store.set("read",r);}}
+function markKnown(f){var k=store.get("known",{});if(!k[f]){k[f]=1;store.set("known",k);}}
+function markQuizOk(q){var k=store.get("quizok",{});if(!k[q]){k[q]=1;store.set("quizok",k);}}
+function pct(a,b){return b?Math.round(a/b*100):0;}
+function renderProgress(){
+  var box=$("#my-progress");if(!box)return;box.innerHTML="";
+  var read=store.get("read",{}),known=store.get("known",{}),qok=store.get("quizok",{});
+  var totR=0,totRd=0;
+  Object.keys(SUBJ).forEach(function(k){
+    var L=LECT.filter(function(x){return x.s===k&&!x.over});
+    var C=CARDS.filter(function(x){return x.s===k});
+    var Q=QUIZ.filter(function(x){return x.s===k});
+    var rd=L.filter(function(x){return read[k]&&read[k][x.t]}).length;
+    var kn=C.filter(function(x){return known[x.f]}).length;
+    var qd=Q.filter(function(x){return qok[x.q]}).length;
+    totR+=L.length;totRd+=rd;
+    var overall=pct(rd+kn+qd,(L.length+C.length+Q.length)||1);
+    var row=el("div",{style:"margin:10px 0"});
+    row.innerHTML='<div class="row" style="justify-content:space-between"><b>'+SUBJ[k]+'</b><span class="mono" style="color:var(--accent)">'+overall+'%</span></div>'
+      +'<div class="progress" style="margin:4px 0"><i style="width:'+overall+'%"></i></div>'
+      +'<span class="note">конспекты '+rd+'/'+L.length+' · карточки '+kn+'/'+C.length+' · тест '+qd+'/'+Q.length+'</span>';
+    box.appendChild(row);
+  });
+  var head=el("div",{"class":"row",style:"justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:6px"});
+  head.innerHTML='<span class="eyebrow" style="margin:0">Всего по курсу</span><span class="stat" style="font-size:1.4rem">'+pct(totRd,totR)+'%</span>';
+  box.insertBefore(head,box.firstChild);
+}
+var AGENTS=[
+  ["📚","Агент-СДО","Заходит в СДО ОмГМУ под твоим логином и проверяет курсы (анатомия, биология, химия и др.) на новые лекции, объявления и задания. Работает по твоей команде в чате — не в фоне и без слежки за людьми."],
+  ["📊","Агент-прогресс","Следит за тем, как учишься именно ты: отмечает прочитанные конспекты, выученные карточки и верные ответы (панель выше). Данные только на твоём устройстве."],
+  ["📅","Агент-расписание","Держит расписание 168 группы актуальным: ставит сегодняшний день первым, помечает завершённые курсы и считает дни до коллоквиума и рубежки."]
+];
+var AGENTLOG=[
+  ["31.10.2026","Агент-СДО","Проверил курсы: Анатомия, Биология, Химия. Новых объявлений и материалов в форумах нет — лекции без изменений."],
+  ["30.10.2026","Агент-СДО","Загрузил лекции и пособия: химия (весь курс), анатомия (череп и лекции 1 семестра), биология (программа и ФОС). По ним добавлены конспекты."],
+  ["30.10.2026","Агент-расписание","Занёс расписание 168 группы с аудиториями лекций, отметил завершённые лекционные курсы."],
+  ["30.10.2026","Агент-контент","Вшиты реальные иллюстрации (атлас Грея, Blausen, Wikimedia) к анатомии, стоматологии, биологии и химии."]
+];
+function renderAgents(){
+  var a=$("#agents");if(a){a.innerHTML="";AGENTS.forEach(function(x){var p=el("div",{"class":"panel",style:"margin-bottom:10px"});p.innerHTML='<b style="font-size:1.05rem">'+x[0]+' '+x[1]+'</b><p class="note" style="margin:.4em 0 0">'+x[2]+'</p>';a.appendChild(p)});}
+  var l=$("#agents-log");if(l){l.innerHTML="";AGENTLOG.forEach(function(x){var li=el("li",{style:"border-top:1px solid var(--line);padding-top:8px"});li.innerHTML='<span class="mono note">'+x[0]+'</span> · <b>'+x[1]+'</b><br><span class="note">'+x[2]+'</span>';l.appendChild(li)});}
+}
+var _pr=$("#progress-reset");if(_pr)_pr.addEventListener("click",function(){if(window.confirm){}try{store.set("read",{});store.set("known",{});store.set("quizok",{});}catch(e){}renderProgress();});
+drawJaws();renderDeadlines();renderRasp();renderProgress();renderAgents();renderDays();renderCheck();renderLectures();renderCheats();
 renderQuizChips();updMist();startQuiz(pool());renderCardChips();newDeck();renderSched();calc();route();
 })();
 </script>
