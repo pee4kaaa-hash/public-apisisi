@@ -17,6 +17,7 @@ const karaokeLine = t => {
   const i = TL.lines.indexOf(lineAt(t + 0.5));
   if (i < 0) return null;
   const l = TL.lines[i];
+  if (l.sung === false) return null;
   return t <= l.wordTimes[l.wordTimes.length - 1] + 1.6 || l.start - t > 0 ? l : null;
 };
 const S = (role, n = 0) => { const ls = TL.lines.filter(l => l.role === role); return (ls[n] || ls[0]).start; };

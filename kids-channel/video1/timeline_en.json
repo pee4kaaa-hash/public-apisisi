@@ -1,31 +1,31 @@
 {
  "lang": "en",
  "bpm": 120,
- "total": 75.0,
+ "total": 77.4,
+ "endCard": 74.4,
  "lines": [
   {
    "section": "intro",
    "role": "intro",
    "text": "Good morning, Sprout!",
-   "start": 0.0,
-   "end": 4.0,
    "words": [
     "Good",
     "morning,",
     "Sprout!"
    ],
    "wordTimes": [
+    0.0,
     1.0,
-    1.5,
-    2.5
-   ]
+    1.88
+   ],
+   "start": 0,
+   "end": 2.51,
+   "sung": true
   },
   {
    "section": "verse1",
    "role": "wake",
    "text": "Wake up, Sprout, the sun is high,",
-   "start": 4.0,
-   "end": 8.0,
    "words": [
     "Wake",
     "up,",
@@ -36,21 +36,22 @@
     "high,"
    ],
    "wordTimes": [
-    4.0,
-    4.5,
-    5.0,
-    5.5,
-    6.0,
-    6.5,
-    7.0
-   ]
+    2.76,
+    3.8,
+    8.9,
+    9.82,
+    9.92,
+    10.38,
+    10.9
+   ],
+   "start": 2.51,
+   "end": 11.29,
+   "sung": true
   },
   {
    "section": "verse1",
    "role": "grab",
    "text": "Grab your brush and say hi, hi!",
-   "start": 8.0,
-   "end": 12.0,
    "words": [
     "Grab",
     "your",
@@ -61,21 +62,22 @@
     "hi!"
    ],
    "wordTimes": [
-    8.0,
-    8.5,
-    9.0,
-    9.5,
-    10.0,
-    10.5,
-    11.0
-   ]
+    11.54,
+    12.26,
+    12.8,
+    13.4,
+    13.82,
+    14.3,
+    15.08
+   ],
+   "start": 11.29,
+   "end": 15.63,
+   "sung": true
   },
   {
    "section": "verse1",
    "role": "paste",
    "text": "A little dot of minty paste,",
-   "start": 12.0,
-   "end": 16.0,
    "words": [
     "A",
     "little",
@@ -85,20 +87,21 @@
     "paste,"
    ],
    "wordTimes": [
-    12.0,
-    12.25,
-    13.0,
-    13.5,
-    14.0,
-    15.0
-   ]
+    15.88,
+    16.04,
+    16.64,
+    17.32,
+    17.86,
+    18.82
+   ],
+   "start": 15.63,
+   "end": 19.35,
+   "sung": true
   },
   {
    "section": "verse1",
    "role": "smile",
    "text": "Let's make our smile a shiny place!",
-   "start": 16.0,
-   "end": 20.0,
    "words": [
     "Let's",
     "make",
@@ -109,21 +112,22 @@
     "place!"
    ],
    "wordTimes": [
-    16.0,
-    16.25,
-    16.5,
-    17.0,
-    17.5,
-    18.0,
-    19.0
-   ]
+    19.6,
+    20.06,
+    20.24,
+    20.76,
+    21.26,
+    21.82,
+    22.5
+   ],
+   "start": 19.35,
+   "end": 23.05,
+   "sung": true
   },
   {
    "section": "chorus",
    "role": "top",
    "text": "Brush brush, top teeth, swish swish swish,",
-   "start": 20.0,
-   "end": 24.0,
    "words": [
     "Brush",
     "brush,",
@@ -134,21 +138,22 @@
     "swish,"
    ],
    "wordTimes": [
-    20.0,
-    20.5,
-    21.0,
-    21.5,
-    22.0,
-    22.5,
-    23.0
-   ]
+    23.3,
+    24.82,
+    25.02,
+    25.3,
+    25.7,
+    26.6,
+    26.94
+   ],
+   "start": 23.05,
+   "end": 27.11,
+   "sung": true
   },
   {
    "section": "chorus",
    "role": "bottom",
    "text": "Brush brush, bottom teeth, make a wish!",
-   "start": 24.0,
-   "end": 28.0,
    "words": [
     "Brush",
     "brush,",
@@ -159,21 +164,22 @@
     "wish!"
    ],
    "wordTimes": [
-    24.0,
-    24.5,
-    25.0,
-    25.5,
-    26.0,
-    26.5,
-    27.0
-   ]
+    27.36,
+    28.52,
+    29.02,
+    29.38,
+    29.76,
+    30.28,
+    30.84
+   ],
+   "start": 27.11,
+   "end": 31.19,
+   "sung": true
   },
   {
    "section": "chorus",
    "role": "round",
    "text": "Round and round and side to side,",
-   "start": 28.0,
-   "end": 32.0,
    "words": [
     "Round",
     "and",
@@ -184,21 +190,22 @@
     "side,"
    ],
    "wordTimes": [
-    28.0,
-    28.5,
-    28.75,
-    29.5,
-    30.0,
-    30.5,
-    31.0
-   ]
+    31.44,
+    32.32,
+    32.86,
+    33.3,
+    33.84,
+    34.36,
+    34.8
+   ],
+   "start": 31.19,
+   "end": 35.17,
+   "sung": true
   },
   {
    "section": "chorus",
    "role": "shiny",
    "text": "Shiny teeth, open wide!",
-   "start": 32.0,
-   "end": 36.0,
    "words": [
     "Shiny",
     "teeth,",
@@ -206,18 +213,19 @@
     "wide!"
    ],
    "wordTimes": [
-    32.0,
-    32.5,
-    33.0,
-    34.0
-   ]
+    35.42,
+    36.4,
+    37.26,
+    38.56
+   ],
+   "start": 35.17,
+   "end": 39.15,
+   "sung": true
   },
   {
    "section": "verse2",
    "role": "frontback",
    "text": "Brush the front and brush the back,",
-   "start": 36.0,
-   "end": 40.0,
    "words": [
     "Brush",
     "the",
@@ -228,21 +236,22 @@
     "back,"
    ],
    "wordTimes": [
-    36.0,
-    36.5,
-    37.0,
-    37.5,
-    38.0,
-    38.5,
-    39.0
-   ]
+    39.4,
+    40.22,
+    40.72,
+    41.28,
+    41.84,
+    42.32,
+    42.82
+   ],
+   "start": 39.15,
+   "end": 43.13,
+   "sung": true
   },
   {
    "section": "verse2",
    "role": "circles",
    "text": "Little circles, clickety clack,",
-   "start": 40.0,
-   "end": 44.0,
    "words": [
     "Little",
     "circles,",
@@ -250,18 +259,19 @@
     "clack,"
    ],
    "wordTimes": [
-    40.0,
-    40.5,
-    41.5,
-    42.5
-   ]
+    43.38,
+    44.64,
+    45.62,
+    46.7
+   ],
+   "start": 43.13,
+   "end": 47.15,
+   "sung": true
   },
   {
    "section": "verse2",
    "role": "tongue",
    "text": "Don't forget your tongue, hee hee!",
-   "start": 44.0,
-   "end": 48.0,
    "words": [
     "Don't",
     "forget",
@@ -271,20 +281,21 @@
     "hee!"
    ],
    "wordTimes": [
-    44.0,
-    44.5,
-    45.5,
-    46.0,
-    46.5,
-    47.0
-   ]
+    47.4,
+    48.36,
+    49.02,
+    49.74,
+    50.32,
+    50.84
+   ],
+   "start": 47.15,
+   "end": 51.55,
+   "sung": true
   },
   {
    "section": "verse2",
    "role": "spit",
    "text": "Now we spit it out, ptoo! Ta-da!",
-   "start": 48.0,
-   "end": 52.0,
    "words": [
     "Now",
     "we",
@@ -295,21 +306,22 @@
     "Ta-da!"
    ],
    "wordTimes": [
-    48.0,
-    48.25,
-    48.5,
-    49.0,
-    49.5,
-    50.0,
-    50.5
-   ]
+    51.8,
+    52.4,
+    52.82,
+    53.22,
+    54.02,
+    54.3,
+    54.72
+   ],
+   "start": 51.55,
+   "end": 55.69,
+   "sung": true
   },
   {
    "section": "chorus2",
    "role": "top",
    "text": "Brush brush, top teeth, swish swish swish,",
-   "start": 52.0,
-   "end": 56.0,
    "words": [
     "Brush",
     "brush,",
@@ -320,21 +332,22 @@
     "swish,"
    ],
    "wordTimes": [
-    52.0,
-    52.5,
-    53.0,
-    53.5,
-    54.0,
-    54.5,
-    55.0
-   ]
+    55.94,
+    56.54,
+    57.02,
+    57.28,
+    57.72,
+    58.46,
+    58.96
+   ],
+   "start": 55.69,
+   "end": 59.43,
+   "sung": true
   },
   {
    "section": "chorus2",
    "role": "bottom",
    "text": "Brush brush, bottom teeth, make a wish!",
-   "start": 56.0,
-   "end": 60.0,
    "words": [
     "Brush",
     "brush,",
@@ -345,21 +358,22 @@
     "wish!"
    ],
    "wordTimes": [
-    56.0,
-    56.5,
-    57.0,
-    57.5,
-    58.0,
-    58.5,
-    59.0
-   ]
+    59.68,
+    60.6,
+    61.03,
+    61.46,
+    61.78,
+    62.28,
+    62.84
+   ],
+   "start": 59.43,
+   "end": 63.17,
+   "sung": true
   },
   {
    "section": "chorus2",
    "role": "round",
    "text": "Round and round and side to side,",
-   "start": 60.0,
-   "end": 64.0,
    "words": [
     "Round",
     "and",
@@ -370,21 +384,22 @@
     "side,"
    ],
    "wordTimes": [
-    60.0,
-    60.5,
-    60.75,
-    61.5,
-    62.0,
-    62.5,
-    63.0
-   ]
+    63.42,
+    64.32,
+    64.88,
+    65.32,
+    65.84,
+    66.36,
+    66.8
+   ],
+   "start": 63.17,
+   "end": 67.19,
+   "sung": true
   },
   {
    "section": "chorus2",
    "role": "shiny",
    "text": "Shiny teeth, open wide!",
-   "start": 64.0,
-   "end": 68.0,
    "words": [
     "Shiny",
     "teeth,",
@@ -392,18 +407,19 @@
     "wide!"
    ],
    "wordTimes": [
-    64.0,
-    64.5,
-    65.0,
-    66.0
-   ]
+    67.44,
+    68.42,
+    69.8,
+    70.54
+   ],
+   "start": 67.19,
+   "end": 70.69,
+   "sung": true
   },
   {
    "section": "outro",
    "role": "outro",
    "text": "All done, Sprout! Big shiny smile!",
-   "start": 68.0,
-   "end": 72.0,
    "words": [
     "All",
     "done,",
@@ -413,17 +429,20 @@
     "smile!"
    ],
    "wordTimes": [
-    68.0,
-    68.5,
-    69.0,
-    70.0,
-    70.5,
-    71.0
-   ]
+    70.94,
+    71.34,
+    71.74,
+    72.14,
+    72.54,
+    72.94
+   ],
+   "start": 70.69,
+   "end": 73.94,
+   "sung": false
   }
  ],
  "events": {
-  "tongue": 46.0,
-  "spit": 50.0
+  "tongue": 49.74,
+  "spit": 54.3
  }
 }

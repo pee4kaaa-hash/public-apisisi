@@ -39,6 +39,7 @@ def main(lang, path, model='medium'):
                 if difflib.SequenceMatcher(None, a[i1 + k], b[j]).ratio() >= 0.5: times[i1 + k] = rec[j][1]
     matched = sum(t is not None for t in times)
     print(f'matched {matched}/{len(words)} words')
+    heard = [t is not None for t in times]
     # fill gaps by interpolation; enforce monotonic times
     known = [i for i, t in enumerate(times) if t is not None]
     for i in range(len(times)):
@@ -51,9 +52,10 @@ def main(lang, path, model='medium'):
     for i in range(1, len(times)): times[i] = max(times[i], times[i - 1] + 0.05)
     out = []
     for li, (sec, text, *_r) in enumerate(lines):
+        hs = [h for h, o in zip(heard, owner) if o == li]; sung = sum(hs) >= max(1, len(hs) // 2)
         wt = [round(t, 3) for t, o in zip(times, owner) if o == li]
         out.append(dict(section=sec, role=song.ROLES[li], text=text, words=text.split(), wordTimes=wt,
-                        start=max(0, wt[0] - 0.25), end=wt[-1] + 1.0))
+                        start=max(0, wt[0] - 0.25), end=wt[-1] + 1.0, sung=sung))
     for i in range(len(out) - 1): out[i]['end'] = min(out[i]['end'], out[i + 1]['start'])
     ev = {r: out[[l['role'] for l in out].index(r)]['wordTimes'][song.EVENTS[lang][r]] for r in ('tongue', 'spit')}
     tl = dict(lang=lang, bpm=song.BPM, total=dur + 3.0, endCard=dur, lines=out, events=ev)
